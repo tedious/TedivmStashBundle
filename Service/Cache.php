@@ -16,7 +16,7 @@ class Cache
 	/**
 	 * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
 	 *
-	 * @var StashHandler $handler
+	 * @param StashHandler $handler
 	 */
 	public function __construct($handler)
 	{
@@ -24,9 +24,10 @@ class Cache
 	}
 
 	/**
-	 * Returns a Stash caching object for the specified key.
+	 * Returns a Stash caching object for the specified key. The key can be either a series of string arguments, 
+	 * or an array.
 	 *
-	 * @param string $key, $key, $key...
+	 * @param array|string $key, $key, $key...
 	 */
 	public function get()
 	{
@@ -46,7 +47,8 @@ class Cache
 	}
 
 	/**
-	 * Clears the cache (for the key, if specified.)
+	 * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either 
+	 * a series of string arguments, or an array.
 	 *
 	 * @param null|string|array $key, $key, $key...
 	 */
@@ -57,8 +59,10 @@ class Cache
 	}
 
 	/**
-	 * Purges the cache.
+	 * Purges the cache of all stale or obsolete objects, as well as other maintenance tasks specified by the
+	 * back end caching system. This operation has the potential to be very long running.
 	 *
+	 * @return bool
 	 */
 	public function purge()
 	{
@@ -67,7 +71,7 @@ class Cache
 	}
 
 	/**
-	 * Returns the current list of handlers.
+	 * Returns the current list of handlers that the system is able to use.
 	 *
 	 * @return array
 	 */
