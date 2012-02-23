@@ -1,8 +1,8 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash;
-use StashHandlers;
+use Stash\Cache;
+use Stash\Handlers;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -24,7 +24,7 @@ class Cache
 	}
 
 	/**
-	 * Returns a Stash caching object for the specified key. The key can be either a series of string arguments, 
+	 * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
 	 * or an array.
 	 *
 	 * @param array|string $key, $key, $key...
@@ -38,7 +38,7 @@ class Cache
 			$args = $args[0];
 
 		$handler = (isset($this->handler)) ? $this->handler : null;
-		$stash = new Stash($handler, 'stashbox');
+		$stash = new Cache($handler);
 
 		if(count($args) > 0)
 			$stash->setupKey($args);
@@ -47,7 +47,7 @@ class Cache
 	}
 
 	/**
-	 * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either 
+	 * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either
 	 * a series of string arguments, or an array.
 	 *
 	 * @param null|string|array $key, $key, $key...
@@ -77,6 +77,6 @@ class Cache
 	 */
 	public function getHandlers()
 	{
-		return StashHandlers::getHandlers();
+		return Handlers::getHandlers();
 	}
 }

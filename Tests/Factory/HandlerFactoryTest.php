@@ -3,6 +3,7 @@
 namespace Tedivm\StashBundle\Tests\Factory;
 
 use Tedivm\StashBundle\Factory\HandlerFactory;
+use Stash\Utilities;
 
 class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +15,7 @@ class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 		$handler = HandlerFactory::createHandler($type, $options);
 
 		if(isset($tests['path']) && $tests['path'] === 'GETPATH')
-			$tests['path'] = \StashUtilities::getBaseDirectory($handler);
+			$tests['path'] = Utilities::getBaseDirectory($handler);
 
 		$this->assertInstanceOf($class, $handler);
 		foreach($tests as $attribute => $value) {

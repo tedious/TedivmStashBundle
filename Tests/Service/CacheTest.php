@@ -3,6 +3,7 @@
 namespace Tedivm\StashBundle\Tests\Service;
 
 use Tedivm\StashBundle\Service\Cache;
+use Stash\Handler\Ephemeral;
 
 class CacheTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +16,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$handler = new \StashArray(array());
+		$handler = new Ephemeral(array());
 		$this->cache = new Cache($handler);
 	}
 

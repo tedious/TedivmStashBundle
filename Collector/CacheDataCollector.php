@@ -4,8 +4,8 @@ namespace Tedivm\StashBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stash;
-use StashHandlers;
+use Stash\Cache;
+use Stash\Handlers;
 
 
 /**
@@ -28,7 +28,7 @@ class CacheDataCollector extends DataCollector
 
 	public function collect(Request $request, Response $response, \Exception $exception = null)
 	{
-		$record = Stash::$queryRecord;
+		$record = Cache::$queryRecord;
 		if(!isset($record))
 			$record = array();
 
@@ -36,12 +36,14 @@ class CacheDataCollector extends DataCollector
 		foreach($record as $query => $calls)
 			$data[$query] = array('calls' => count($calls), 'returns' => array_sum($calls));
 
-		$info = array('calls' => Stash::$cacheCalls, 'returns' => Stash::$cacheReturns, 'record' => $data);
+		$info = array('calls' => Cache::$cacheCalls, 'returns' => Cache::$cacheReturns, 'record' => $data);
 		$info['handlerType'] = $this->handlerType;
 		$info['handlerOptions'] = $this->handlerOptions;
-		$handlers = StashHandlers::getHandlers();
-		foreach($handlers as $handler)
-			$info['availableHandlers'][] = substr($handler, 5);
+		$handlers = Handlers::getHandlers();
+		foreach($handlers as $handler) {
+			$pieces = explode('\\', $handler);
+			$info['availableHandlers'][] = array_pop($pieces);
+		}
 		$info['availableHandlers'] = join(', ', $info['availableHandlers']);
 
 		if($this->handlerType === 'MultiHandler') {
