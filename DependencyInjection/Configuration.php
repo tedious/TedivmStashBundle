@@ -5,7 +5,7 @@ namespace Tedivm\StashBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use StashHandlers;
+use Stash\Handlers;
 
 class Configuration implements ConfigurationInterface
 {
@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
 		$treeBuilder = new TreeBuilder();
 		$rootNode = $treeBuilder->root('tedivm_stash');
 
-		$handlers = array_keys(StashHandlers::getHandlers());
+		$handlers = array_keys(Handlers::getHandlers());
 		$default = current($handlers);
 
 		$next = $rootNode
@@ -110,7 +110,7 @@ class Configuration implements ConfigurationInterface
 					$node = $node
 				->end();
 
-				$handlers = array_keys(StashHandlers::getHandlers());
+				$handlers = array_keys(Handlers::getHandlers());
 				foreach($handlers as $handler) {
 					if($handler !== 'MultiHandler') {
 						$this->addHandlerSettings($handler, $node);

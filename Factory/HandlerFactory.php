@@ -1,13 +1,13 @@
 <?php
 
 namespace Tedivm\StashBundle\Factory;
-use StashHandlers;
+use Stash\Handlers;
 
 class HandlerFactory {
 
     static function createHandler($type, $options)
     {
-        $handlers = StashHandlers::getHandlers();
+        $handlers = Handlers::getHandlers();
 
         $class = $handlers[$type];
 
