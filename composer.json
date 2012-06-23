@@ -1,0 +1,22 @@
+{
+  "name": "tedivm/stash-bundle",
+  "type": "symfony-bundle",
+  "description": "Incorporates the Stash caching library into Symfony",
+  "keywords": ["cache","caching","apc","memcached","sqlite"],
+  "homepage": "http://github.com/tedivm/TedivmStashBundle",
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "Josh Hall-Bachner",
+      "email": "jhallbachner@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+    "tedivm/stash": "*"
+  },
+  "autoload": {
+    "psr-0": {"Tedivm\\StashBundle": ""}
+  },
+  "target-dir": "Tedivm/StashBundle"
+}
