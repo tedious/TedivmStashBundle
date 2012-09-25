@@ -31,6 +31,10 @@ class Configuration implements ConfigurationInterface
 			'ttl'				=> 300,
 			'namespace'			=> null,
 		),
+		'Memcache' => array(
+			'ttl'				=> 300,
+			'namespace'			=> null,
+		),
 	);
 
 	public function getConfigTreeBuilder()
@@ -62,7 +66,7 @@ class Configuration implements ConfigurationInterface
 
 	public function addHandlerSettings($handler, $rootNode)
 	{
-		if($handler == 'Memcached') {
+		if($handler == 'Memcache') {
 			$rootNode
 				->children()
 					->variableNode($handler)
