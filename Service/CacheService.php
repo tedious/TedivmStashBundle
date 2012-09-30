@@ -46,13 +46,13 @@ class CacheService
             $args = $args[0];
 
         array_unshift($args, $this->key);
+        $key = join('/', $args);
 
         $handler = (isset($this->handler)) ? $this->handler : null;
         $cache = new StashCache($handler);
         $stash = new CacheResultObject($cache, $this->logger);
 
-        if(count($args) > 0)
-            $stash->setupKey($args);
+        $stash->setupKey($key);
 
         return $stash;
     }
@@ -65,7 +65,7 @@ class CacheService
      */
     public function clear()
     {
-        $stash = $this->getCache(func_get_args());
+        $stash = $this->get(func_get_args());
         return $stash->clear();
     }
 
@@ -77,7 +77,7 @@ class CacheService
      */
     public function purge()
     {
-        $stash = $this->getCache();
+        $stash = $this->get();
         return $stash->purge();
     }
 
