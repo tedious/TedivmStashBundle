@@ -83,6 +83,7 @@ class Configuration implements ConfigurationInterface
         $node = $treeBuilder->root('caches');
 
         $childNode = $node
+            ->fixXmlConfig('handler')
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('array')
@@ -115,17 +116,22 @@ class Configuration implements ConfigurationInterface
     public function addHandlerSettings($handler, $rootNode)
     {
         $handlerNode = $rootNode
-            ->arrayNode($handler);
+            ->arrayNode($handler)
+                ->fixXmlConfig('server');
 
            if($handler == 'Memcache') {
                 $finalNode = $handlerNode
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('servers')
+                            ->requiresAtLeastOneElement()
+                            ->defaultValue(array(array('server' => '127.0.0.1', 'port' => '11211')))
                             ->prototype('array')
-                            ->children()
-                                ->scalarNode('server')->defaultValue('127.0.0.1')->end()
-                                ->scalarNode('port')->defaultValue('11211')->end()
-                                ->scalarNode('weight')->end()
+                                ->children()
+                                    ->scalarNode('server')->defaultValue('127.0.0.1')->end()
+                                    ->scalarNode('port')->defaultValue('11211')->end()
+                                    ->scalarNode('weight')->end()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()

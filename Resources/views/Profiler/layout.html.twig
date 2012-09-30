@@ -84,10 +84,10 @@
                         <th colspan="2"><h3 style="font-size: 16px; margin-bottom: 0;">{{ name }} settings</h3></th>
                     </tr>
                     {% if name == 'Memcache' %}
-                        {% for ovalue in options %}
+                        {% for ovalue in options.servers %}
                             <tr>
                                 <th>Server</th>
-                                <td>{{ ovalue.server }}:{{ ovalue.port }} (weight {{ ovalue.weight }})</td>
+                                <td>{{ ovalue.server }}:{{ ovalue.port }} {% if ovalue.weight is defined %}(weight {{ ovalue.weight }}){% endif %}</td>
                             </tr>
                         {% endfor %}
                     {% else %}
