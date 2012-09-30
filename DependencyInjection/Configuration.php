@@ -99,6 +99,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->booleanNode('registerDoctrineAdapter')->defaultFalse()->end()
+                ->booleanNode('inMemory')->defaultTrue()->end()
             ;
 
             foreach($handlers as $handler) {

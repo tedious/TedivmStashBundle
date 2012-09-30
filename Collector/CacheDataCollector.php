@@ -54,9 +54,12 @@ class CacheDataCollector extends DataCollector
         $handlers = Handlers::getHandlers();
         foreach($handlers as $handler) {
             $pieces = explode('\\', $handler);
-            $info['availableHandlers'][] = array_pop($pieces);
+            $name = array_pop($pieces);
+            if(!in_array($name, array('Ephemeral', 'MultiHandler'))) {
+                $info['availableHandlers'][] = $name;
+            }
         }
-        $info['availableHandlers'] = $info['availableHandlers'];
+
         $info['default'] = $this->defaultCache;
 
         $this->data = $info;

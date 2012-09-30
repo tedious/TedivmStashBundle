@@ -22,6 +22,8 @@ class HandlerFactory {
         }
 
         $class = $handlers['MultiHandler'];
-        return new $class(array('handlers' => $h));
+        $handler = new $class(array('handlers' => $h));
+
+        return $handler;
     }
 }

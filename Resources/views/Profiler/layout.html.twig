@@ -74,6 +74,14 @@
                 <th>Hits</th>
                 <td>{{ details.hits }}</td>
             </tr>
+            <tr>
+                <th>Doctrine Adapter</th>
+                <td>{{ details.options.registerDoctrineAdapter ? 'true' : 'false' }}</td>
+            </tr>
+            <tr>
+                <th>Cache In-Memory</th>
+                <td>{{ details.options.inMemory ? 'true' : 'false' }}</td>
+            </tr>
         </table>
 
         <h3>Handler Options</h3>

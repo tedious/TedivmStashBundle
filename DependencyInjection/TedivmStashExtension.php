@@ -48,6 +48,11 @@ class TedivmStashExtension extends Extension
         $handlers = $cache['handlers'];
         unset($cache['handlers']);
 
+        if(isset($cache['inMemory']) && $cache['inMemory']) {
+            array_unshift($handlers, 'Ephemeral');
+        }
+        unset($cache['inMemory']);
+
         $doctrine = $cache['registerDoctrineAdapter'];
         unset($cache['registerDoctrineAdapter']);
 
