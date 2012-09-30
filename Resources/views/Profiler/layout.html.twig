@@ -2,12 +2,15 @@
 
 {% block toolbar %}
 	{% set icon %}
-		<img height="20" alt="Memory Usage" style="vertical-align: middle; margin-right: 5px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAAAAXNSR0IArs4c6QAAAAZiS0dEADAALgAyomY5kwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sGAhAwGTZvRiQAAAOqSURBVEjHtZZtTFtVGMd/vS2raymZMqiMjQ2Ijn3Y2g7C5MMWiDF+MYENho51GhW3xBAT3jeNbjG+hMQsGsMm8kET5a0xZuIHXQYbsi0uTtIWX5BtlReZWiyz5F5YS6v1gwdzo31T8J+c5Enufc7vnnvOeZ6/JhKJoJbNUvhX7HSPaGsO2Etmvd7Hg8GlHYqiFKnfNRgM1/R6/ddpaWkfnen/sMdmKQw53SNEkyYayOke0dUcsD80NTnVtri4eC9JSK/X/5xpzmzr//jMKWApEUjz8kuvbhi6MNTu8/nK+Q8ymUwjFRXlexua6meASDSQ5q3THZu73u8eUBQlnxVIp9MtFO8qLm8/9eYQ8BuApIZ0d/UMrhQCEA6HjVe/uNrf1+vIBzRqkGHg3OBrsiznsUoKhUKGzrc7PwBMyyBdS3Prfo/HU8kqa27u1vbDtUcagTUSsG7U/VUr/5PGxr6rA9ZLPd29xV6vtyCJHA/QCOwA0gEDkAc8ALwSK0lRlLtam48+ps3K2nBsevoHWwLIBWA3MAzMAreBMOAHvgfOAydiJaekpKyV5v3z25NYTQOwKOJ3gDngF+AK8DyQFS85EAhslGRZNicB8qviAeCiAO8CXgR+jJc8OTmVI2m1Ol0SoIOquAuoADYDG4HTQCjRBJJG8+eFSqDjQHuUX3QTeBp4NiEoyVOaIiacBtzAe8B+1fOeeMnp69NvSwXbts0kAcoVR3hUxOVAtep5ZrzknE2bfpWsVss3SYAmgeeAQiBNjOUV6YG2eMlbCwompMqqfeczMjKCCUAngQeBfMAI5AB2oBMYE5c2puyHas5KwI2HH6l2JQDVA58CNwAFmBL7VCt+ZUyVlpX+lJ2d7ZSAySdrn+jLzcsNrHadMxqNvx891uIArkuAD7jS3NJ0NjU1NbKaoIbG+i/NZvM54KYk+vu1kpL7HIePPPXtakGamhuv76vc+y7gAhYkVYn5/NCj9o7X3zg5utKVNbc0eQ7aazqAQVGEI2rPsEacprK5uVsVx184UXr50mXDvwHYbNZQ3TN1zp07bb3AJ6KyL0VzQTogQ9yX+10ud5mjz3HPxeFLaxVF0cRwPVitlmBVddXEnj27h4HPRFWfUduuf/g6YSZSgS2iyVmBrW6Xe4ssK8bx8XGTLMvaoqIiv8mUumCxWqZFU3SLMQHML7ufeKBlaYWxyATuFiu9E1gnaqRf9CWf2IdZAQgn5VTjQPXAHWJogIDotMG/f300/QHnmkc8IA3RLAAAAABJRU5ErkJggg=="/>
+		<img width="22" height="28" alt="Memory Usage" style="vertical-align: middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAcCAYAAABlL09dAAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHGAALFQCM6LQAAAFwSURBVEjH7ZW9S4JRFIefRAoaAmlpbguCiKaGIqjh1FI0SV+vH6G2BmW4RlJG0Rj08RcE0aI3bGqPioagD6IpSEISGiSiBt/ATK+91ynwLBfOOffhx+/cD6jHv40GpVQ7EDXcnxCR+7JgAKVUGhgyAJ8CAyLyWVpw2esC8GEA7gesiopt1btA0AD+AnSISKacYoAYkDMAtwKJSlYgIs/AmuEQLaXUYHHCXdKwBdxqAFlN7UkH7jQ8Hd9z2gZuROTNXZQcBg6AZgPmOxAC2gAvEHXZUC9wZAjNASPAgy2ssdiKa6DX0IEM0GJfluYfHi8txi5qeRdWE/F5wFPpHNf05pQm3Lru4GyAyakJPJ6CmO6unkqtLkdgf8DHxvomyWSKfD7vSLHWipXlOGPjo6RPjglHQo680YJTKYU17ScSnsPyzehamxxZcX55VrjH2Sx7O/t/teKxKlgzrHLgV8AvIodVwQ7iDugTkav6b/8rvgBcMlqf0kD/YAAAAABJRU5ErkJggg=="/>
+		<span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.returns }} return{% if collector.returns != 1 %}s{% endif %}</span>
 	{% endset %}
-	{% set text %}
-		{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.returns }} return{% if collector.returns != 1 %}s{% endif %}
-	{% endset %}
-
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Cache Handler</b>
+            <span>{{ collector.handlertype }}</span>
+        </div>
+    {% endset %}
 	{% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
 {% endblock %}
 
