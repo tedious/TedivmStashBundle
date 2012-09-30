@@ -1,77 +1,135 @@
 {% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
-	{% set icon %}
-		<img height="20" alt="Memory Usage" style="vertical-align: middle; margin-right: 5px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAAAAXNSR0IArs4c6QAAAAZiS0dEADAALgAyomY5kwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sGAhAwGTZvRiQAAAOqSURBVEjHtZZtTFtVGMd/vS2raymZMqiMjQ2Ijn3Y2g7C5MMWiDF+MYENho51GhW3xBAT3jeNbjG+hMQsGsMm8kET5a0xZuIHXQYbsi0uTtIWX5BtlReZWiyz5F5YS6v1gwdzo31T8J+c5Enufc7vnnvOeZ6/JhKJoJbNUvhX7HSPaGsO2Etmvd7Hg8GlHYqiFKnfNRgM1/R6/ddpaWkfnen/sMdmKQw53SNEkyYayOke0dUcsD80NTnVtri4eC9JSK/X/5xpzmzr//jMKWApEUjz8kuvbhi6MNTu8/nK+Q8ymUwjFRXlexua6meASDSQ5q3THZu73u8eUBQlnxVIp9MtFO8qLm8/9eYQ8BuApIZ0d/UMrhQCEA6HjVe/uNrf1+vIBzRqkGHg3OBrsiznsUoKhUKGzrc7PwBMyyBdS3Prfo/HU8kqa27u1vbDtUcagTUSsG7U/VUr/5PGxr6rA9ZLPd29xV6vtyCJHA/QCOwA0gEDkAc8ALwSK0lRlLtam48+ps3K2nBsevoHWwLIBWA3MAzMAreBMOAHvgfOAydiJaekpKyV5v3z25NYTQOwKOJ3gDngF+AK8DyQFS85EAhslGRZNicB8qviAeCiAO8CXgR+jJc8OTmVI2m1Ol0SoIOquAuoADYDG4HTQCjRBJJG8+eFSqDjQHuUX3QTeBp4NiEoyVOaIiacBtzAe8B+1fOeeMnp69NvSwXbts0kAcoVR3hUxOVAtep5ZrzknE2bfpWsVss3SYAmgeeAQiBNjOUV6YG2eMlbCwompMqqfeczMjKCCUAngQeBfMAI5AB2oBMYE5c2puyHas5KwI2HH6l2JQDVA58CNwAFmBL7VCt+ZUyVlpX+lJ2d7ZSAySdrn+jLzcsNrHadMxqNvx891uIArkuAD7jS3NJ0NjU1NbKaoIbG+i/NZvM54KYk+vu1kpL7HIePPPXtakGamhuv76vc+y7gAhYkVYn5/NCj9o7X3zg5utKVNbc0eQ7aazqAQVGEI2rPsEacprK5uVsVx184UXr50mXDvwHYbNZQ3TN1zp07bb3AJ6KyL0VzQTogQ9yX+10ud5mjz3HPxeFLaxVF0cRwPVitlmBVddXEnj27h4HPRFWfUduuf/g6YSZSgS2iyVmBrW6Xe4ssK8bx8XGTLMvaoqIiv8mUumCxWqZFU3SLMQHML7ufeKBlaYWxyATuFiu9E1gnaqRf9CWf2IdZAQgn5VTjQPXAHWJogIDotMG/f300/QHnmkc8IA3RLAAAAABJRU5ErkJggg=="/>
-	{% endset %}
-	{% set text %}
-		{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.returns }} return{% if collector.returns != 1 %}s{% endif %}
-	{% endset %}
-
-	{% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+    {% set icon %}
+        <img width="22" height="28" alt="Memory Usage" style="vertical-align: middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAcCAYAAABlL09dAAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHGAALFQCM6LQAAAFwSURBVEjH7ZW9S4JRFIefRAoaAmlpbguCiKaGIqjh1FI0SV+vH6G2BmW4RlJG0Rj08RcE0aI3bGqPioagD6IpSEISGiSiBt/ATK+91ynwLBfOOffhx+/cD6jHv40GpVQ7EDXcnxCR+7JgAKVUGhgyAJ8CAyLyWVpw2esC8GEA7gesiopt1btA0AD+AnSISKacYoAYkDMAtwKJSlYgIs/AmuEQLaXUYHHCXdKwBdxqAFlN7UkH7jQ8Hd9z2gZuROTNXZQcBg6AZgPmOxAC2gAvEHXZUC9wZAjNASPAgy2ssdiKa6DX0IEM0GJfluYfHi8txi5qeRdWE/F5wFPpHNf05pQm3Lru4GyAyakJPJ6CmO6unkqtLkdgf8DHxvomyWSKfD7vSLHWipXlOGPjo6RPjglHQo680YJTKYU17ScSnsPyzehamxxZcX55VrjH2Sx7O/t/teKxKlgzrHLgV8AvIodVwQ7iDugTkav6b/8rvgBcMlqf0kD/YAAAAABJRU5ErkJggg=="/>
+        <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.hits }} hit{% if collector.hits != 1 %}s{% endif %}</span>
+    {% endset %}
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+                <b>Total Response</b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} / {{ collector.hits }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+                <b>Default Queue</b> <span>{{ collector.default }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+                <b>Av. Handlers</b> <span>{{ collector.handlers|join(', ') }}</span>
+        </div>
+        {% for name, details in collector.caches %}
+            <hr style="border: 1px solid #ccc;">
+            <div class="sf-toolbar-info-piece">
+                <b><i>{{ name }}</i></b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ details.calls }} / {{ details.hits }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Handlers</b> <span>{{ details.options.handlers|join(', ') }}</span>
+            </div>
+        {% endfor %}
+    {% endset %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
 {% endblock %}
 
 {% block menu %}
 <span class="label">
-	<span class="icon"><img src="{{ asset('bundles/tedivmstash/images/stash.png') }}" alt="" /></span>
-	<strong>Stash</strong>
-	<span class="count">
-		<span>{{ collector.calls}} / {{ collector.returns }}</span>
-	</span>
+    <span class="icon"><img src="{{ asset('bundles/tedivmstash/images/stash.png') }}" alt="" /></span>
+    <strong>Stash</strong>
+    <span class="count">
+        <span>{{ collector.calls }} / {{ collector.hits }}</span>
+    </span>
 </span>
 {% endblock %}
 
 {% block panel %}
-	<h2>Cache Details</h2>
-	<table>
-		<tr>
-			<th>Available Handlers</th>
-			<td>{{ collector.handlers }}</td>
-		</tr>
-		<tr>
-			<th>Cache Handler</th>
-			<td>{{ collector.handlertype }}</td>
-		</tr>
-		{% for option, value in collector.handleroptions %}
-		<tr>
-			<th>{{ option }}</th>
-			<td>{{ value }}</td>
-		</tr>
-		{% endfor %}
-		{% if collector.handlertype == 'MultiHandler' %}
-			{% for subhandler, options in collector.subhandleroptions %}
-				<tr>
-					<th colspan=2>{{ subhandler }} Options</th>
-				</tr>
-				{% for option, value in options %}
-					<tr>
-						<th>{{ option }}</th>
-						<td>{{ value }}</td>
-					</tr>
-				{% endfor %}
-			{% endfor %}
-		{% endif %}
-	</table>
+    <h2>Cache Information</h2>
+    <table>
+        <tr>
+            <th>Default Cache</th>
+            <td>{{ collector.default }}</td>
+        <tr>
+            <th>Available Handlers</th>
+            <td>{{ collector.handlers|join(', ') }}</td>
+        </tr>
+        <tr>
+            <th>Total Requests</th>
+            <td>{{ collector.calls }}</td>
+        </tr>
+        <tr>
+            <th>Total Hits</th>
+            <td>{{ collector.hits }}</td>
+        </tr>
+    </table>
 
-	<h2>Cache Stats</h2>
-	<table>
-		<tr>
-			<th>Cache Calls</th>
-			<td>{{ collector.calls }}</td>
-		</tr>
-		<tr>
-			<th>Cache Returns</th>
-			<td>{{ collector.returns }}</td>
-		</tr>
-	</table>
+    {% for name, details in collector.caches %}
 
-	<h2>Cache Requests</h2>
-	<table>
-		{% for query, response in collector.record %}
-			<tr>
-				<th>{{ query }}</th>
-				<td>{{ response.calls }} call{% if response.calls != 1 %}s{% endif %} / {{ response.returns }} return{% if response.returns != 1 %}s{% endif %}</td>
-			</tr>
-		{% endfor %}
-	</table>
+        <h2>Cache Service: <i>{{ name }}</i></h2>
+        <table>
+            <tr>
+                <th>Handlers</th>
+                <td>{{ details.options.handlers|join(', ') }}</td>
+            </tr>
+            <tr>
+                <th>Calls</th>
+                <td>{{ details.calls }}</td>
+            </tr>
+            <tr>
+                <th>Hits</th>
+                <td>{{ details.hits }}</td>
+            </tr>
+            <tr>
+                <th>Doctrine Adapter</th>
+                <td>{{ details.options.registerDoctrineAdapter ? 'true' : 'false' }}</td>
+            </tr>
+            <tr>
+                <th>Cache In-Memory</th>
+                <td>{{ details.options.inMemory ? 'true' : 'false' }}</td>
+            </tr>
+        </table>
+
+        <h3>Handler Options</h3>
+        <table>
+            {% for name, options in details.options %}
+                {% if name != 'handlers' and name in details.options.handlers %}
+                    <tr>
+                        <th colspan="2"><h3 style="font-size: 16px; margin-bottom: 0;">{{ name }} settings</h3></th>
+                    </tr>
+                    {% if name == 'Memcache' %}
+                        {% for ovalue in options.servers %}
+                            <tr>
+                                <th>Server</th>
+                                <td>{{ ovalue.server }}:{{ ovalue.port }} {% if ovalue.weight is defined %}(weight {{ ovalue.weight }}){% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for oname, ovalue in options %}
+                            <tr>
+                                <th>{{ oname }}</th>
+                                {% if oname == 'filePermissions' or oname == 'dirPermissions' %}
+                                    <td>{{ "%o"|format(ovalue) }}
+                                {% else %}
+                                    <td>{{ ovalue }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <h3>Query Record</h3>
+        <table>
+            <tr>
+                <th>Request Key</th>
+                <th>Hit?</th>
+                <th>Returned Value</th>
+            </tr>
+            {% for query in details.queries %}
+                <tr>
+                    <td>{{ query.key }}</td>
+                    <td>{{ query.hit }}</td>
+                    <td>{{ query.value }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+
+    {% endfor %}
 {% endblock %}
