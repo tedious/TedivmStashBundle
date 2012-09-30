@@ -8,7 +8,7 @@ use Stash\Handlers;
  *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  */
-class Cache
+class CacheResultObject
 {
     protected $cache;
     protected $logger;

@@ -119,12 +119,14 @@ class Configuration implements ConfigurationInterface
 
            if($handler == 'Memcache') {
                 $finalNode = $handlerNode
-                    ->arrayNode('servers')
-                        ->prototype('array')
-                        ->children()
-                            ->scalarNode('server')->defaultIfNotSet('127.0.0.1')->end()
-                            ->scalarNode('port')->defaultIfNotSet('11211')->end()
-                            ->scalarNode('weight')->end()
+                    ->children()
+                        ->arrayNode('servers')
+                            ->prototype('array')
+                            ->children()
+                                ->scalarNode('server')->defaultValue('127.0.0.1')->end()
+                                ->scalarNode('port')->defaultValue('11211')->end()
+                                ->scalarNode('weight')->end()
+                            ->end()
                         ->end()
                     ->end()
                 ;

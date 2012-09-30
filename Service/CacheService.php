@@ -49,7 +49,7 @@ class CacheService
 
         $handler = (isset($this->handler)) ? $this->handler : null;
         $cache = new StashCache($handler);
-        $stash = new CacheResultObject($cache, $logger);
+        $stash = new CacheResultObject($cache, $this->logger);
 
         if(count($args) > 0)
             $stash->setupKey($args);

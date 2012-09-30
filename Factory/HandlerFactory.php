@@ -14,7 +14,7 @@ class HandlerFactory {
         foreach($types as $type) {
             $class = $handlers[$type];
             $opts = isset($options[$type]) ? $options[$type] : array();
-            $h[] = new $class[$opts];
+            $h[] = new $class($opts);
         }
 
         if(count($h) == 1) {
@@ -22,6 +22,6 @@ class HandlerFactory {
         }
 
         $class = $handlers['MultiHandler'];
-        return new $class(array('handlers' => $h);
+        return new $class(array('handlers' => $h));
     }
 }

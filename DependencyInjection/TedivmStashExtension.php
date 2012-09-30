@@ -69,7 +69,8 @@ class TedivmStashExtension extends Extension
             ->setDefinition(sprintf('stash.%s_cache', $name), new DefinitionDecorator('stash.cache'))
             ->setArguments(array(
                 $name,
-                new Reference(sprintf('stash.handler.%s_cache', $name))
+                new Reference(sprintf('stash.handler.%s_cache', $name)),
+                new Reference(sprintf('stash.logger.%s_cache', $name))
             ))
             ->setAbstract(false)
         ;

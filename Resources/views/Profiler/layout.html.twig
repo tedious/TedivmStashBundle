@@ -7,11 +7,21 @@
     {% endset %}
     {% set text %}
         <div class="sf-toolbar-info-piece">
-                <b>Default Handler</b> <span>{{ collector.default }}</span>
+                <b>Total Response</b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} / {{ collector.hits }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+                <b>Default Queue</b> <span>{{ collector.default }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+                <b>Av. Handlers</b> <span>{{ collector.handlers|join(', ') }}</span>
         </div>
         {% for name, details in collector.caches %}
+            <hr style="border: 1px solid #ccc;">
             <div class="sf-toolbar-info-piece">
-                <b>{{ name }}</b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ details.calls }} / {{ details.hits }}</span>
+                <b><i>{{ name }}</i></b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ details.calls }} / {{ details.hits }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Handlers</b> <span>{{ details.options.handlers|join(', ') }}</span>
             </div>
         {% endfor %}
     {% endset %}
@@ -36,7 +46,7 @@
             <td>{{ collector.default }}</td>
         <tr>
             <th>Available Handlers</th>
-            <td>{{ collector.handlers }}</td>
+            <td>{{ collector.handlers|join(', ') }}</td>
         </tr>
         <tr>
             <th>Total Requests</th>
@@ -54,7 +64,7 @@
         <table>
             <tr>
                 <th>Handlers</th>
-                <td>{{ details.options.handlers|join(',') }}</td>
+                <td>{{ details.options.handlers|join(', ') }}</td>
             </tr>
             <tr>
                 <th>Calls</th>
@@ -69,16 +79,29 @@
         <h3>Handler Options</h3>
         <table>
             {% for name, options in details.options %}
-                {% if name != 'handlers' %}
+                {% if name != 'handlers' and name in details.options.handlers %}
                     <tr>
                         <th colspan="2"><h3 style="font-size: 16px; margin-bottom: 0;">{{ name }} settings</h3></th>
                     </tr>
-                    {% for oname, ovalue in options %}
-                        <tr>
-                            <th>{{ oname }}</th>
-                            <td>{{ ovalue }}</td>
-                        </tr>
-                    {% endfor %}
+                    {% if name == 'Memcache' %}
+                        {% for ovalue in options %}
+                            <tr>
+                                <th>Server</th>
+                                <td>{{ ovalue.server }}:{{ ovalue.port }} (weight {{ ovalue.weight }})</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for oname, ovalue in options %}
+                            <tr>
+                                <th>{{ oname }}</th>
+                                {% if oname == 'filePermissions' or oname == 'dirPermissions' %}
+                                    <td>{{ "%o"|format(ovalue) }}
+                                {% else %}
+                                    <td>{{ ovalue }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </table>

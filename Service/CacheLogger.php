@@ -27,6 +27,18 @@ class CacheLogger
         if($hit) {
             $this->hits++;
         }
+
+        $leader = sprintf('@@_%s_@@/', $this->name);
+        if(strpos($key, $leader) === 0) {
+            $key = substr($key, strlen($leader));
+        }
+
+        $hit = $hit ? 'true' : 'false';
+
+        ob_start();
+        print_r($value);
+        $value = sprintf('(%s) %s', gettype($value), ob_get_clean());
+
         $this->queries[] = array(
             'key'   => $key,
             'hit'   => $hit,

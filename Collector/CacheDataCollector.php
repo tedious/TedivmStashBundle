@@ -56,7 +56,7 @@ class CacheDataCollector extends DataCollector
             $pieces = explode('\\', $handler);
             $info['availableHandlers'][] = array_pop($pieces);
         }
-        $info['availableHandlers'] = join(', ', $info['availableHandlers']);
+        $info['availableHandlers'] = $info['availableHandlers'];
         $info['default'] = $this->defaultCache;
 
         $this->data = $info;
