@@ -1,80 +1,54 @@
 {% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
-	{% set icon %}
-		<img width="22" height="28" alt="Memory Usage" style="vertical-align: middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAcCAYAAABlL09dAAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHGAALFQCM6LQAAAFwSURBVEjH7ZW9S4JRFIefRAoaAmlpbguCiKaGIqjh1FI0SV+vH6G2BmW4RlJG0Rj08RcE0aI3bGqPioagD6IpSEISGiSiBt/ATK+91ynwLBfOOffhx+/cD6jHv40GpVQ7EDXcnxCR+7JgAKVUGhgyAJ8CAyLyWVpw2esC8GEA7gesiopt1btA0AD+AnSISKacYoAYkDMAtwKJSlYgIs/AmuEQLaXUYHHCXdKwBdxqAFlN7UkH7jQ8Hd9z2gZuROTNXZQcBg6AZgPmOxAC2gAvEHXZUC9wZAjNASPAgy2ssdiKa6DX0IEM0GJfluYfHi8txi5qeRdWE/F5wFPpHNf05pQm3Lru4GyAyakJPJ6CmO6unkqtLkdgf8DHxvomyWSKfD7vSLHWipXlOGPjo6RPjglHQo680YJTKYU17ScSnsPyzehamxxZcX55VrjH2Sx7O/t/teKxKlgzrHLgV8AvIodVwQ7iDugTkav6b/8rvgBcMlqf0kD/YAAAAABJRU5ErkJggg=="/>
-		<span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.returns }} return{% if collector.returns != 1 %}s{% endif %}</span>
-	{% endset %}
+    {% set icon %}
+        <img width="22" height="28" alt="Memory Usage" style="vertical-align: middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAcCAYAAABlL09dAAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHGAALFQCM6LQAAAFwSURBVEjH7ZW9S4JRFIefRAoaAmlpbguCiKaGIqjh1FI0SV+vH6G2BmW4RlJG0Rj08RcE0aI3bGqPioagD6IpSEISGiSiBt/ATK+91ynwLBfOOffhx+/cD6jHv40GpVQ7EDXcnxCR+7JgAKVUGhgyAJ8CAyLyWVpw2esC8GEA7gesiopt1btA0AD+AnSISKacYoAYkDMAtwKJSlYgIs/AmuEQLaXUYHHCXdKwBdxqAFlN7UkH7jQ8Hd9z2gZuROTNXZQcBg6AZgPmOxAC2gAvEHXZUC9wZAjNASPAgy2ssdiKa6DX0IEM0GJfluYfHi8txi5qeRdWE/F5wFPpHNf05pQm3Lru4GyAyakJPJ6CmO6unkqtLkdgf8DHxvomyWSKfD7vSLHWipXlOGPjo6RPjglHQo680YJTKYU17ScSnsPyzehamxxZcX55VrjH2Sx7O/t/teKxKlgzrHLgV8AvIodVwQ7iDugTkav6b/8rvgBcMlqf0kD/YAAAAABJRU5ErkJggg=="/>
+        <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.hits }} hits{% if collector.hits != 1 %}s{% endif %}</span>
+    {% endset %}
     {% set text %}
         <div class="sf-toolbar-info-piece">
             <b>Cache Handler</b>
-            <span>{{ collector.handlertype }}</span>
+            <span></span>
         </div>
     {% endset %}
-	{% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
 {% endblock %}
 
 {% block menu %}
 <span class="label">
-	<span class="icon"><img src="{{ asset('bundles/tedivmstash/images/stash.png') }}" alt="" /></span>
-	<strong>Stash</strong>
-	<span class="count">
-		<span>{{ collector.calls}} / {{ collector.returns }}</span>
-	</span>
+    <span class="icon"><img src="{{ asset('bundles/tedivmstash/images/stash.png') }}" alt="" /></span>
+    <strong>Stash</strong>
+    <span class="count">
+        <span>{{ collector.calls }} / {{ collector.hits }}</span>
+    </span>
 </span>
 {% endblock %}
 
 {% block panel %}
-	<h2>Cache Details</h2>
-	<table>
-		<tr>
-			<th>Available Handlers</th>
-			<td>{{ collector.handlers }}</td>
-		</tr>
-		<tr>
-			<th>Cache Handler</th>
-			<td>{{ collector.handlertype }}</td>
-		</tr>
-		{% for option, value in collector.handleroptions %}
-		<tr>
-			<th>{{ option }}</th>
-			<td>{{ value }}</td>
-		</tr>
-		{% endfor %}
-		{% if collector.handlertype == 'MultiHandler' %}
-			{% for subhandler, options in collector.subhandleroptions %}
-				<tr>
-					<th colspan=2>{{ subhandler }} Options</th>
-				</tr>
-				{% for option, value in options %}
-					<tr>
-						<th>{{ option }}</th>
-						<td>{{ value }}</td>
-					</tr>
-				{% endfor %}
-			{% endfor %}
-		{% endif %}
-	</table>
+    <h2>Cache Information</h2>
+    <table>
+        <tr>
+            <th>Default Cache</th>
+            <td>{{ collector.default }}</td>
+        <tr>
+            <th>Available Handlers</th>
+            <td>{{ collector.handlers }}</td>
+        </tr>
+        <tr>
+            <th>Total Requests</th>
+            <td>{{ collector.calls }}</td>
+        </tr>
+        <tr>
+            <th>Total Hits</th>
+            <td>{{ collector.hits }}</td>
+        </tr>
+    </table>
 
-	<h2>Cache Stats</h2>
-	<table>
-		<tr>
-			<th>Cache Calls</th>
-			<td>{{ collector.calls }}</td>
-		</tr>
-		<tr>
-			<th>Cache Returns</th>
-			<td>{{ collector.returns }}</td>
-		</tr>
-	</table>
+    <h2>Cache Services</h2>
 
-	<h2>Cache Requests</h2>
-	<table>
-		{% for query, response in collector.record %}
-			<tr>
-				<th>{{ query }}</th>
-				<td>{{ response.calls }} call{% if response.calls != 1 %}s{% endif %} / {{ response.returns }} return{% if response.returns != 1 %}s{% endif %}</td>
-			</tr>
-		{% endfor %}
-	</table>
+    {% for name, details in collector.caches %}
+
+        <h3>{{ name }}</h3>
+
+    {% endfor %}
 {% endblock %}

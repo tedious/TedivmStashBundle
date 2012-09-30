@@ -9,18 +9,26 @@ use Stash\Handlers;
  *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  */
-class Cache
+class CacheService
 {
+    protected $name;
     protected $handler;
+    protected $key;
+
+    protected $logger;
 
     /**
      * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
      *
      * @param StashHandler $handler
      */
-    public function __construct($handler)
+    public function __construct($name, $handler, $logger = null)
     {
+        $this->name = $name;
         $this->handler = $handler;
+        $this->key = '@@_' . $name . '_@@';
+
+        $this->logger = $logger;
     }
 
     /**
@@ -37,8 +45,11 @@ class Cache
         if(count($args) == 1 && is_array($args[0]))
             $args = $args[0];
 
+        array_unshift($args, $this->key);
+
         $handler = (isset($this->handler)) ? $this->handler : null;
-        $stash = new StashCache($handler);
+        $cache = new StashCache($handler);
+        $stash = new CacheResultObject($cache, $logger);
 
         if(count($args) > 0)
             $stash->setupKey($args);

@@ -27,16 +27,19 @@ class TedivmStashExtension extends Extension
 
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $configs);
-var_dump($config);
+
         $container->setAlias('cache', sprintf('stash.%s_cache', $config['default_cache']));
 
         $caches = array();
+        $options = array();
         foreach($config['caches'] as $name => $cache) {
             $caches[$name] = sprintf('stash.%s_cache', $name);
+            $options[$name] = $cache;
             $this->addCacheService($name, $cache, $container);
         }
 
         $container->setParameter('stash.caches', $caches);
+        $container->setParameter('stash.caches.options', $options);
         $container->setParameter('stash.default_cache', $config['default_cache']);
     }
 
@@ -53,14 +56,31 @@ var_dump($config);
             ))
             ->setAbstract(false)
         ;
-var_dump($container);
+
+        $container
+            ->setDefinition(sprintf('stash.logger.%s_cache', $name), new DefinitionDecorator('stash.logger'))
+            ->setArguments(array(
+                $name
+            ))
+            ->setAbstract(false)
+        ;
+
         $container
             ->setDefinition(sprintf('stash.%s_cache', $name), new DefinitionDecorator('stash.cache'))
             ->setArguments(array(
+                $name,
                 new Reference(sprintf('stash.handler.%s_cache', $name))
             ))
             ->setAbstract(false)
         ;
+
+        $container
+            ->getDefinition('data_collector.stash')
+                ->addMethodCall('addLogger', array(
+                    new Reference(sprintf('stash.logger.%s_cache', $name))
+                ))
+        ;
+
     }
 
     public function getAlias()

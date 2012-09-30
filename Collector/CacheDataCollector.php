@@ -16,86 +16,79 @@ use Stash\Handlers;
  */
 class CacheDataCollector extends DataCollector
 {
+    protected $defaultCache;
+    protected $cacheNames;
+    protected $cacheOptions;
 
-	protected $handlerType;
-	protected $handlerOptions;
+    protected $loggers = array();
 
-	public function __construct($type, $options)
-	{
-		$this->handlerType = $type;
-		$this->handlerOptions = $options;
-	}
+    public function __construct($default, $caches, $options)
+    {
+        $this->defaultCache = $default;
+        $this->cacheNames = $caches;
+        $this->cacheOptions = $options;
+    }
 
-	public function collect(Request $request, Response $response, \Exception $exception = null)
-	{
-		$record = Cache::$queryRecord;
-		if(!isset($record))
-			$record = array();
+    public function addLogger($logger)
+    {
+        $this->loggers[] = $logger;
+    }
 
-		$data = array();
-		foreach($record as $query => $calls)
-			$data[$query] = array('calls' => count($calls), 'returns' => array_sum($calls));
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
+        $info = array('calls' => 0, 'hits' => 0);
+        foreach($this->loggers as $logger) {
+            $name = $logger->getName();
+            $calls = $logger->getCalls();
+            $hits = $logger->getHits();
 
-		$info = array('calls' => Cache::$cacheCalls, 'returns' => Cache::$cacheReturns, 'record' => $data);
-		$info['handlerType'] = $this->handlerType;
-		$info['handlerOptions'] = $this->handlerOptions;
-		$handlers = Handlers::getHandlers();
-		foreach($handlers as $handler) {
-			$pieces = explode('\\', $handler);
-			$info['availableHandlers'][] = array_pop($pieces);
-		}
-		$info['availableHandlers'] = join(', ', $info['availableHandlers']);
+            $info['calls'] += $calls;
+            $info['hits'] += $hits;
 
-		if($this->handlerType === 'MultiHandler') {
-			$handlers = $info['handlerOptions']['handlers'];
-			$info['handlerOptions']['handlers'] = join(', ', $handlers);
+            $info['caches'][$name]['options'] = $this->cacheOptions[$name];
+            $info['caches'][$name]['queries'] = $logger->getQueries();
+            $info['caches'][$name]['calls'] = $calls;
+            $info['caches'][$name]['hits'] = $hits;
+        }
 
-			foreach($handlers as $h) {
-				$info['subhandlerOptions'][$h] = isset($info['handlerOptions'][$h]) ? $info['handlerOptions'][$h] : array();
-				unset($info['handlerOptions'][$h]);
-			}
-		}
+        $handlers = Handlers::getHandlers();
+        foreach($handlers as $handler) {
+            $pieces = explode('\\', $handler);
+            $info['availableHandlers'][] = array_pop($pieces);
+        }
+        $info['availableHandlers'] = join(', ', $info['availableHandlers']);
+        $info['default'] = $this->defaultCache;
 
-		$this->data = $info;
-	}
+        $this->data = $info;
+    }
 
-	public function getCalls()
-	{
-		return $this->data['calls'];
-	}
+    public function getCalls()
+    {
+        return $this->data['calls'];
+    }
 
-	public function getReturns()
-	{
-		return $this->data['returns'];
-	}
+    public function getHits()
+    {
+        return $this->data['hits'];
+    }
 
-	public function getRecord()
-	{
-		return $this->data['record'];
-	}
+    public function gethandlers()
+    {
+        return $this->data['availableHandlers'];
+    }
 
-	public function getHandlertype()
-	{
-		return $this->data['handlerType'];
-	}
+    public function getCaches()
+    {
+        return $this->data['caches'];
+    }
 
-	public function getHandleroptions()
-	{
-		return $this->data['handlerOptions'];
-	}
+    public function getDefault()
+    {
+        return $this->data['default'];
+    }
 
-	public function getSubhandleroptions()
-	{
-		return $this->data['subhandlerOptions'];
-	}
-
-	public function gethandlers()
-	{
-		return $this->data['availableHandlers'];
-	}
-
-	public function getname()
-	{
-		return 'stash';
-	}
+    public function getname()
+    {
+        return 'stash';
+    }
 }
