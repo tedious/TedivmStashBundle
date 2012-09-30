@@ -10,116 +10,144 @@ use Stash\Handlers;
 class Configuration implements ConfigurationInterface
 {
 
-	protected $handlerSettings = array(
-		'FileSystem' => array(
-			'dirSplit' 			=> 2,
-			'path' 				=> '%kernel.cache_dir%/stash',
-			'filePermissions' 	=> 0660,
-			'dirPermissions' 	=> 0770,
-			'memKeyLimit' 		=> 200
-		),
-		'SQLite' => array(
-			'filePermissions'	=> 0660,
-			'dirPermissions'	=> 0770,
-			'busyTimeout'		=> 500,
-			'nesting'			=> 0,
-			'subhandler'		=> 'PDO',
-			'version'			=> null,
-			'path'				=> '%kernel.cache_dir%/stash',
-		),
-		'APC' => array(
-			'ttl'				=> 300,
-			'namespace'			=> null,
-		),
-	);
+    protected $handlerSettings = array(
+        'FileSystem' => array(
+            'dirSplit'          => 2,
+            'path'              => '%kernel.cache_dir%/stash',
+            'filePermissions'   => 0660,
+            'dirPermissions'    => 0770,
+            'memKeyLimit'       => 200
+        ),
+        'SQLite' => array(
+            'filePermissions'   => 0660,
+            'dirPermissions'    => 0770,
+            'busyTimeout'       => 500,
+            'nesting'           => 0,
+            'subhandler'        => 'PDO',
+            'version'           => null,
+            'path'              => '%kernel.cache_dir%/stash',
+        ),
+        'Apc' => array(
+            'ttl'               => 300,
+            'namespace'         => null,
+        ),
+    );
 
-	public function getConfigTreeBuilder()
-	{
-		$treeBuilder = new TreeBuilder();
-		$rootNode = $treeBuilder->root('tedivm_stash');
+    public function getConfigTreeBuilder()
+    {
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('stash');
 
-		$handlers = array_keys(Handlers::getHandlers());
-		$default = current($handlers);
+        $rootNode
+            ->beforeNormalization()
+                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('default_cache', $v) && array_key_exists('caches', $v); })
+                ->then(function ($v) {
+                    $names = array_keys($v['caches']);
+                    $v['default_cache'] = reset($names);
 
-		$next = $rootNode
-			->children()
-				->scalarNode('handler')
-					->defaultValue($default)
-					->validate()
-					->ifNotInArray($handlers)
-						->thenInvalid('No Stash handler named %s registered.')
-					->end()
-				->end()
-			->end()
-		;
+                    return $v;
+                })
+            ->end()
+            ->beforeNormalization()
+                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('caches', $v) && !array_key_exists('cache', $v); })
+                ->then(function ($v) {
+                    $cache = array();
+                    foreach ($v as $key => $value) {
+                        if ($key === 'default_cache') {
+                            continue;
+                        }
+                        $cache[$key] = $v[$key];
+                        unset($v[$key]);
+                    }
+                    $v['default_cache'] = isset($v['default_cache']) ? (string) $v['default_cache'] : 'default';
+                    $v['caches'] = array($v['default_cache'] => $cache);
 
-		foreach($handlers as $handler) {
-			$this->addHandlerSettings($handler, $rootNode);
-		}
+                    return $v;
+                })
+            ->end()
+            ->children()
+                ->scalarNode('default_cache')->end()
+            ->end()
+            ->fixXmlConfig('cache')
+            ->append($this->getCachesNode())
+        ;
 
-		return $treeBuilder;
-	}
+        return $treeBuilder;
+    }
 
-	public function addHandlerSettings($handler, $rootNode)
-	{
-		if($handler == 'Memcached') {
-			$rootNode
-				->children()
-					->variableNode($handler)
-						->defaultValue(array())
-					->end()
-				->end()
-			;
-			return;
-		} elseif ($handler == 'MultiHandler') {
-		    $this->addMultiHandlerSettings($rootNode);
-		    return;
-		} else {
-			$node = $rootNode->children()->arrayNode($handler)->addDefaultsIfNotSet()->children();
+    protected function getCachesNode()
+    {
+        $handlers = array_keys(Handlers::getHandlers());
 
-			if(!isset($this->handlerSettings[$handler])) {
-				$node->end()->end()->end();
-				return;
-			}
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('caches');
 
-			foreach($this->handlerSettings[$handler] as $setting => $default) {
-				$set = $node->scalarNode($setting);
-				if(isset($default))
-					$set = $set->defaultValue($default);
-				$end = $set->end();
-			}
+        $childNode = $node
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children()
+                ->arrayNode('handlers')
+                    ->requiresAtLeastOneElement()
+                    ->defaultValue(array('FileSystem'))
+                    ->prototype('scalar')
+                        ->validate()
+                            ->ifNotInArray($handlers)
+                            ->thenInvalid('A handler of that name is not registered.')
+                        ->end()
+                    ->end()
+                ->end()
+            ;
 
-			$end->end()->end();
-		}
-	}
+            foreach($handlers as $handler) {
+                if($handler !== 'MultiHandler') {
+                    $this->addHandlerSettings($handler, $childNode);
+                }
+            }
 
-	public function addMultiHandlerSettings($rootNode)
-	{
-		$node = $rootNode
-			->children()
-				->arrayNode('MultiHandler')
-				->addDefaultsIfNotSet()
-					->children();
+            $childNode->end()
+        ;
 
-					$node
-						->VariableNode('handlers')
-							->defaultValue(array('FileSystem'))
-						->end()
-					;
+        return $node;
+    }
 
-					$node = $node
-				->end();
 
-				$handlers = array_keys(Handlers::getHandlers());
-				foreach($handlers as $handler) {
-					if($handler !== 'MultiHandler') {
-						$this->addHandlerSettings($handler, $node);
-					}
-				}
+    public function addHandlerSettings($handler, $rootNode)
+    {
+        $handlerNode = $rootNode
+            ->arrayNode($handler);
 
-				$node->end()
-			->end()
-		;
+           if($handler == 'Memcache') {
+                $finalNode = $handlerNode
+                    ->arrayNode('servers')
+                        ->prototype('array')
+                        ->children()
+                            ->scalarNode('server')->defaultIfNotSet('127.0.0.1')->end()
+                            ->scalarNode('port')->defaultIfNotSet('11211')->end()
+                            ->scalarNode('weight')->end()
+                        ->end()
+                    ->end()
+                ;
+            } else {
+                $defaults = isset($this->handlerSettings[$handler]) ? $this->handlerSettings[$handler] : array();
 
-	}
+                $node = $handlerNode
+                    ->addDefaultsIfNotSet()
+                    ->children();
+
+                    foreach($defaults as $setting => $default) {
+                        $node
+                            ->scalarNode($setting)
+                            ->defaultValue($default)
+                            ->end()
+                        ;
+                    }
+
+                    $finalNode = $node->end()
+                ;
+            }
+
+            $finalNode->end()
+        ;
+    }
 }

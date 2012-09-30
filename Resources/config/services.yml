@@ -1,23 +1,15 @@
 parameters:
-    stash.class:            Tedivm\StashBundle\Service\Cache
-    stash_factory.class:    Tedivm\StashBundle\Factory\HandlerFactory
+    stash.cache.class:      Tedivm\StashBundle\Service\Cache
+    stash.handler.class:    Tedivm\Stash\Handler\HandlerInterface
+    stash.factory.class:    Tedivm\StashBundle\Factory\HandlerFactory
 
 services:
-    stash:
-        arguments:          [@stash_handler]
-        class:              %stash.class%
-    stash_handler:
-        class:              %stash.class%
-        factory_class:      %stash_factory.class%
+    stash.cache:
+        class:                %stash.cache.class%
+        abstract:           true
+    stash.handler:
+        class:              %stash.handler.class%
+        abstract:           true
+        synthetic:          true
         factory_method:     createHandler
-        arguments:
-            -               %stash.handler.type%
-            -               %stash.handler.options%
-    data_collector.stash:
-        class:      Tedivm\StashBundle\Collector\CacheDataCollector
-        arguments: [ %stash.handler.type%, %stash.handler.options% ]
-        tags:
-            -
-                name: data_collector
-                template: "TedivmStashBundle:Profiler:layout"
-                id: "stash"
+        factory_class:      %stash.factory.class%

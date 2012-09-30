@@ -5,24 +5,23 @@ use Stash\Handlers;
 
 class HandlerFactory {
 
-    static function createHandler($type, $options)
+    static function createHandler($types, $options)
     {
         $handlers = Handlers::getHandlers();
 
-        $class = $handlers[$type];
-
-        if($type !== 'MultiHandler') {
-            return new $class($options);
-        }
-
         $h = array();
-        $subhandlers = isset($options['handlers']) ? $options['handlers'] : array();
-        foreach($subhandlers as $subhandler) {
-            $shoptions = isset($options[$subhandler]) ? $options[$subhandler] : array();
-            $h[] = self::createHandler($subhandler, $shoptions);
-        }
-        $options['handlers'] = $h;
 
-        return new $class($options);
+        foreach($types as $type) {
+            $class = $handlers[$type];
+            $opts = isset($options[$type]) ? $options[$type] : array();
+            $h[] = new $class[$opts];
+        }
+
+        if(count($h) == 1) {
+            return reset($h);
+        }
+
+        $class = $handlers['MultiHandler'];
+        return new $class(array('handlers' => $h);
     }
 }

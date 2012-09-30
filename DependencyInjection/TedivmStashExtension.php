@@ -2,12 +2,14 @@
 
 namespace Tedivm\StashBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Definition\Processor;
 
 /**
  * Bundle extension to handle configuration of the Stash bundle. Based on the specification provided
@@ -25,16 +27,44 @@ class TedivmStashExtension extends Extension
 
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $configs);
+var_dump($config);
+        $container->setAlias('cache', sprintf('stash.%s_cache', $config['default_cache']));
 
-        $handler = $config['handler'];
-        $params = $config[$handler];
+        $caches = array();
+        foreach($config['caches'] as $name => $cache) {
+            $caches[$name] = sprintf('stash.%s_cache', $name);
+            $this->addCacheService($name, $cache, $container);
+        }
 
-        $container->setParameter('stash.handler.type', $handler);
-        $container->setParameter('stash.handler.options', $params);
+        $container->setParameter('stash.caches', $caches);
+        $container->setParameter('stash.default_cache', $config['default_cache']);
+    }
+
+    protected function addCacheService($name, $cache, $container)
+    {
+        $handlers = $cache['handlers'];
+        unset($cache['handlers']);
+
+        $container
+            ->setDefinition(sprintf('stash.handler.%s_cache', $name), new DefinitionDecorator('stash.handler'))
+            ->setArguments(array(
+                $handlers,
+                $cache
+            ))
+            ->setAbstract(false)
+        ;
+var_dump($container);
+        $container
+            ->setDefinition(sprintf('stash.%s_cache', $name), new DefinitionDecorator('stash.cache'))
+            ->setArguments(array(
+                new Reference(sprintf('stash.handler.%s_cache', $name))
+            ))
+            ->setAbstract(false)
+        ;
     }
 
     public function getAlias()
     {
-        return 'tedivm_stash';
+        return 'stash';
     }
 }
