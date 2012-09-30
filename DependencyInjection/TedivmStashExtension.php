@@ -48,6 +48,9 @@ class TedivmStashExtension extends Extension
         $handlers = $cache['handlers'];
         unset($cache['handlers']);
 
+        $doctrine = $cache['registerDoctrineAdapter'];
+        unset($cache['registerDoctrineAdapter']);
+
         $container
             ->setDefinition(sprintf('stash.handler.%s_cache', $name), new DefinitionDecorator('stash.handler'))
             ->setArguments(array(
@@ -74,6 +77,16 @@ class TedivmStashExtension extends Extension
             ))
             ->setAbstract(false)
         ;
+
+        if(interface_exists("\\Doctrine\\Common\\Cache\\Cache") && $doctrine) {
+            $container
+                ->setDefinition(sprintf('stash.adapter.doctrine.%s_cache', $name), new DefinitionDecorator('stash.adapter.doctrine'))
+                ->setArguments(array(
+                    new Reference(sprintf('stash.%s_cache', $name))
+                ))
+                ->setAbstract(false)
+            ;
+        }
 
         $container
             ->getDefinition('data_collector.stash')

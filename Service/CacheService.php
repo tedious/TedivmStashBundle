@@ -90,4 +90,14 @@ class CacheService
     {
         return Handlers::getHandlers();
     }
+
+    /**
+     * Returns the current logger
+     *
+     * @return CacheLogger
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
 }

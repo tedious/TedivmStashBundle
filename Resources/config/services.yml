@@ -3,6 +3,7 @@ parameters:
     stash.logger.class:     Tedivm\StashBundle\Service\CacheLogger
     stash.handler.class:    Tedivm\Stash\Handler\HandlerInterface
     stash.factory.class:    Tedivm\StashBundle\Factory\HandlerFactory
+    stash.adapter.doctrine.class:   Tedivm\StashBundle\Adapters\DoctrineAdapter
 
 services:
     stash.cache:
@@ -17,6 +18,9 @@ services:
         synthetic:          true
         factory_method:     createHandler
         factory_class:      %stash.factory.class%
+    stash.adapter.doctrine:
+        class:              %stash.adapter.doctrine.class%
+        abstract:           true
     data_collector.stash:
         class:      Tedivm\StashBundle\Collector\CacheDataCollector
         arguments: [ %stash.default_cache%, %stash.caches%, %stash.caches.options% ]

@@ -98,6 +98,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->booleanNode('registerDoctrineAdapter')->defaultFalse()->end()
             ;
 
             foreach($handlers as $handler) {
