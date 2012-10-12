@@ -2,12 +2,14 @@
 
 namespace Tedivm\StashBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Definition\Processor;
 
 /**
  * Bundle extension to handle configuration of the Stash bundle. Based on the specification provided
@@ -26,15 +28,82 @@ class TedivmStashExtension extends Extension
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $configs);
 
-        $handler = $config['handler'];
-        $params = $config[$handler];
+        $container->setAlias('cache', sprintf('stash.%s_cache', $config['default_cache']));
 
-        $container->setParameter('stash.handler.type', $handler);
-        $container->setParameter('stash.handler.options', $params);
+        $caches = array();
+        $options = array();
+        foreach($config['caches'] as $name => $cache) {
+            $caches[$name] = sprintf('stash.%s_cache', $name);
+            $options[$name] = $cache;
+            $this->addCacheService($name, $cache, $container);
+        }
+
+        $container->setParameter('stash.caches', $caches);
+        $container->setParameter('stash.caches.options', $options);
+        $container->setParameter('stash.default_cache', $config['default_cache']);
+    }
+
+    protected function addCacheService($name, $cache, $container)
+    {
+        $handlers = $cache['handlers'];
+        unset($cache['handlers']);
+
+        if(isset($cache['inMemory']) && $cache['inMemory']) {
+            array_unshift($handlers, 'Ephemeral');
+        }
+        unset($cache['inMemory']);
+
+        $doctrine = $cache['registerDoctrineAdapter'];
+        unset($cache['registerDoctrineAdapter']);
+
+        $container
+            ->setDefinition(sprintf('stash.handler.%s_cache', $name), new DefinitionDecorator('stash.handler'))
+            ->setArguments(array(
+                $handlers,
+                $cache
+            ))
+            ->setAbstract(false)
+        ;
+
+        $container
+            ->setDefinition(sprintf('stash.logger.%s_cache', $name), new DefinitionDecorator('stash.logger'))
+            ->setArguments(array(
+                $name
+            ))
+            ->setAbstract(false)
+        ;
+
+        $container
+            ->setDefinition(sprintf('stash.%s_cache', $name), new DefinitionDecorator('stash.cache'))
+            ->setArguments(array(
+                $name,
+                new Reference(sprintf('stash.handler.%s_cache', $name)),
+                new Reference(sprintf('stash.logger.%s_cache', $name))
+            ))
+            ->setAbstract(false)
+        ;
+
+        if(interface_exists("\\Doctrine\\Common\\Cache\\Cache") && $doctrine) {
+            $container
+                ->setDefinition(sprintf('stash.adapter.doctrine.%s_cache', $name), new DefinitionDecorator('stash.adapter.doctrine'))
+                ->setArguments(array(
+                    new Reference(sprintf('stash.%s_cache', $name))
+                ))
+                ->setAbstract(false)
+            ;
+        }
+
+        $container
+            ->getDefinition('data_collector.stash')
+                ->addMethodCall('addLogger', array(
+                    new Reference(sprintf('stash.logger.%s_cache', $name))
+                ))
+        ;
+
     }
 
     public function getAlias()
     {
-        return 'tedivm_stash';
+        return 'stash';
     }
 }
