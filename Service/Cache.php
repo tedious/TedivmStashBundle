@@ -1,7 +1,7 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Cache;
+use Stash\Cache as SCache;
 use Stash\Handlers;
 
 /**
@@ -38,7 +38,7 @@ class Cache
 			$args = $args[0];
 
 		$handler = (isset($this->handler)) ? $this->handler : null;
-		$stash = new Cache($handler);
+		$stash = new SCache($handler);
 
 		if(count($args) > 0)
 			$stash->setupKey($args);
