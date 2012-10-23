@@ -1,19 +1,10 @@
 <?php
 
-require_once $_SERVER['SYMFONY_SRC'].'/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+$filename = __DIR__ .'/../vendor/autoload.php';
 
-$loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
-$loader->registerNamespace('Symfony', $_SERVER['SYMFONY_SRC']);
-$loader->register();
+if (!file_exists($filename)) {
+    throw new Exception("You need to execute `composer install` before running the tests. (vendors are required for test execution)");
+}
 
-require_once( $_SERVER['SYMFONY_SRC'].'/../../vendor/tedivm/Stash/Autoloader.class.php');
-\StashAutoloader::register();
+require_once $filename;
 
-spl_autoload_register(function($class)
-{
-    if (0 === strpos($class, 'Tedivm\\StashBundle')) {
-        $path = implode('/', array_slice(explode('\\', $class), 2)).'.php';
-        require_once __DIR__.'/../'.$path;
-        return true;
-    }
-});
