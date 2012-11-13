@@ -7,52 +7,92 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class StashExtensionTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @dataProvider handlerProvider
-	 */
-	public function testLoadHandlerConfiguration($config, $tests)
-	{
-		$container = new ContainerBuilder();
-		$extension = new TedivmStashExtension();
+    /**
+     * @dataProvider configProvider
+     */
+    public function testLoadHandlerConfiguration($config)
+    {
+        $container = new ContainerBuilder();
+        $extension = new TedivmStashExtension();
 
-		$extension->load(array($config), $container);
+        $extension->load(array($config), $container);
 
-		$this->assertEquals($config['handler'], $container->getParameter('stash.handler.type'));
+        $this->assertEquals($config['default_cache'], $container->getParameter('stash.default_cache'));
+        $this->assertEquals(count($config['caches']), count($container->getParameter('stash.caches')));
 
-		$options = $container->getParameter('stash.handler.options');
 
-		foreach($tests as $option => $value) {
-			$this->assertEquals($value, $options[$option]);
-		}
-	}
+        $options = $container->getParameter('stash.caches.options');
+        foreach($config['caches'] as $name => $cache) {
+            $cacheoptions = $options[$name];
+            $this->assertArrayHasKey($name, $container->getParameter('stash.caches'));
 
-	public function handlerProvider()
-	{
-		return array(
-			array(
-				'config'	=>	array('handler' => 'FileSystem'),
-				'tests'		=>	array('dirSplit' => 2, 'filePermissions' => 0660, 'memKeyLimit' => 200),
-			),
-			array(
-				'config'	=>	array('handler' => 'FileSystem', 'FileSystem' => array('memKeyLimit' => 400)),
-				'tests'		=>	array('dirSplit' => 2, 'filePermissions' => 0660, 'memKeyLimit' => 400),
-			),
-			array(
-				'config'	=>	array('handler' => 'SQLite'),
-				'tests'		=>	array('nesting' => 0, 'filePermissions' => 0660, 'busyTimeout' => 500),
-			),
-			array(
-				'config'	=>	array('handler' => 'SQLite', 'SQLite' => array('busyTimeout' => 0, 'nesting' => 2)),
-				'tests'		=>	array('nesting' => 2, 'filePermissions' => 0660, 'busyTimeout' => 0),
-			),
-			array(
-				'config'	=>	array('handler' => 'MultiHandler'),
-				'tests'		=>	array('handlers' => array('FileSystem')),
-			),
-			array(
-				'config'	=>	array('handler' => 'MultiHandler', 'MultiHandler' => array('handlers' => array('SQLite', 'FileSystem'))),
-				'tests'		=>	array('handlers' => array('SQLite', 'FileSystem')),
-			),
-		);
-	}
+            foreach(array('registerDoctrineAdapter', 'inMemory') as $item) {
+                $this->assertEquals($cache[$item], $cacheoptions[$item]);
+            }
+
+            foreach($cache['handlers'] as $handler) {
+                $handleroptions = $cache[$handler];
+                foreach($handleroptions as $handleroptname => $handleroptvalue) {
+                    $this->assertEquals($handleroptvalue, $cacheoptions[$handler][$handleroptname]);
+                }
+            }
+
+        }
+    }
+
+    public function configProvider()
+    {
+        return array(
+            array(
+                'config' => array(
+                    'default_cache' => 'first',
+                    'caches' => array(
+                        'first' => array(
+                            'handlers' => array('FileSystem'),
+                            'registerDoctrineAdapter' => false,
+                            'inMemory' => false,
+                            'FileSystem' => array(
+                                'dirSplit'          => 2,
+                                'path'              => '%kernel.cache_dir%/stash',
+                                'filePermissions'   => 0660,
+                                'dirPermissions'    => 0770,
+                                'memKeyLimit'       => 400
+                            ),
+                        )
+                    ),
+                ),
+            ),
+            array(
+                'config' => array(
+                    'default_cache' => 'default',
+                    'caches' => array(
+                        'default' => array(
+                            'handlers' => array('SQLite'),
+                            'registerDoctrineAdapter' => true,
+                            'inMemory' => true,
+                            'SQLite' => array(
+                                'filePermissions'   => 0550,
+                                'dirPermissions'    => 0444,
+                                'path'              => '%kernel.cache_dir%/tedivm/stash',
+                            ),
+                        ),
+                        'nondefault' => array(
+                            'handlers' => array('FileSystem', 'Apc'),
+                            'registerDoctrineAdapter' => true,
+                            'inMemory' => true,
+                            'FileSystem' => array(
+                                'filePermissions'   => 0770,
+                                'dirPermissions'    => 0666,
+                                'path'              => '/tmp/tedivm/stash',
+                            ),
+                            'Apc' => array(
+                                'ttl'               => 500,
+                                'namespace'         => 'stash',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
 }

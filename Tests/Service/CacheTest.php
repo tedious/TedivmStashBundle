@@ -7,49 +7,55 @@ use Stash\Handler\Ephemeral;
 
 class CacheTest extends \PHPUnit_Framework_TestCase
 {
-	protected $cache;
+    protected $handler;
 
-	public static function setUpBeforeClass()
-	{
-		define('TESTING', true);
-	}
+    public static function setUpBeforeClass()
+    {
+        define('TESTING', true);
+    }
 
-	protected function setUp()
-	{
-		$handler = new Ephemeral(array());
-		$this->cache = new CacheService($handler);
-	}
+    protected function setUp()
+    {
+        $this->handler = new Ephemeral(array());
+    }
 
-	public function testCache()
-	{
-		$this->runCacheCycle('one', true);
-		$this->runCacheCycle('two', true);
+    protected function getCacheService($name)
+    {
+        return new CacheService($name, $this->handler);
+    }
 
-		$this->runCacheCycle('one', false);
-		$this->runCacheCycle('two', false);
+    public function testCache()
+    {
+        $service = $this->getCacheService('first');
 
-		$this->cache->clear('test', 'key', 'one');
+        $this->runCacheCycle($service, 'one', true);
+        $this->runCacheCycle($service, 'two', true);
 
-		$this->runCacheCycle('one', true);
-		$this->runCacheCycle('two', false);
+        $this->runCacheCycle($service, 'one', false);
+        $this->runCacheCycle($service, 'two', false);
 
-		$this->cache->clear();
+        $service->clear('test', 'key', 'one');
 
-		$this->runCacheCycle('one', true);
-		$this->runCacheCycle('two', true);
-	}
+        $this->runCacheCycle($service, 'one', true);
+        $this->runCacheCycle($service, 'two', false);
 
-	protected function runCacheCycle($num, $ismiss)
-	{
-		$cache = $this->cache->get('test', 'key', $num);
-		$data = $cache->get();
-		$this->assertEquals($ismiss, $cache->isMiss());
+        $service->clear();
 
-		$this->assertTrue($cache->store('testkey'.$num));
+        $this->runCacheCycle($service, 'one', true);
+        $this->runCacheCycle($service, 'two', true);
+    }
 
-		$cache = $this->cache->get('test', 'key', $num);
-		$data = $cache->get();
-		$this->assertFalse($cache->isMiss());
-		$this->assertEquals('testkey'.$num, $data);
-	}
+    protected function runCacheCycle($service, $num, $ismiss)
+    {
+        $cache = $service->get('test', 'key', $num);
+        $data = $cache->get();
+        $this->assertEquals($ismiss, $cache->isMiss());
+
+        $this->assertTrue($cache->set('testkey'.$num));
+
+        $cache = $service->get('test', 'key', $num);
+        $data = $cache->get();
+        $this->assertFalse($cache->isMiss());
+        $this->assertEquals('testkey'.$num, $data);
+    }
 }
