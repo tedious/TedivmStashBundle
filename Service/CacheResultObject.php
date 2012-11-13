@@ -39,7 +39,9 @@ class CacheResultObject
         $miss = $this->cache->isMiss();
         $key = $this->cache->getKey();
 
-        $this->logger->logRequest($key, !($miss), $result);
+        if(isset($this->logger)) {
+            $this->logger->logRequest($key, !($miss), $result);
+        }
 
         return $result;
     }
