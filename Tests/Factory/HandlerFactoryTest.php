@@ -4,42 +4,69 @@ namespace Tedivm\StashBundle\Tests\Factory;
 
 use Tedivm\StashBundle\Factory\HandlerFactory;
 use Stash\Utilities;
+use Stash\Handlers;
 
 class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider handlerProvider
-     */
-    public function testManufactureHandlers($class, $type, $options, $tests)
+    protected $handlers = array();
+
+    protected $defaultSettings = array(
+        'FileSystem' => array(
+            'dirSplit'          => 2,
+            'filePermissions'   => 0660,
+            'dirPermissions'    => 0770,
+            'memKeyLimit'       => 200
+        ),
+        'SQLite' => array(
+            'filePermissions'   => 0660,
+            'dirPermissions'    => 0770,
+            'busyTimeout'       => 500,
+            'nesting'           => 0,
+            'subhandler'        => 'PDO',
+            'version'           => null,
+        ),
+        'Apc' => array(
+            'ttl'               => 300,
+            'namespace'         => null,
+        ),
+    );
+
+    public function setUp()
     {
-        $handler = HandlerFactory::createHandler($type, $options);
-
-        if(isset($tests['path']) && $tests['path'] === 'GETPATH')
-            $tests['path'] = Utilities::getBaseDirectory($handler);
-
-        $this->assertInstanceOf($class, $handler);
-        foreach($tests as $attribute => $value) {
-            $this->assertAttributeEquals($value, $attribute, $handler);
-        }
+        $this->handlers = Handlers::getHandlers();
     }
 
     /**
-     * @dataProvider multiHandlerProvider
+     * @dataProvider handlerProvider
      */
-    public function testMultiHandler($options, $classes, $tests)
+    public function testManufactureHandlers($types, $options)
     {
-        $handler = HandlerFactory::createHandler('MultiHandler', $options);
+        $handler = HandlerFactory::createHandler($types, $options);
 
-        $handlers = \PHPUnit_Util_Class::getObjectAttribute($handler, 'handlers');
+        if(count($types) > 1) {
+            $handlerclass = $this->handlers['MultiHandler'];
+            $h = \PHPUnit_Util_Class::getObjectAttribute($handler, 'handlers');
+            $handlers = array_combine($types, $h);
+        } else {
+            $handlerclass = $this->handlers[$types[0]];
+            $handlers = array($types[0] => $handler);
+        }
 
-        foreach($handlers as $subhandler) {
-            $class = array_shift($classes);
-            $this->assertInstanceOf($class, $subhandler);
+        $this->assertInstanceOf($handlerclass, $handler);
 
-            $ts = array_shift($tests);
-            foreach($ts as $attribute => $value) {
-                $this->assertAttributeEquals($value, $attribute, $subhandler);
+        foreach($handlers as $subtype => $subhandler) {
+            $subhandlerclass = $this->handlers[$subtype];
+            $this->assertInstanceOf($subhandlerclass, $subhandler);
+        }
+
+        foreach($types as $type) {
+            $defaults = isset($this->defaultSettings[$type]) ? $this->defaultSettings[$type] : array();
+            $options = array_merge($defaults, $options);
+
+/*            foreach($options as $optname => $optvalue) {
+                $this->assertAttributeEquals($optvalue, $optname, $handlers[$type]);
             }
+*/
         }
     }
 
@@ -47,49 +74,28 @@ class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'class'     => 'StashFileSystem',
-                'type'      => 'FileSystem',
+                'types'     => array('FileSystem'),
                 'options'   => array(),
-                'tests'     => array('directorySplit' => 2, 'memStoreLimit' => 20),
             ),
             array(
-                'class'     => 'StashFileSystem',
-                'type'      => 'FileSystem',
-                'options'   => array('dirSplit' => 3, 'memKeyLimit' => 21),
-                'tests'     => array('directorySplit' => 3, 'memStoreLimit' => 21),
+                'types'     => array('FileSystem'),
+                'options'   => array('FileSystem' => array('dirSplit' => 3, 'memKeyLimit' => 21)),
             ),
             array(
-                'class'     => 'StashSqlite',
-                'type'      => 'SQLite',
+                'types'     => array('SQLite'),
                 'options'   => array(),
-                'tests'     => array('nesting' => 0, 'handlerClass' => 'StashSqlite_PDO', 'path' => 'GETPATH'),
             ),
             array(
-                'class'     => 'StashSqlite',
-                'type'      => 'SQLite',
+                'types'     => array('SQLite'),
                 'options'   => array('nesting' => 2, 'extension' => 'sqlite'),
-                'tests'     => array('nesting' => 2, 'handlerClass' => 'StashSqlite_SQLite'),
-            ),
-        );
-    }
-
-    public function multiHandlerProvider()
-    {
-        return array(
-            array(
-                'options'   => array('handlers' => array('FileSystem')),
-                'classes'   => array('StashFileSystem'),
-                'tests'     => array(
-                    array('directorySplit' => 2, 'memStoreLimit' => 20),
-                ),
             ),
             array(
-                'options'   => array('handlers' => array('FileSystem', 'SQLite')),
-                'classes'   => array('StashFileSystem', 'StashSqlite'),
-                'tests'     => array(
-                    array('directorySplit' => 2, 'memStoreLimit' => 20),
-                    array('nesting' => 0, 'handlerClass' => 'StashSqlite_PDO'),
-                ),
+                'types'     => array('Ephemeral', 'FileSystem'),
+                'options'   => array('FileSystem' => array('dirSplit' => 2)),
+            ),
+            array(
+                'types'     => array('Ephemeral', 'FileSystem', 'SQLite'),
+                'options'   => array('FileSystem' => array('dirSplit' => 3), 'SQLite' => array('dirSplit' => 5)),
             ),
         );
     }
