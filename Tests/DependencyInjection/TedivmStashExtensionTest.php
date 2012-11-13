@@ -77,7 +77,7 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         'nondefault' => array(
-                            'handlers' => array('FileSystem', 'Apc'),
+                            'handlers' => array('FileSystem', 'SQLite'),
                             'registerDoctrineAdapter' => true,
                             'inMemory' => true,
                             'FileSystem' => array(
@@ -85,9 +85,10 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
                                 'dirPermissions'    => 0666,
                                 'path'              => '/tmp/tedivm/stash',
                             ),
-                            'Apc' => array(
-                                'ttl'               => 500,
-                                'namespace'         => 'stash',
+                            'SQLite' => array(
+                                'filePermissions'   => 0777,
+                                'dirPermissions'    => 0666,
+                                'path'              => '%kernel.cache_dir%/tedivm/stash',
                             ),
                         ),
                     ),
