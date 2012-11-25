@@ -1,8 +1,8 @@
 {
   "name": "tedivm/stash-bundle",
   "type": "symfony-bundle",
-  "description": "Incorporates the Stash caching library into Symfony",
-  "keywords": ["cache","caching","apc","memcached","sqlite"],
+  "description": "Incorporates the Stash caching library into Symfony.",
+  "keywords": ["caching","symfony","sessions"],
   "homepage": "http://github.com/tedivm/TedivmStashBundle",
   "license": "BSD-3-Clause",
   "authors": [
