@@ -17,9 +17,9 @@
   ],
   "require": {
     "php": ">=5.3.0",
-    "tedivm/stash": "~0.9",
-    "symfony/framework-bundle": "~2.1",
-    "symfony/yaml": "~2.1"
+    "tedivm/stash": "0.9.*",
+    "symfony/framework-bundle": "2.1.*",
+    "symfony/yaml": "2.1.*"
   },
   "autoload": {
     "psr-0": {"Tedivm\\StashBundle": ""}
