@@ -3,6 +3,7 @@
 namespace Tedivm\StashBundle\Service;
 use Stash\Cache as StashCache;
 use Stash\Handlers;
+use Stash\Handler\HandlerInterface;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -11,18 +12,34 @@ use Stash\Handlers;
  */
 class CacheService
 {
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var \Stash\Handler\HandlerInterface
+     */
     protected $handler;
+
+    /**
+     * @var string
+     */
     protected $key;
 
+    /**
+     * @var CacheLogger|null
+     */
     protected $logger;
 
     /**
      * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
      *
-     * @param StashHandler $handler
+     * @param string $name Used to name and prefix the cache to avoid cache collisions across installs
+     * @param \Stash\Handler\HandlerInterface $handler
+     * @param CacheLogger|null $logger
      */
-    public function __construct($name, $handler, $logger = null)
+    public function __construct($name, HandlerInterface $handler, CacheLogger $logger = null)
     {
         $this->name = $name;
         $this->handler = $handler;
@@ -35,7 +52,8 @@ class CacheService
      * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
      * or an array.
      *
-     * @param array|string $key, $key, $key...
+     * @param string|array $key, $key, $key...
+     * @return \Stash\Cache Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
     public function get()
     {
@@ -94,7 +112,7 @@ class CacheService
     /**
      * Returns the current logger
      *
-     * @return CacheLogger
+     * @return CacheLogger|null
      */
     public function getLogger()
     {
