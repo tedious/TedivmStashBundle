@@ -3,6 +3,7 @@
 namespace Tedivm\StashBundle\Service;
 use Stash\Cache as StashCache;
 use Stash\Handlers;
+use Stash\Handler\HandlerInterface;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -38,7 +39,7 @@ class CacheService
      * @param \Stash\Handler\HandlerInterface $handler
      * @param CacheLogger|null $logger
      */
-    public function __construct($name, $handler, $logger = null)
+    public function __construct($name, HandlerInterface $handler, CacheLogger $logger = null)
     {
         $this->name = $name;
         $this->handler = $handler;
