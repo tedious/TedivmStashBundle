@@ -53,7 +53,7 @@ class CacheService
      * or an array.
      *
      * @param string|array $key, $key, $key...
-     * @return \Stash\Cache  Note: Cache item is wrapped inside CacheResultObject which deals with logging
+     * @return \Stash\Cache Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
     public function get()
     {
