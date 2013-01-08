@@ -10,13 +10,21 @@ use Stash\Handlers;
  */
 class CacheResultObject
 {
+    /**
+     * @var \Stash\Cache
+     */
     protected $cache;
+
+    /**
+     * @var null|CacheLogger
+     */
     protected $logger;
 
     /**
-     * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
+     * Constructs the CacheResultObject, wraps Cache object to perform logging.
      *
-     * @param StashHandler $handler
+     * @param \Stash\Cache $cache
+     * @param CacheLogger $logger
      */
     public function __construct($cache, $logger = null)
     {
