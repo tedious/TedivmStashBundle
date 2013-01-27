@@ -34,10 +34,7 @@ class CacheLogger
         }
 
         $hit = $hit ? 'true' : 'false';
-
-        ob_start();
-        print_r($value);
-        $value = sprintf('(%s) %s', gettype($value), ob_get_clean());
+        $value = sprintf('(%s) %s', gettype($value), print_r($value, true));
 
         $this->queries[] = array(
             'key'   => $key,
