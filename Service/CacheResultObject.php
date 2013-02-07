@@ -1,7 +1,7 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Handlers;
+use Stash\Drivers;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -11,7 +11,7 @@ use Stash\Handlers;
 class CacheResultObject
 {
     /**
-     * @var \Stash\Cache
+     * @var \Stash\Item
      */
     protected $cache;
 
@@ -23,7 +23,7 @@ class CacheResultObject
     /**
      * Constructs the CacheResultObject, wraps Cache object to perform logging.
      *
-     * @param \Stash\Cache $cache
+     * @param \Stash\Item $cache
      * @param CacheLogger $logger
      */
     public function __construct($cache, $logger = null)

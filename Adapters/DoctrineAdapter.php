@@ -1,8 +1,8 @@
 <?php
 
 namespace Tedivm\StashBundle\Adapters;
-use Stash\Cache as StashCache;
-use Stash\Handlers;
+use Stash\Item as StashItem;
+use Stash\Drivers;
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
 class DoctrineAdapter implements DoctrineCacheInterface

@@ -1,8 +1,8 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Cache as StashCache;
-use Stash\Handlers;
+use Stash\Item;
+use Stash\Drivers;
 use Stash\Handler\HandlerInterface;
 
 /**
@@ -53,7 +53,7 @@ class CacheService
      * or an array.
      *
      * @param string|array $key, $key, $key...
-     * @return \Stash\Cache Note: Cache item is wrapped inside CacheResultObject which deals with logging
+     * @return \Stash\Item Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
     public function get()
     {
@@ -67,7 +67,7 @@ class CacheService
         $key = join('/', $args);
 
         $handler = (isset($this->handler)) ? $this->handler : null;
-        $cache = new StashCache($handler);
+        $cache = new Item($handler);
         $stash = new CacheResultObject($cache, $this->logger);
 
         $stash->setupKey($key);
@@ -104,9 +104,9 @@ class CacheService
      *
      * @return array
      */
-    public function getHandlers()
+    public function getDrivers()
     {
-        return Handlers::getHandlers();
+        return Drivers::getDrivers();
     }
 
     /**
