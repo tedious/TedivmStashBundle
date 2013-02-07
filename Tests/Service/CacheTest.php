@@ -3,7 +3,7 @@
 namespace Tedivm\StashBundle\Tests\Service;
 
 use Tedivm\StashBundle\Service\CacheService;
-use Stash\Handler\Ephemeral;
+use Stash\Driver\Ephemeral;
 
 class CacheTest extends \PHPUnit_Framework_TestCase
 {
