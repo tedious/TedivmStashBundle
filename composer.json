@@ -17,7 +17,7 @@
   ],
   "require": {
     "php": ">=5.3.0",
-    "tedivm/stash": "0.9.*",
+    "tedivm/stash": "0.10.*",
     "symfony/framework-bundle": "2.1.*",
     "symfony/yaml": "2.1.*"
   },
