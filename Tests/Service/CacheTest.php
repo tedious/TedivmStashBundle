@@ -47,7 +47,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     protected function runCacheCycle($service, $num, $ismiss)
     {
-        $cache = $service->get('test', 'key', $num);
+        $cache = $service->getItem('test', 'key', $num);
         $data = $cache->get();
         $this->assertEquals($ismiss, $cache->isMiss());
 

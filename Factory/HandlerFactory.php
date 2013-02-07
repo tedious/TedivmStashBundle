@@ -22,7 +22,7 @@ class HandlerFactory {
         }
 
         $class = $handlers['Composite'];
-        $handler = new $class(array('handlers' => $h));
+        $handler = new $class(array('drivers' => $h));
 
         return $handler;
     }

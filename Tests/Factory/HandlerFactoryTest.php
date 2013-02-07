@@ -6,7 +6,7 @@ use Tedivm\StashBundle\Factory\HandlerFactory;
 use Stash\Utilities;
 use Stash\Drivers;
 
-class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
+class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     protected $handlers = array();
 
@@ -44,8 +44,8 @@ class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
         $handler = HandlerFactory::createHandler($types, $options);
 
         if(count($types) > 1) {
-            $handlerclass = $this->handlers['MultiHandler'];
-            $h = \PHPUnit_Util_Class::getObjectAttribute($handler, 'handlers');
+            $handlerclass = $this->handlers['Composite'];
+            $h = \PHPUnit_Util_Class::getObjectAttribute($handler, 'drivers');
             $handlers = array_combine($types, $h);
         } else {
             $handlerclass = $this->handlers[$types[0]];

@@ -3,7 +3,7 @@
 namespace Tedivm\StashBundle\Service;
 use Stash\Item;
 use Stash\Drivers;
-use Stash\Handler\HandlerInterface;
+use Stash\Driver\DriverInterface;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -18,9 +18,9 @@ class CacheService
     protected $name;
 
     /**
-     * @var \Stash\Handler\HandlerInterface
+     * @var \Stash\Driver\DriverInterface
      */
-    protected $handler;
+    protected $driver;
 
     /**
      * @var string
@@ -39,10 +39,10 @@ class CacheService
      * @param \Stash\Handler\HandlerInterface $handler
      * @param CacheLogger|null $logger
      */
-    public function __construct($name, HandlerInterface $handler, CacheLogger $logger = null)
+    public function __construct($name, DriverInterface $driver, CacheLogger $logger = null)
     {
         $this->name = $name;
-        $this->handler = $handler;
+        $this->driver = $driver;
         $this->key = '@@_' . $name . '_@@';
 
         $this->logger = $logger;
@@ -66,11 +66,9 @@ class CacheService
         array_unshift($args, $this->key);
         $key = join('/', $args);
 
-        $handler = (isset($this->handler)) ? $this->handler : null;
-        $cache = new Item($handler);
+        $driver = (isset($this->driver)) ? $this->driver : null;
+        $cache = new Item($driver, $key);
         $stash = new CacheResultObject($cache, $this->logger);
-
-        $stash->setupKey($key);
 
         return $stash;
     }
@@ -83,7 +81,7 @@ class CacheService
      */
     public function clear()
     {
-        $stash = $this->get(func_get_args());
+        $stash = $this->getItem(func_get_args());
         return $stash->clear();
     }
 
