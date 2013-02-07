@@ -53,7 +53,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($cache->set('testkey'.$num));
 
-        $cache = $service->get('test', 'key', $num);
+        $cache = $service->getItem('test', 'key', $num);
         $data = $cache->get();
         $this->assertFalse($cache->isMiss());
         $this->assertEquals('testkey'.$num, $data);

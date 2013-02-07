@@ -33,7 +33,7 @@ class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->handlers = Handlers::getHandlers();
+        $this->handlers = Drivers::getDrivers();
     }
 
     /**
