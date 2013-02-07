@@ -4,7 +4,7 @@ namespace Tedivm\StashBundle\Tests\Factory;
 
 use Tedivm\StashBundle\Factory\HandlerFactory;
 use Stash\Utilities;
-use Stash\Handlers;
+use Stash\Drivers;
 
 class HandlerFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 {
