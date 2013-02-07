@@ -55,7 +55,7 @@ class CacheService
      * @param string|array $key, $key, $key...
      * @return \Stash\Item Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
-    public function get()
+    public function getItem()
     {
         $args = func_get_args();
 
