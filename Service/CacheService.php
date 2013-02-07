@@ -63,6 +63,12 @@ class CacheService
     {
         $args = func_get_args();
 
+        // check to see if a single array was used instead of multiple arguments
+        if(count($args) == 1 && is_array($args[0]))
+            $args = $args[0];
+
+        array_unshift($args, $this->key);
+
         $item = $this->pool->getItem($args);
 
         $stash = new CacheResultObject($item, $this->logger);

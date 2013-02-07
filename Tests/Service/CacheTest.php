@@ -8,6 +8,7 @@ use Stash\Driver\Ephemeral;
 class CacheTest extends \PHPUnit_Framework_TestCase
 {
     protected $handler;
+    protected $service;
 
     public static function setUpBeforeClass()
     {
@@ -45,6 +46,24 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->runCacheCycle($service, 'two', true);
     }
 
+    public function testTwoServices()
+    {
+        $service1 = $this->getCacheService('first');
+        $service2 = $this->getCacheService('second');
+
+        $this->runCacheCycle($service1, 'one', true);
+        $this->runCacheCycle($service2, 'two', true);
+
+        $this->runCacheCycle($service2, 'one', true);
+        $this->runCacheCycle($service1, 'two', true);
+
+        $this->runCacheCycle($service1, 'one', false);
+        $this->runCacheCycle($service2, 'two', false);
+
+        $this->runCacheCycle($service2, 'one', false);
+        $this->runCacheCycle($service1, 'two', false);
+    }
+
     protected function runCacheCycle($service, $num, $ismiss)
     {
         $cache = $service->getItem('test', 'key', $num);
@@ -58,4 +77,5 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($cache->isMiss());
         $this->assertEquals('testkey'.$num, $data);
     }
+
 }

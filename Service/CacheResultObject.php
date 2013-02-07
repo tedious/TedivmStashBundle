@@ -36,9 +36,22 @@ class CacheResultObject
     {
         if($name === 'get') {
             return $this->getAndLog($args);
+        } elseif($name === 'getKey') {
+            return $this->getShortenedKey();
         } else {
             return call_user_func_array(array($this->cache, $name), $args);
         }
+    }
+
+    protected function getShortenedKey()
+    {
+        $key = $this->cache->getKey();
+        $parts = explode('/', $key);
+        if( (strpos($parts[0], '@@_') === 0) && (strpos(strrev($parts[0]), '@@_') === 0) ) {
+            array_shift($parts);
+        }
+
+        return join('/', $parts);
     }
 
     protected function getAndLog($args)
