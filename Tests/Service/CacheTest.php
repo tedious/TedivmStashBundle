@@ -64,6 +64,33 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->runCacheCycle($service1, 'two', false);
     }
 
+    public function testGetItemIterator()
+    {
+        $keys = array('test/key/one', 'test/key/two', 'test/key/three', 'test/key/four');
+        $values = array('uno', 'dos', 'tres', 'quattro');
+
+        $service = $this->getCacheService('first');
+
+        $iterator = $service->getItemIterator($keys);
+        $setvalues = $values;
+
+        foreach($iterator as $item) {
+            $this->assertTrue($item->isMiss());
+            $val = array_shift($setvalues);
+            $item->set($val);
+            $this->assertEquals($val, $item->get());
+        }
+
+        $iterator2 = $service->getItemIterator($keys);
+        $getvalues = $values;
+
+        foreach($iterator2 as $item) {
+            $this->assertFalse($item->isMiss());
+            $val = array_shift($getvalues);
+            $this->assertEquals($val, $item->get());
+        }
+    }
+
     protected function runCacheCycle($service, $num, $ismiss)
     {
         $cache = $service->getItem('test', 'key', $num);
