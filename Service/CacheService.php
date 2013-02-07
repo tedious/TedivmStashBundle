@@ -4,6 +4,8 @@ namespace Tedivm\StashBundle\Service;
 use Stash\Item;
 use Stash\Drivers;
 use Stash\Driver\DriverInterface;
+use Stash\Pool;
+use ArrayIterator;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -45,6 +47,8 @@ class CacheService
         $this->driver = $driver;
         $this->key = '@@_' . $name . '_@@';
 
+        $this->pool = new Pool($this->driver);
+
         $this->logger = $logger;
     }
 
@@ -59,18 +63,29 @@ class CacheService
     {
         $args = func_get_args();
 
-        // check to see if a single array was used instead of multiple arguments
-        if(count($args) == 1 && is_array($args[0]))
-            $args = $args[0];
+        $item = $this->pool->getItem($args);
 
-        array_unshift($args, $this->key);
-        $key = join('/', $args);
-
-        $driver = (isset($this->driver)) ? $this->driver : null;
-        $cache = new Item($driver, $key);
-        $stash = new CacheResultObject($cache, $this->logger);
+        $stash = new CacheResultObject($item, $this->logger);
 
         return $stash;
+    }
+
+    /**
+     * Returns a group of wrapped cache objects as an \Iterator. This duplicates the functionality of the
+     * Pool class getItemIterator method, but with wrapped, loggable cache items.
+     *
+     * @param array $keys
+     * @return \Iterator
+     */
+    public function getItemIterator($keys)
+    {
+        $items = array();
+        foreach($keys as $key)
+        {
+            $items[] = $this->getItem($key);
+        }
+
+         return new ArrayIterator($items);
     }
 
     /**
@@ -81,8 +96,13 @@ class CacheService
      */
     public function clear()
     {
-        $stash = $this->getItem(func_get_args());
-        return $stash->clear();
+        $args = func_get_args();
+        if(count($args) === 0) {
+            return $this->pool->flush();
+        } else {
+            $stash = call_user_func_array(array($this, 'getItem'), $args);
+            return $stash->clear();
+        }
     }
 
     /**
@@ -93,8 +113,7 @@ class CacheService
      */
     public function purge()
     {
-        $stash = $this->get();
-        return $stash->purge();
+        return $this->pool->purge();
     }
 
     /**
