@@ -5,7 +5,7 @@ namespace Tedivm\StashBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Stash\Handlers;
+use Stash\Drivers;
 
 class Configuration implements ConfigurationInterface
 {
@@ -77,7 +77,7 @@ class Configuration implements ConfigurationInterface
 
     protected function getCachesNode()
     {
-        $handlers = array_keys(Handlers::getHandlers());
+        $handlers = array_keys(Drivers::getDrivers());
 
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('caches');
@@ -103,7 +103,7 @@ class Configuration implements ConfigurationInterface
             ;
 
             foreach($handlers as $handler) {
-                if($handler !== 'MultiHandler') {
+                if($handler !== 'Composite') {
                     $this->addHandlerSettings($handler, $childNode);
                 }
             }

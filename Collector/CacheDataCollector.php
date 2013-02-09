@@ -4,8 +4,8 @@ namespace Tedivm\StashBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stash\Cache;
-use Stash\Handlers;
+use Stash\Item;
+use Stash\Drivers;
 
 
 /**
@@ -51,12 +51,12 @@ class CacheDataCollector extends DataCollector
             $info['caches'][$name]['hits'] = $hits;
         }
 
-        $handlers = Handlers::getHandlers();
+        $handlers = Drivers::getDrivers();
         foreach($handlers as $handler) {
             $pieces = explode('\\', $handler);
             $name = array_pop($pieces);
-            if(!in_array($name, array('Ephemeral', 'MultiHandler'))) {
-                $info['availableHandlers'][] = $name;
+            if(!in_array($name, array('Ephemeral', 'Composite'))) {
+                $info['availableDrivers'][] = $name;
             }
         }
 
@@ -77,7 +77,7 @@ class CacheDataCollector extends DataCollector
 
     public function gethandlers()
     {
-        return $this->data['availableHandlers'];
+        return $this->data['availableDrivers'];
     }
 
     public function getCaches()
