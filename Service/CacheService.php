@@ -1,9 +1,11 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Cache as StashCache;
-use Stash\Handlers;
-use Stash\Handler\HandlerInterface;
+use Stash\Item;
+use Stash\Drivers;
+use Stash\Driver\DriverInterface;
+use Stash\Pool;
+use ArrayIterator;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -18,9 +20,9 @@ class CacheService
     protected $name;
 
     /**
-     * @var \Stash\Handler\HandlerInterface
+     * @var \Stash\Driver\DriverInterface
      */
-    protected $handler;
+    protected $driver;
 
     /**
      * @var string
@@ -39,11 +41,13 @@ class CacheService
      * @param \Stash\Handler\HandlerInterface $handler
      * @param CacheLogger|null $logger
      */
-    public function __construct($name, HandlerInterface $handler, CacheLogger $logger = null)
+    public function __construct($name, DriverInterface $driver, CacheLogger $logger = null)
     {
         $this->name = $name;
-        $this->handler = $handler;
+        $this->driver = $driver;
         $this->key = '@@_' . $name . '_@@';
+
+        $this->pool = new Pool($this->driver);
 
         $this->logger = $logger;
     }
@@ -53,9 +57,9 @@ class CacheService
      * or an array.
      *
      * @param string|array $key, $key, $key...
-     * @return \Stash\Cache Note: Cache item is wrapped inside CacheResultObject which deals with logging
+     * @return \Stash\Item Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
-    public function get()
+    public function getItem()
     {
         $args = func_get_args();
 
@@ -64,15 +68,30 @@ class CacheService
             $args = $args[0];
 
         array_unshift($args, $this->key);
-        $key = join('/', $args);
 
-        $handler = (isset($this->handler)) ? $this->handler : null;
-        $cache = new StashCache($handler);
-        $stash = new CacheResultObject($cache, $this->logger);
+        $item = $this->pool->getItem($args);
 
-        $stash->setupKey($key);
+        $stash = new CacheResultObject($item, $this->logger);
 
         return $stash;
+    }
+
+    /**
+     * Returns a group of wrapped cache objects as an \Iterator. This duplicates the functionality of the
+     * Pool class getItemIterator method, but with wrapped, loggable cache items.
+     *
+     * @param array $keys
+     * @return \Iterator
+     */
+    public function getItemIterator($keys)
+    {
+        $items = array();
+        foreach($keys as $key)
+        {
+            $items[] = $this->getItem($key);
+        }
+
+         return new ArrayIterator($items);
     }
 
     /**
@@ -83,8 +102,13 @@ class CacheService
      */
     public function clear()
     {
-        $stash = $this->get(func_get_args());
-        return $stash->clear();
+        $args = func_get_args();
+        if(count($args) === 0) {
+            return $this->pool->flush();
+        } else {
+            $stash = call_user_func_array(array($this, 'getItem'), $args);
+            return $stash->clear();
+        }
     }
 
     /**
@@ -95,8 +119,7 @@ class CacheService
      */
     public function purge()
     {
-        $stash = $this->get();
-        return $stash->purge();
+        return $this->pool->purge();
     }
 
     /**
@@ -104,9 +127,9 @@ class CacheService
      *
      * @return array
      */
-    public function getHandlers()
+    public function getDrivers()
     {
-        return Handlers::getHandlers();
+        return Drivers::getDrivers();
     }
 
     /**

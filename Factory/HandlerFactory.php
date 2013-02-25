@@ -1,13 +1,13 @@
 <?php
 
 namespace Tedivm\StashBundle\Factory;
-use Stash\Handlers;
+use Stash\Drivers;
 
 class HandlerFactory {
 
     static function createHandler($types, $options)
     {
-        $handlers = Handlers::getHandlers();
+        $handlers = Drivers::getDrivers();
 
         $h = array();
 
@@ -21,8 +21,8 @@ class HandlerFactory {
             return reset($h);
         }
 
-        $class = $handlers['MultiHandler'];
-        $handler = new $class(array('handlers' => $h));
+        $class = $handlers['Composite'];
+        $handler = new $class(array('drivers' => $h));
 
         return $handler;
     }
