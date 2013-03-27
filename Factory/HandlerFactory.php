@@ -13,6 +13,20 @@ class HandlerFactory {
 
         foreach($types as $type) {
             $class = $handlers[$type];
+            if ($type === 'Memcache' && isset($options[$type])) {
+                // Fix servers spec since underlying drivers expect plain arrays, not hashes.
+                $servers = array();
+                foreach ($options[$type]['servers'] as $serverSpec) {
+                    $servers[] = array(
+                        $serverSpec['server'],
+                        $serverSpec['port'],
+                        isset($serverSpec['weight']) ? $serverSpec['weight'] : null
+                    );
+                }
+
+                $options[$type]['servers'] = $servers;
+            }
+
             $opts = isset($options[$type]) ? $options[$type] : array();
             $h[] = new $class($opts);
         }
