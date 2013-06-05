@@ -10,7 +10,7 @@ powerful abstraction for a range of caching engines.
 
 Add the bundle using composer, either by requiring it on the command line:
 
-    composer require jms/serializer-bundle
+    composer require tedivm/stash-bundle
 
 or by adding it directly to your `composer.json` file:
 
