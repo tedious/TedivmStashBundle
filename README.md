@@ -4,7 +4,10 @@ TedivmStashBundle
 [![Build Status](https://secure.travis-ci.org/tedivm/TedivmStashBundle.png?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
 
 The **TedivmStashBundle** integrates the [Stash caching library](https://github.com/tedivm/Stash) into Symfony, providing a
-powerful abstraction for a range of caching engines.
+powerful abstraction for a range of caching engines. This bundle provides a caching service, adds Stash information to
+the Web Profiler toolbar, and adds integration for the Doctrine Common Cache library.
+
+Both the bundle and Stash are licensed under the New BSD License.
 
 ## Installation ##
 
@@ -102,7 +105,7 @@ or retrieved from the cache service will be stored in memory, with the in-memory
 any other drivers. In some circumstances, however (such as long-running CLI batch scripts) this may not be desirable.
 In those cases, the in-memory handler can be disabled:
 
-     tedivm_stash:
+    tedivm_stash:
         cache:
             handlers: [ Apc ]
             inMemory: false
@@ -113,21 +116,32 @@ In those cases, the in-memory handler can be disabled:
 Stash provides a Doctrine cache adapter so that your Stash caching service can be injected into any service that takes
 a DoctrineCacheInterface object. To turn on the adapter for a service, set the parameter:
 
-     tedivm_stash:
+    tedivm_stash:
         cache:
             handlers: [ Apc ]
             registerDoctrineAdapter: true
             Apc: ~
 
 For the default cache, the Adapter service will be added to the container under the name
-`stash.adapter.doctrine.default_cache`.
+`stash.adapter.doctrine.default_cache`. You can use it anywhere you'd use a regular Doctrine Cache object:
+
+    doctrine:
+        orm:
+            metadata_cache_driver:
+                type: service
+                id: stash.adapter.doctrine.default_cache
+            query_cache_driver:
+                type: service
+                id: stash.adapter.doctrine.default_cache
+            result_cache_driver:
+                type: service
+                id: stash.adapter.doctrine.default_cache
 
 ### Multiple Services ###
 
-You can also configure multiple services, each of which is entirely distinct:
+You can also configure multiple services, each of which stores is entirely separate:
 
-
-     tedivm_stash:
+    tedivm_stash:
         caches:
             first:
                 handlers: [ FileSystem ]
@@ -150,4 +164,28 @@ When multiple caches are defined, you can manually define a default, which will 
         second:
             ...
 
-However, if you don't, the first service defined will be set as the default.
+If you don't, the first service defined will be set as the default.
+
+## Stash Driver Configuration ##
+
+Each driver comes with a set of default options which canb be individually overrided.
+
+    FileSystem:
+        dirSplit:               2
+        path:                   %kernel.cache_dir%/stash
+        filePermissions:        0660
+        dirPermissions:         0770
+        memKeyLimit:            20
+    Sqlite:
+        path:                   %kernel.cache_dir%/stash
+        filePermissions:        0660
+        dirPermissions:         0770
+        busyTimeout:            500
+        nesting:                0
+        subdriver:              PDO
+    Apc:
+        ttl:                    300
+        namespace:              <none>
+    Memcache:
+        servers:
+            - { server: 127.0.0.1, port: 11211, weight: 1 }
