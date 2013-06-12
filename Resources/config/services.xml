@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="stash.cache.class">Tedivm\StashBundle\Service\CacheService</parameter>
+        <parameter key="stash.logger.class">Tedivm\StashBundle\Service\CacheLogger</parameter>
+        <parameter key="stash.handler.class">Tedivm\Stash\Handler\HandlerInterface</parameter>
+        <parameter key="stash.factory.class">Tedivm\StashBundle\Factory\HandlerFactory</parameter>
+        <parameter key="stash.adapter.doctrine.class">Tedivm\StashBundle\Adapters\DoctrineAdapter</parameter>
+        <parameter key="stash.data_collector.class">Tedivm\StashBundle\Collector\CacheDataCollector</parameter>
+    </parameters>
+
+    <services>
+        <service id="stash.cache" class="%stash.cache.class%" abstract="true"/>
+        <service id="stash.logger" class="%stash.logger.class%" abstract="true"/>
+        <service id="stash.handler"
+            class="%stash.handler.class%"
+            abstract="true"
+            synthetic="true"
+            factory-method="createHandler"
+            factory-class="%stash.factory.class%"
+        />
+        <service id="stash.adapter.doctrine" class="%stash.adapter.doctrine.class%" abstract="true"/>
+        <service id="data_collector.stash" class="%stash.data_collector.class%">
+            <argument>%stash.default_cache%</argument>
+            <argument>%stash.caches%</argument>
+            <argument>%stash.caches.options%</argument>
+            <tag name="data_collector" id="stash" template="TedivmStashBundle:Profiler:layout"/>
+        </service>
+    </services>
+</container>
