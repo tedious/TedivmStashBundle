@@ -1,10 +1,18 @@
 <?php
 
 namespace Tedivm\StashBundle\Factory;
-use Stash\Drivers;
+use Stash\Drivers,
+    Stash\Driver\DriverInterface;
 
 class HandlerFactory {
 
+    /**
+     * Given a list of cache types and options, creates a CompositeDrivers wrapping the specified drivers.
+     *
+     * @param $types
+     * @param $options
+     * @return DriverInterface
+     */
     static function createHandler($types, $options)
     {
         $handlers = Drivers::getDrivers();

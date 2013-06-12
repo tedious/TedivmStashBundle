@@ -7,10 +7,25 @@ use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
 class DoctrineAdapter implements DoctrineCacheInterface
 {
+    /**
+     * The cache service being wrapped.
+     *
+     * @var Doctrine\Common\Cache\Cache
+     */
     protected $cacheService;
 
+    /**
+     * The Doctrine Cache namespace being used.
+     *
+     * @var string
+     */
     protected $namespace = '';
 
+    /**
+     * Storage for cache items to avoid race conditions between checking and fetching.
+     *
+     * @var array
+     */
     protected $caches = array();
 
     public function __construct($cacheService)
@@ -18,11 +33,21 @@ class DoctrineAdapter implements DoctrineCacheInterface
         $this->cacheService = $cacheService;
     }
 
+    /**
+     * Sets the current namespace.
+     *
+     * @param string $namespace
+     */
     public function setNamespace($namespace)
     {
         $this->namespace = $namespace;
     }
 
+    /**
+     * Returns the current namespace.
+     *
+     * @return string
+     */
     public function getNamespace()
     {
         return $this->namespace;
@@ -41,7 +66,6 @@ class DoctrineAdapter implements DoctrineCacheInterface
         } else {
             $cache = $this->cacheService->get($id);
         }
-
 
         $value = $cache->get();
         if($cache->isMiss()) {
@@ -103,11 +127,20 @@ class DoctrineAdapter implements DoctrineCacheInterface
         return $stats;
     }
 
+    /**
+     * Deletes all keys.
+     */
     public function flushAll()
     {
         $this->delete('');
     }
 
+    /**
+     * Standardizes the cache key id in order to separate cache items by namespace.
+     *
+     * @param $id
+     * @return string
+     */
     protected function normalizeId($id)
     {
         if(isset($this->namespace)) {
