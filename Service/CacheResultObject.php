@@ -32,6 +32,16 @@ class CacheResultObject
         $this->logger = $logger;
     }
 
+    /**
+     * Decorates the Stash cache result object:
+     * - Adds logging to the 'get' method
+     * - Replaces the key for the 'getKey' method
+     * - Passes through all other methods directly
+     *
+     * @param $name
+     * @param $args
+     * @return mixed|string
+     */
     public function __call($name, $args)
     {
         if($name === 'get') {
@@ -43,6 +53,11 @@ class CacheResultObject
         }
     }
 
+    /**
+     * Removes the cache-service namespace from the start of the key for public consumption.
+     *
+     * @return string
+     */
     protected function getShortenedKey()
     {
         $key = $this->cache->getKey();
@@ -54,6 +69,12 @@ class CacheResultObject
         return join('/', $parts);
     }
 
+    /**
+     * Get the value from the cache object, then logs the query.
+     *
+     * @param $args
+     * @return mixed
+     */
     protected function getAndLog($args)
     {
         $result = call_user_func_array(array($this->cache, 'get'), $args);

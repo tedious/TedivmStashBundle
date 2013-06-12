@@ -16,10 +16,32 @@ use Stash\Drivers;
  */
 class CacheDataCollector extends DataCollector
 {
+    /**
+     * The name of the default cache service.
+     *
+     * @var string
+     */
     protected $defaultCache;
+
+    /**
+     * The names of the defined cache services.
+     *
+     * @var array
+     */
     protected $cacheNames;
+
+    /**
+     * The options for all defined cache services.
+     *
+     * @var array
+     */
     protected $cacheOptions;
 
+    /**
+     * The logger classes for all cache services.
+     *
+     * @var array
+     */
     protected $loggers = array();
 
     public function __construct($default, $caches, $options)
@@ -29,11 +51,19 @@ class CacheDataCollector extends DataCollector
         $this->cacheOptions = $options;
     }
 
+    /**
+     * Inject the logger for a cache service.
+     *
+     * @param $logger
+     */
     public function addLogger($logger)
     {
         $this->loggers[] = $logger;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $info = array('calls' => 0, 'hits' => 0);
@@ -65,31 +95,49 @@ class CacheDataCollector extends DataCollector
         $this->data = $info;
     }
 
+    /**
+     * Returns total cache calls made.
+     */
     public function getCalls()
     {
         return $this->data['calls'];
     }
 
+    /**
+     * Returns the number of cache calls that were hits.
+     */
     public function getHits()
     {
         return $this->data['hits'];
     }
 
+    /**
+     * Returns the list of available drivers.
+     */
     public function gethandlers()
     {
         return $this->data['availableDrivers'];
     }
 
+    /**
+     * Returns the list of cache services.
+     */
     public function getCaches()
     {
         return $this->data['caches'];
     }
 
+    /**
+     * Returns the name of the default cache service.
+     */
     public function getDefault()
     {
         return $this->data['default'];
     }
 
+    /**
+     * Returns the name of the data collector.
+     */
     public function getname()
     {
         return 'stash';
