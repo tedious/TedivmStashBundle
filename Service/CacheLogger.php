@@ -10,6 +10,8 @@ namespace Tedivm\StashBundle\Service;
 class CacheLogger
 {
     /**
+     * The name of the cache being logged.
+     *
      * @var
      */
     protected $name;
@@ -35,9 +37,26 @@ class CacheLogger
      */
     protected $queries = array();
 
+    /**
+     * Whether to log individual queries or only hits/misses.
+     *
+     * @var bool
+     */
+    protected $logQueries = true;
+
     public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Enables or disables query logging.
+     *
+     * @param boolean $lq
+     */
+    public function enableQueryLogging($lq = true)
+    {
+        $this->logQueries = $lq;
     }
 
     /**
@@ -52,6 +71,10 @@ class CacheLogger
         $this->calls++;
         if($hit) {
             $this->hits++;
+        }
+
+        if(!$this->logQueries) {
+            return;
         }
 
         $leader = sprintf('@@_%s_@@/', $this->name);

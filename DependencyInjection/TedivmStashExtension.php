@@ -45,6 +45,8 @@ class TedivmStashExtension extends Extension
 
     protected function addCacheService($name, $cache, $container)
     {
+        $logqueries = !($container->getParameter('kernel.environment') === 'prod');
+
         $handlers = $cache['handlers'];
         unset($cache['handlers']);
 
@@ -70,6 +72,7 @@ class TedivmStashExtension extends Extension
             ->setArguments(array(
                 $name
             ))
+            ->addMethodCall('enableQueryLogging', array($logqueries))
             ->setAbstract(false)
         ;
 
