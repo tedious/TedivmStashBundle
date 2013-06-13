@@ -30,6 +30,11 @@ class TedivmStashExtension extends Extension
 
         $container->setAlias('cache', sprintf('stash.%s_cache', $config['default_cache']));
 
+        $lq = isset($config['logging'])
+            ? $config['logging']
+            : (in_array($container->getParameter('kernel.environment'), array('dev', 'test')));
+        $container->setParameter('stash.logging', $lq);
+
         $caches = array();
         $options = array();
         foreach($config['caches'] as $name => $cache) {
@@ -45,7 +50,7 @@ class TedivmStashExtension extends Extension
 
     protected function addCacheService($name, $cache, $container)
     {
-        $logqueries = !($container->getParameter('kernel.environment') === 'prod');
+        $logqueries = $container->getParameter('stash.logging');
 
         $handlers = $cache['handlers'];
         unset($cache['handlers']);

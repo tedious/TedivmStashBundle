@@ -53,7 +53,7 @@ class Configuration implements ConfigurationInterface
                 ->then(function ($v) {
                     $cache = array();
                     foreach ($v as $key => $value) {
-                        if ($key === 'default_cache') {
+                        if (in_array($key, array('default_cache', 'logging'))) {
                             continue;
                         }
                         $cache[$key] = $v[$key];
@@ -67,6 +67,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->children()
                 ->scalarNode('default_cache')->end()
+                ->booleanNode('logging')->end()
             ->end()
             ->fixXmlConfig('cache')
             ->append($this->getCachesNode())
