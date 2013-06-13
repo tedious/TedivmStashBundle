@@ -13,6 +13,7 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadHandlerConfiguration($config)
     {
         $container = new ContainerBuilder();
+        $container->setParameter('kernel.environment', 'test');
         $extension = new TedivmStashExtension();
 
         $extension->load(array($config), $container);
