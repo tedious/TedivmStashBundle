@@ -100,6 +100,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->booleanNode('registerDoctrineAdapter')->defaultFalse()->end()
+                ->booleanNode('registerSessionHandler')->defaultFalse()->end()
                 ->booleanNode('inMemory')->defaultTrue()->end()
             ;
 
