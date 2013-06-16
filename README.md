@@ -67,9 +67,8 @@ Then you can use the cache service directly:
 To get started quickly, you can define a single caching service with a single driver:
 
     tedivm_stash:
-        cache:
-            handlers: [ FileSystem]
-            FileSystem: ~
+        handlers: [ FileSystem]
+        FileSystem: ~
 
 This cache service will be registered as `stash.default_cache`, which will also be automatically aliased to `cache`.
 
@@ -78,22 +77,20 @@ This cache service will be registered as `stash.default_cache`, which will also 
 You can set the individual parameters of the cache driver directly in the configuration:
 
     tedivm_stash:
-        cache:
-            handlers: [ FileSystem ]
-            FileSystem:
-                dirSplit: 3
-                path: /tmp
+        handlers: [ FileSystem ]
+        FileSystem:
+            dirSplit: 3
+            path: /tmp
 
 ### Multiple Drivers ###
 
 If you want to use multiple drivers in sequence, you can list them separately:
 
     tedivm_stash:
-        cache:
-            handlers: [ Apc, FileSystem ]
-            Apc: ~
-            FileSystem:
-                path: /tmp
+        handlers: [ Apc, FileSystem ]
+        Apc: ~
+        FileSystem:
+            path: /tmp
 
 The cache service will automatically be configured with a Composite handler, with the drivers queried in the specified
 order (for example, in this example, Apc would be queried first, followed by FileSystem if that query failed.)
@@ -106,10 +103,9 @@ any other drivers. In some circumstances, however (such as long-running CLI batc
 In those cases, the in-memory handler can be disabled:
 
     tedivm_stash:
-        cache:
-            handlers: [ Apc ]
-            inMemory: false
-            Apc: ~
+        handlers: [ Apc ]
+        inMemory: false
+        Apc: ~
 
 ### Doctrine Adapter ###
 
@@ -117,10 +113,9 @@ Stash provides a Doctrine cache adapter so that your Stash caching service can b
 a DoctrineCacheInterface object. To turn on the adapter for a service, set the parameter:
 
     tedivm_stash:
-        cache:
-            handlers: [ Apc ]
-            registerDoctrineAdapter: true
-            Apc: ~
+        handlers: [ Apc ]
+        registerDoctrineAdapter: true
+        Apc: ~
 
 For the default cache, the Adapter service will be added to the container under the name
 `stash.adapter.doctrine.default_cache`. You can use it anywhere you'd use a regular Doctrine Cache object:
@@ -136,6 +131,22 @@ For the default cache, the Adapter service will be added to the container under 
             result_cache_driver:
                 type: service
                 id: stash.adapter.doctrine.default_cache
+
+### Session Adapter ###
+
+Stash provides a session adapter to allow Symfony sessions to be stored directly inside the cache. To turn on the
+adapter, set the parameter:
+
+    tedivm_stash:
+        handlers: [ Apc ]
+        registerSessionHandler: true
+        Apc: ~
+
+Once it's enabled, enable it in the framework bundle and it will automatically be used:
+
+    framework:
+        session:
+            handler_id: stash.adapter.session.default_cache
 
 ### Multiple Services ###
 
