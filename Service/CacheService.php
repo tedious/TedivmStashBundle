@@ -12,7 +12,7 @@ use ArrayIterator;
  *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  */
-class CacheService
+class CacheService extends Pool
 {
     /**
      * @var string
