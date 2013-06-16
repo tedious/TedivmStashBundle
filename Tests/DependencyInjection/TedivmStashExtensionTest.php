@@ -21,14 +21,19 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($config['default_cache'], $container->getParameter('stash.default_cache'));
         $this->assertEquals(count($config['caches']), count($container->getParameter('stash.caches')));
 
-
         $options = $container->getParameter('stash.caches.options');
         foreach($config['caches'] as $name => $cache) {
             $cacheoptions = $options[$name];
             $this->assertArrayHasKey($name, $container->getParameter('stash.caches'));
 
-            foreach(array('registerDoctrineAdapter', 'inMemory') as $item) {
-                $this->assertEquals($cache[$item], $cacheoptions[$item]);
+            foreach(array('inMemory') as $item) {
+                $value = isset($cache[$item]) ? $cache[$item] : true;
+                $this->assertEquals($cacheoptions[$item], $value);
+            }
+
+            foreach(array('registerSessionHandler', 'registerDoctrineAdapter') as $item) {
+                $value = isset($cache[$item]) ? $cache[$item] : false;
+                $this->assertEquals($cacheoptions[$item], $value);
             }
 
             foreach($cache['handlers'] as $handler) {
@@ -50,8 +55,6 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
                     'caches' => array(
                         'first' => array(
                             'handlers' => array('FileSystem'),
-                            'registerDoctrineAdapter' => false,
-                            'inMemory' => false,
                             'FileSystem' => array(
                                 'dirSplit'          => 2,
                                 'path'              => '%kernel.cache_dir%/stash',
@@ -70,6 +73,7 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
                         'default' => array(
                             'handlers' => array('SQLite'),
                             'registerDoctrineAdapter' => true,
+                            'registerSessionHandler' => false,
                             'inMemory' => true,
                             'SQLite' => array(
                                 'filePermissions'   => 0550,
@@ -80,6 +84,7 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
                         'nondefault' => array(
                             'handlers' => array('FileSystem', 'SQLite'),
                             'registerDoctrineAdapter' => true,
+                            'registerSessionHandler' => true,
                             'inMemory' => true,
                             'FileSystem' => array(
                                 'filePermissions'   => 0770,
