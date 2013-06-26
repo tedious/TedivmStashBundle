@@ -123,9 +123,10 @@ class Configuration implements ConfigurationInterface
             ->arrayNode($handler)
                 ->fixXmlConfig('server');
 
-           if($handler == 'Memcache') {
+            if($handler == 'Memcache') {
                 $finalNode = $handlerNode
                     ->info('All options except "servers" are Memcached options. See http://www.php.net/manual/en/memcached.constants.php')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('compression')->end()
                         ->scalarNode('prefix_key')->end()
@@ -145,11 +146,35 @@ class Configuration implements ConfigurationInterface
                             ->info('Your Memcached server(s) configuration.')
                             ->requiresAtLeastOneElement()
                             ->example(array(array('server' => '127.0.0.1', 'port' => '11211')))
+                            ->defaultValue(array(array('server' => '127.0.0.1', 'port' => '11211')))
                             ->prototype('array')
                                 ->children()
                                     ->scalarNode('server')->defaultValue('127.0.0.1')->end()
                                     ->scalarNode('port')->defaultValue('11211')->end()
                                     ->scalarNode('weight')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+               ;
+            } elseif($handler == 'Redis') {
+                $finalNode = $handlerNode
+                    ->info("Accepts server info, password, and database.")
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('password')->end()
+                        ->scalarNode('database')->end()
+                        ->arrayNode('servers')
+                            ->info('Configuration of Redis server(s)')
+                            ->requiresAtLeastOneElement()
+                            ->example(array(array('server' => '127.0.0.1', 'port' => '6379')))
+                            ->defaultValue(array(array('server' => '127.0.0.1', 'port' => '6379')))
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('server')->defaultValue('127.0.0.1')->end()
+                                    ->scalarNode('port')->defaultValue('6379')->end()
+                                    ->scalarNode('ttl')->end()
+                                    ->booleanNode('socket')->end()
                                 ->end()
                             ->end()
                         ->end()
