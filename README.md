@@ -32,7 +32,7 @@ Add the bundle to `app/AppKernel.php`:
 
 And then set the basic configuration in `app/config/config.yml`:
 
-`tedivm_stash: ~`
+`stash: ~`
 
 ## Usage ##
 
@@ -66,7 +66,7 @@ Then you can use the cache service directly:
 
 To get started quickly, you can define a single caching service with a single driver:
 
-    tedivm_stash:
+    stash:
         handlers: [ FileSystem]
         FileSystem: ~
 
@@ -76,7 +76,7 @@ This cache service will be registered as `stash.default_cache`, which will also 
 
 You can set the individual parameters of the cache driver directly in the configuration:
 
-    tedivm_stash:
+    stash:
         handlers: [ FileSystem ]
         FileSystem:
             dirSplit: 3
@@ -86,7 +86,7 @@ You can set the individual parameters of the cache driver directly in the config
 
 If you want to use multiple drivers in sequence, you can list them separately:
 
-    tedivm_stash:
+    stash:
         handlers: [ Apc, FileSystem ]
         Apc: ~
         FileSystem:
@@ -102,7 +102,7 @@ or retrieved from the cache service will be stored in memory, with the in-memory
 any other drivers. In some circumstances, however (such as long-running CLI batch scripts) this may not be desirable.
 In those cases, the in-memory handler can be disabled:
 
-    tedivm_stash:
+    stash:
         handlers: [ Apc ]
         inMemory: false
         Apc: ~
@@ -112,7 +112,7 @@ In those cases, the in-memory handler can be disabled:
 Stash provides a Doctrine cache adapter so that your Stash caching service can be injected into any service that takes
 a DoctrineCacheInterface object. To turn on the adapter for a service, set the parameter:
 
-    tedivm_stash:
+    stash:
         handlers: [ Apc ]
         registerDoctrineAdapter: true
         Apc: ~
@@ -137,7 +137,7 @@ For the default cache, the Adapter service will be added to the container under 
 Stash provides a session adapter to allow Symfony sessions to be stored directly inside the cache. To turn on the
 adapter, set the parameter:
 
-    tedivm_stash:
+    stash:
         handlers: [ Apc ]
         registerSessionHandler: true
         Apc: ~
@@ -152,7 +152,7 @@ Once it's enabled, enable it in the framework bundle and it will automatically b
 
 You can also configure multiple services, each of which stores is entirely separate:
 
-    tedivm_stash:
+    stash:
         caches:
             first:
                 handlers: [ FileSystem ]
@@ -168,7 +168,7 @@ avoid key collisions between distinct services even if you only have a single ba
 
 When multiple caches are defined, you can manually define a default, which will be aliased to the `stash` service:
 
-    tedivm_stash:
+    stash:
         default_cache: first
         first:
             ...
@@ -183,12 +183,12 @@ StashBundle includes a module which logs the keys of all cache queries made duri
 default this module is enabled in the `dev` and `test` environments but disabled elsewhere. However, if you want to
 override the default behavior, you can enable or disable this behavior in the configuration:
 
-    tedivm_stash:
+    stash:
         logging: true # enables query logging, false to disable
 
 ## Stash Driver Configuration ##
 
-Each driver comes with a set of default options which canb be individually overrided.
+Each driver comes with a set of default options which can be individually overridden.
 
     FileSystem:
         dirSplit:               2
