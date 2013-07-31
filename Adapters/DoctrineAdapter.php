@@ -10,7 +10,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     /**
      * The cache service being wrapped.
      *
-     * @var Doctrine\Common\Cache\Cache
+     * @var \Stash\Pool
      */
     protected $cacheService;
 
@@ -64,7 +64,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
             $cache = $this->caches[$id];
             unset($this->caches[$id]);
         } else {
-            $cache = $this->cacheService->get($id);
+            $cache = $this->cacheService->getItem($id);
         }
 
         $value = $cache->get();
@@ -82,7 +82,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     {
         $id = $this->normalizeId($id);
 
-        $this->caches[$id] = $this->cacheService->get($id);
+        $this->caches[$id] = $this->cacheService->getItem($id);
 
         return $this->caches[$id]->isMiss();
     }
@@ -94,7 +94,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     {
         $id = $this->normalizeId($id);
 
-        $cache = $this->cacheService->get($id);
+        $cache = $this->cacheService->getItem($id);
 
         return $cache->set($data, $lifeTime);
     }
