@@ -16,7 +16,8 @@ class Configuration implements ConfigurationInterface
             'path'              => '%kernel.cache_dir%/stash',
             'filePermissions'   => 0660,
             'dirPermissions'    => 0770,
-            'memKeyLimit'       => 200
+            'memKeyLimit'       => 200,
+            'keyHashFunction'   => 'md5'
         ),
         'SQLite' => array(
             'filePermissions'   => 0660,
