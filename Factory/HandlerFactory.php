@@ -2,7 +2,7 @@
 
 namespace Tedivm\StashBundle\Factory;
 use Stash\Drivers,
-    Stash\Driver\DriverInterface;
+    Stash\Interfaces\DriverInterface;
 
 class HandlerFactory {
 

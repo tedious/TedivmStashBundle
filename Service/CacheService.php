@@ -3,7 +3,7 @@
 namespace Tedivm\StashBundle\Service;
 use Stash\Item;
 use Stash\Drivers;
-use Stash\Driver\DriverInterface;
+use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
 use ArrayIterator;
 
@@ -20,7 +20,7 @@ class CacheService extends Pool
     protected $name;
 
     /**
-     * @var \Stash\Driver\DriverInterface
+     * @var \Stash\Interfaces\DriverInterface
      */
     protected $driver;
 
