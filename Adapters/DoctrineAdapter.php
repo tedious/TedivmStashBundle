@@ -84,7 +84,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
 
         $this->caches[$id] = $this->cacheService->getItem($id);
 
-        return $this->caches[$id]->isMiss();
+        return !$this->caches[$id]->isMiss(); 
     }
 
     /**
