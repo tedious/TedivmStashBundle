@@ -10,11 +10,6 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     protected $handler;
     protected $service;
 
-    public static function setUpBeforeClass()
-    {
-        define('TESTING', true);
-    }
-
     protected function setUp()
     {
         $this->handler = new Ephemeral(array());
