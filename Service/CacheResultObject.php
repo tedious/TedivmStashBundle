@@ -1,7 +1,6 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Drivers;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -44,9 +43,9 @@ class CacheResultObject
      */
     public function __call($name, $args)
     {
-        if($name === 'get') {
+        if ($name === 'get') {
             return $this->getAndLog($args);
-        } elseif($name === 'getKey') {
+        } elseif ($name === 'getKey') {
             return $this->getShortenedKey();
         } else {
             return call_user_func_array(array($this->cache, $name), $args);
@@ -62,7 +61,7 @@ class CacheResultObject
     {
         $key = $this->cache->getKey();
         $parts = explode('/', $key);
-        if( (strpos($parts[0], '@@_') === 0) && (strpos(strrev($parts[0]), '@@_') === 0) ) {
+        if ( (strpos($parts[0], '@@_') === 0) && (strpos(strrev($parts[0]), '@@_') === 0) ) {
             array_shift($parts);
         }
 
@@ -81,7 +80,7 @@ class CacheResultObject
         $miss = $this->cache->isMiss();
         $key = $this->cache->getKey();
 
-        if(isset($this->logger)) {
+        if (isset($this->logger)) {
             $this->logger->logRequest($key, !($miss), $result);
         }
 

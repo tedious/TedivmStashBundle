@@ -10,11 +10,6 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     protected $handler;
     protected $service;
 
-    public static function setUpBeforeClass()
-    {
-        define('TESTING', true);
-    }
-
     protected function setUp()
     {
         $this->handler = new Ephemeral(array());
@@ -74,7 +69,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $iterator = $service->getItemIterator($keys);
         $setvalues = $values;
 
-        foreach($iterator as $item) {
+        foreach ($iterator as $item) {
             $this->assertTrue($item->isMiss());
             $val = array_shift($setvalues);
             $item->set($val);
@@ -84,7 +79,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $iterator2 = $service->getItemIterator($keys);
         $getvalues = $values;
 
-        foreach($iterator2 as $item) {
+        foreach ($iterator2 as $item) {
             $this->assertFalse($item->isMiss());
             $val = array_shift($getvalues);
             $this->assertEquals($val, $item->get());

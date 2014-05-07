@@ -5,7 +5,7 @@ namespace Tedivm\StashBundle\Tests\DependencyInjection;
 use Tedivm\StashBundle\DependencyInjection\TedivmStashExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class StashExtensionTest extends \PHPUnit_Framework_TestCase
+class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider configProvider
@@ -22,23 +22,23 @@ class StashExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(count($config['caches']), count($container->getParameter('stash.caches')));
 
         $options = $container->getParameter('stash.caches.options');
-        foreach($config['caches'] as $name => $cache) {
+        foreach ($config['caches'] as $name => $cache) {
             $cacheoptions = $options[$name];
             $this->assertArrayHasKey($name, $container->getParameter('stash.caches'));
 
-            foreach(array('inMemory') as $item) {
+            foreach (array('inMemory') as $item) {
                 $value = isset($cache[$item]) ? $cache[$item] : true;
                 $this->assertEquals($cacheoptions[$item], $value);
             }
 
-            foreach(array('registerSessionHandler', 'registerDoctrineAdapter') as $item) {
+            foreach (array('registerSessionHandler', 'registerDoctrineAdapter') as $item) {
                 $value = isset($cache[$item]) ? $cache[$item] : false;
                 $this->assertEquals($cacheoptions[$item], $value);
             }
 
-            foreach($cache['handlers'] as $handler) {
+            foreach ($cache['handlers'] as $handler) {
                 $handleroptions = $cache[$handler];
-                foreach($handleroptions as $handleroptname => $handleroptvalue) {
+                foreach ($handleroptions as $handleroptname => $handleroptvalue) {
                     $this->assertEquals($handleroptvalue, $cacheoptions[$handler][$handleroptname]);
                 }
             }

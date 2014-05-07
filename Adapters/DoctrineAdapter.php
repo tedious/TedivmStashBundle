@@ -1,8 +1,6 @@
 <?php
 
 namespace Tedivm\StashBundle\Adapters;
-use Stash\Item as StashItem;
-use Stash\Drivers;
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
 class DoctrineAdapter implements DoctrineCacheInterface
@@ -60,7 +58,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     {
         $id = $this->normalizeId($id);
 
-        if(isset($this->caches[$id])) {
+        if (isset($this->caches[$id])) {
             $cache = $this->caches[$id];
             unset($this->caches[$id]);
         } else {
@@ -68,7 +66,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
         }
 
         $value = $cache->get();
-        if($cache->isMiss()) {
+        if ($cache->isMiss()) {
             return false;
         } else {
             return $value;
@@ -84,7 +82,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
 
         $this->caches[$id] = $this->cacheService->getItem($id);
 
-        return !$this->caches[$id]->isMiss(); 
+        return !$this->caches[$id]->isMiss();
     }
 
     /**
@@ -143,9 +141,10 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     protected function normalizeId($id)
     {
-        if(isset($this->namespace)) {
+        if (isset($this->namespace)) {
             $id = sprintf('zz_%s_zz/%s', $this->namespace, $id);
             $id = trim($id, '/');
+
             return $id;
         } else {
             return $id;

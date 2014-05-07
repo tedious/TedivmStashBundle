@@ -3,7 +3,6 @@
 namespace Tedivm\StashBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Stash\Drivers;
 
@@ -105,8 +104,8 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('inMemory')->defaultTrue()->end()
             ;
 
-            foreach($handlers as $handler) {
-                if($handler !== 'Composite') {
+            foreach ($handlers as $handler) {
+                if ($handler !== 'Composite') {
                     $this->addHandlerSettings($handler, $childNode);
                 }
             }
@@ -117,14 +116,13 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-
     public function addHandlerSettings($handler, $rootNode)
     {
         $handlerNode = $rootNode
             ->arrayNode($handler)
                 ->fixXmlConfig('server');
 
-            if($handler == 'Memcache') {
+            if ($handler == 'Memcache') {
                 $finalNode = $handlerNode
                     ->info('All options except "servers" are Memcached options. See http://www.php.net/manual/en/memcached.constants.php')
                     ->addDefaultsIfNotSet()
@@ -163,7 +161,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                ;
-            } elseif($handler == 'Redis') {
+            } elseif ($handler == 'Redis') {
                 $finalNode = $handlerNode
                     ->info("Accepts server info, password, and database.")
                     ->addDefaultsIfNotSet()
@@ -193,7 +191,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children();
 
-                    foreach($defaults as $setting => $default) {
+                    foreach ($defaults as $setting => $default) {
                         $node
                             ->scalarNode($setting)
                             ->defaultValue($default)

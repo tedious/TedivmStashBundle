@@ -4,9 +4,7 @@ namespace Tedivm\StashBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stash\Item;
 use Stash\Drivers;
-
 
 /**
  * Collects data stored in the static variables of the Stash class for use in profiling/debugging. Currently
@@ -67,7 +65,7 @@ class CacheDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $info = array('calls' => 0, 'hits' => 0);
-        foreach($this->loggers as $logger) {
+        foreach ($this->loggers as $logger) {
             $name = $logger->getName();
             $calls = $logger->getCalls();
             $hits = $logger->getHits();
@@ -82,10 +80,10 @@ class CacheDataCollector extends DataCollector
         }
 
         $handlers = Drivers::getDrivers();
-        foreach($handlers as $handler) {
+        foreach ($handlers as $handler) {
             $pieces = explode('\\', $handler);
             $name = array_pop($pieces);
-            if(!in_array($name, array('Ephemeral', 'Composite'))) {
+            if (!in_array($name, array('Ephemeral', 'Composite'))) {
                 $info['availableDrivers'][] = $name;
             }
         }
