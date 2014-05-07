@@ -37,9 +37,9 @@ class CacheService extends Pool
     /**
      * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
      *
-     * @param string                          $name    Used to name and prefix the cache to avoid cache collisions across installs
-     * @param \Stash\Handler\HandlerInterface $handler
-     * @param CacheLogger|null                $logger
+     * @param string                            $name   Used to name and prefix the cache to avoid cache collisions across installs
+     * @param \Stash\Interfaces\DriverInterface $driver
+     * @param CacheLogger|null                  $logger
      */
     public function __construct($name, DriverInterface $driver, CacheLogger $logger = null)
     {
@@ -56,8 +56,8 @@ class CacheService extends Pool
      * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
      * or an array.
      *
-     * @param  string|array $key, $key, $key...
-     * @return \Stash\Item  Note: Cache item is wrapped inside CacheResultObject which deals with logging
+     * @param  mixed       $key,... String Representing the key
+     * @return \Stash\Item Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
     public function getItem()
     {
@@ -97,7 +97,7 @@ class CacheService extends Pool
      * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either
      * a series of string arguments, or an array.
      *
-     * @param null|string|array $key, $key, $key...
+     * @param mixed $key,... String Representing the key
      */
     public function clear()
     {
