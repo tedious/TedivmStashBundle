@@ -44,7 +44,7 @@ class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
 
         if (count($types) > 1) {
             $handlerclass = $this->handlers['Composite'];
-            $h = \PHPUnit_Util_Class::getObjectAttribute($handler, 'drivers');
+            $h = $this->getObjectAttribute($handler, 'drivers');
             $handlers = array_combine($types, $h);
         } else {
             $handlerclass = $this->handlers[$types[0]];
