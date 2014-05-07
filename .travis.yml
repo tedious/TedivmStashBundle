@@ -9,7 +9,7 @@ php:
 before_script:
     - composer self-update && composer install --dev
 
-script: ./tests/runTests.sh
+script: ./Tests/runTests.sh
 
 after_script:
     - php vendor/bin/coveralls -v
