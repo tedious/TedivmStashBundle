@@ -3,7 +3,6 @@
 namespace Tedivm\StashBundle\Tests\Factory;
 
 use Tedivm\StashBundle\Factory\HandlerFactory;
-use Stash\Utilities;
 use Stash\Drivers;
 
 class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
@@ -43,7 +42,7 @@ class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $handler = HandlerFactory::createHandler($types, $options);
 
-        if(count($types) > 1) {
+        if (count($types) > 1) {
             $handlerclass = $this->handlers['Composite'];
             $h = \PHPUnit_Util_Class::getObjectAttribute($handler, 'drivers');
             $handlers = array_combine($types, $h);
@@ -54,16 +53,16 @@ class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf($handlerclass, $handler);
 
-        foreach($handlers as $subtype => $subhandler) {
+        foreach ($handlers as $subtype => $subhandler) {
             $subhandlerclass = $this->handlers[$subtype];
             $this->assertInstanceOf($subhandlerclass, $subhandler);
         }
 
-        foreach($types as $type) {
+        foreach ($types as $type) {
             $defaults = isset($this->defaultSettings[$type]) ? $this->defaultSettings[$type] : array();
             $options = array_merge($defaults, $options);
 
-/*            foreach($options as $optname => $optvalue) {
+/*            foreach ($options as $optname => $optvalue) {
                 $this->assertAttributeEquals($optvalue, $optname, $handlers[$type]);
             }
 */

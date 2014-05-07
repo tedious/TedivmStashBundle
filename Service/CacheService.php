@@ -37,9 +37,9 @@ class CacheService extends Pool
     /**
      * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
      *
-     * @param string $name Used to name and prefix the cache to avoid cache collisions across installs
+     * @param string                          $name    Used to name and prefix the cache to avoid cache collisions across installs
      * @param \Stash\Handler\HandlerInterface $handler
-     * @param CacheLogger|null $logger
+     * @param CacheLogger|null                $logger
      */
     public function __construct($name, DriverInterface $driver, CacheLogger $logger = null)
     {
@@ -56,8 +56,8 @@ class CacheService extends Pool
      * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
      * or an array.
      *
-     * @param string|array $key, $key, $key...
-     * @return \Stash\Item Note: Cache item is wrapped inside CacheResultObject which deals with logging
+     * @param  string|array $key, $key, $key...
+     * @return \Stash\Item  Note: Cache item is wrapped inside CacheResultObject which deals with logging
      */
     public function getItem()
     {
@@ -80,14 +80,13 @@ class CacheService extends Pool
      * Returns a group of wrapped cache objects as an \Iterator. This duplicates the functionality of the
      * Pool class getItemIterator method, but with wrapped, loggable cache items.
      *
-     * @param array $keys
+     * @param  array     $keys
      * @return \Iterator
      */
     public function getItemIterator($keys)
     {
         $items = array();
-        foreach($keys as $key)
-        {
+        foreach ($keys as $key) {
             $items[] = $this->getItem($key);
         }
 
@@ -103,10 +102,11 @@ class CacheService extends Pool
     public function clear()
     {
         $args = func_get_args();
-        if(count($args) === 0) {
+        if (count($args) === 0) {
             return $this->pool->flush();
         } else {
             $stash = call_user_func_array(array($this, 'getItem'), $args);
+
             return $stash->clear();
         }
     }

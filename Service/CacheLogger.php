@@ -69,16 +69,16 @@ class CacheLogger
     public function logRequest($key, $hit, $value)
     {
         $this->calls++;
-        if($hit) {
+        if ($hit) {
             $this->hits++;
         }
 
-        if(!$this->logQueries) {
+        if (!$this->logQueries) {
             return;
         }
 
         $leader = sprintf('@@_%s_@@/', $this->name);
-        if(strpos($key, $leader) === 0) {
+        if (strpos($key, $leader) === 0) {
             $key = substr($key, strlen($leader));
         }
 

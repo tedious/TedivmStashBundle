@@ -37,7 +37,7 @@ class TedivmStashExtension extends Extension
 
         $caches = array();
         $options = array();
-        foreach($config['caches'] as $name => $cache) {
+        foreach ($config['caches'] as $name => $cache) {
             $caches[$name] = sprintf('stash.%s_cache', $name);
             $options[$name] = $cache;
             $this->addCacheService($name, $cache, $container);
@@ -55,7 +55,7 @@ class TedivmStashExtension extends Extension
         $handlers = $cache['handlers'];
         unset($cache['handlers']);
 
-        if(isset($cache['inMemory']) && $cache['inMemory']) {
+        if (isset($cache['inMemory']) && $cache['inMemory']) {
             array_unshift($handlers, 'Ephemeral');
         }
         unset($cache['inMemory']);
@@ -94,7 +94,7 @@ class TedivmStashExtension extends Extension
             ->setAbstract(false)
         ;
 
-        if(interface_exists("\\Doctrine\\Common\\Cache\\Cache") && $doctrine) {
+        if (interface_exists("\\Doctrine\\Common\\Cache\\Cache") && $doctrine) {
             $container
                 ->setDefinition(sprintf('stash.adapter.doctrine.%s_cache', $name), new DefinitionDecorator('stash.adapter.doctrine'))
                 ->setArguments(array(
@@ -104,7 +104,7 @@ class TedivmStashExtension extends Extension
             ;
         }
 
-        if($session) {
+        if ($session) {
             $container
                 ->setDefinition(sprintf('stash.adapter.session.%s_cache', $name), new DefinitionDecorator('stash.adapter.session'))
                 ->setArguments(array(
