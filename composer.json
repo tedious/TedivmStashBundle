@@ -21,6 +21,11 @@
     "symfony/framework-bundle": ">=2.1,<3.0",
     "symfony/yaml": ">=2.1,<3.0"
   },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*",
+        "fabpot/php-cs-fixer": "0.4.0",
+        "satooshi/php-coveralls": "dev-master"
+    },
   "autoload": {
     "psr-0": {"Tedivm\\StashBundle": ""}
   },
