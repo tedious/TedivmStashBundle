@@ -5,7 +5,7 @@ namespace Tedivm\StashBundle\Tests\Service;
 use Tedivm\StashBundle\Service\CacheService;
 use Stash\Driver\Ephemeral;
 
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheServiceTest extends \PHPUnit_Framework_TestCase
 {
     protected $handler;
     protected $service;
@@ -30,12 +30,12 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->runCacheCycle($service, 'one', false);
         $this->runCacheCycle($service, 'two', false);
 
-        $service->clear('test', 'key', 'one');
+        $this->assertTrue($service->clear('test', 'key', 'one'));
 
         $this->runCacheCycle($service, 'one', true);
         $this->runCacheCycle($service, 'two', false);
 
-        $service->clear();
+        $this->assertTrue($service->clear());
 
         $this->runCacheCycle($service, 'one', true);
         $this->runCacheCycle($service, 'two', true);
@@ -88,16 +88,19 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     protected function runCacheCycle($service, $num, $ismiss)
     {
-        $cache = $service->getItem('test', 'key', $num);
-        $data = $cache->get();
-        $this->assertEquals($ismiss, $cache->isMiss());
+        $key = array('test', 'key', $num);
+        $testData = 'testkey' . $num;
 
-        $this->assertTrue($cache->set('testkey'.$num));
+        $item = $service->getItem($key);
+        $data = $item->get();
+        $this->assertEquals($ismiss, $item->isMiss());
 
-        $cache = $service->getItem('test', 'key', $num);
-        $data = $cache->get();
-        $this->assertFalse($cache->isMiss());
-        $this->assertEquals('testkey'.$num, $data);
+        $this->assertTrue($item->set($testData));
+
+        $item = $service->getItem($key);
+        $data = $item->get();
+        $this->assertFalse($item->isMiss());
+        $this->assertEquals($testData, $data);
     }
 
 }
