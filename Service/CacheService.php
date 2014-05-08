@@ -5,7 +5,6 @@ use Stash\Drivers;
 use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
 
-
 /**
  * Simple result-object provider for the Stash class.
  *
@@ -39,7 +38,7 @@ class CacheService extends Pool
      * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
      * or an array.
      *
-     * @param  mixed       $key,... String Representing the key
+     * @param  mixed     $key,... String Representing the key
      * @return CacheItem
      */
     public function getItem()
@@ -59,7 +58,6 @@ class CacheService extends Pool
         return $item;
     }
 
-
     /**
      * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either
      * a series of string arguments, or an array.
@@ -73,10 +71,10 @@ class CacheService extends Pool
             return $this->flush();
         } else {
             $item = $this->getItem($args);
+
             return $item->clear();
         }
     }
-
 
     /**
      * Returns the current list of handlers that the system is able to use.

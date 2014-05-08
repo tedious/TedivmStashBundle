@@ -21,7 +21,6 @@ class CacheItem extends Item
         $this->cacheLogger = $logger;
     }
 
-
     public function get($invalidation = 0, $arg = null, $arg2 = null)
     {
         $result = parent::get($invalidation = 0, $arg = null, $arg2 = null);
@@ -34,6 +33,5 @@ class CacheItem extends Item
 
         return $result;
     }
-
 
 }
