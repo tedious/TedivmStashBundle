@@ -6,7 +6,7 @@
     <parameters>
         <parameter key="stash.cache.class">Tedivm\StashBundle\Service\CacheService</parameter>
         <parameter key="stash.logger.class">Tedivm\StashBundle\Service\CacheLogger</parameter>
-        <parameter key="stash.handler.class">Stash\Handler\HandlerInterface</parameter>
+        <parameter key="stash.driver.class">Stash\Interfaces\DriverInterface</parameter>
         <parameter key="stash.factory.class">Tedivm\StashBundle\Factory\HandlerFactory</parameter>
         <parameter key="stash.adapter.doctrine.class">Tedivm\StashBundle\Adapters\DoctrineAdapter</parameter>
         <parameter key="stash.adapter.session.class">Tedivm\StashBundle\Adapters\SessionHandlerAdapter</parameter>
