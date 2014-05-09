@@ -28,7 +28,7 @@ class CacheItem extends Item
         if (isset($this->cacheTracker)) {
             $miss = $this->isMiss();
             $key = $this->getKey();
-            $this->cacheTracker->logRequest($key, !($miss), $result);
+            $this->cacheTracker->trackRequest($key, !($miss), $result);
         }
 
         return $result;
