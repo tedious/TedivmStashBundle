@@ -3,6 +3,7 @@
 namespace Tedivm\StashBundle\Tests\Service;
 
 use Tedivm\StashBundle\Service\CacheService;
+use Tedivm\StashBundle\Service\CacheTracker;
 use Stash\Driver\Ephemeral;
 
 class CacheServiceTest extends \Stash\Test\AbstractPoolTest
@@ -12,6 +13,17 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
     protected function getCacheService($name)
     {
         return new $this->itemClass($name);
+    }
+
+    public function testCacheServiceConstruct()
+    {
+        $driver = new Ephemeral();
+        $tracker = new CacheTracker('test');
+        $service = new $this->itemClass('test', $driver, $tracker);
+
+        $this->assertAttributeEquals($driver, 'driver', $service, 'Constructor sets driver when passed.');
+        $this->assertAttributeEquals($tracker, 'tracker', $service, 'Constructor sets tracker when passed.');
+        $this->assertEquals('test', $service->getNamespace(), 'Constructor sets name as namespace.');
     }
 
     public function testCacheService()

@@ -18,7 +18,7 @@ class CacheService extends Pool
     /**
      * @var CacheTracker|null
      */
-    protected $cacheTracker;
+    protected $tracker;
 
     /**
      * Constructs the cache holder. Parameter is a Stash driver which is dynamically injected at service creation.
@@ -29,10 +29,10 @@ class CacheService extends Pool
      */
     public function __construct($name, DriverInterface $driver = null, CacheTracker $tracker = null)
     {
-        $this->cacheTracker = $tracker;
+        $this->tracker = $tracker;
         $this->setNamespace($name);
 
-        if (isset($this->driver)) {
+        if (isset($driver)) {
            $this->setDriver($driver);
         }
 
@@ -58,7 +58,7 @@ class CacheService extends Pool
         $item = parent::getItem($args);
 
         if (isset($this->tracker)) {
-           $item->setCacheTracker($this->cacheTracker);
+           $item->setCacheTracker($this->tracker);
         }
 
         return $item;
@@ -99,6 +99,6 @@ class CacheService extends Pool
      */
     public function getTracker()
     {
-        return isset($this->cacheTracker) ? $this->cacheTracker : false;
+        return isset($this->tracker) ? $this->tracker : false;
     }
 }
