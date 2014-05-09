@@ -36,7 +36,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($cacheoptions[$item], $value);
             }
 
-            if(isset($cache['drivers'])) {
+            if (isset($cache['drivers'])) {
                 foreach ($cache['drivers'] as $driver) {
                     $driveroptions = $cache[$driver];
                     foreach ($driveroptions as $driveroptname => $driveroptvalue) {
