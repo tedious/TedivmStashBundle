@@ -27,4 +27,3 @@ if (!file_exists($filename)) {
 $loader = require $filename;
 $loader->add('Tedivm\\StashBundle\\Test', __DIR__);
 $loader->add('Stash\\Test', __DIR__ . '/../vendor/tedivm/stash/tests/');
-$loader->add('Doctrine\\Tests', __DIR__ . '/../vendor/doctrine/cache/Tests/');
