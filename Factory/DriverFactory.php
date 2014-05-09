@@ -25,13 +25,12 @@ class DriverFactory
             if (!isset($drivers[$type])) {
                 $allDrivers = Drivers::getAllDrivers();
 
-                if(isset($allDrivers[$type])) {
+                if (isset($allDrivers[$type])) {
                     throw new \RuntimeException('Driver currently unavailable.');
-                }else{
+                } else {
                     throw new \RuntimeException('Driver does not exist.');
                 }
             }
-
 
             $class = $drivers[$type];
             if ($type === 'Memcache' && isset($options[$type])) {

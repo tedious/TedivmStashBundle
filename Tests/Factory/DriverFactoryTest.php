@@ -81,14 +81,13 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testMemcacheSetup()
     {
-        if(!isset($this->drivers['Memcache'])) {
+        if (!isset($this->drivers['Memcache'])) {
             $this->markTestSkipped('Memcache extension required for this test.');
         }
 
         $driver = DriverFactory::createDriver(array('Memcache'), $this->defaultSettings['Memcache']);
         $this->assertInstanceOf('Stash\Interfaces\DriverInterface', $driver);
     }
-
 
     /**
      *
@@ -110,7 +109,6 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
         Drivers::registerDriver('FakeDriver', 'Stash\Test\Stubs\DriverUnavailableStub');
         DriverFactory::createDriver(array('FakeDriver'), array());
     }
-
 
     public function driverProvider()
     {
