@@ -23,15 +23,16 @@ class CacheItem extends Item
 
     public function get($invalidation = 0, $arg = null, $arg2 = null)
     {
-        $result = parent::get($invalidation = 0, $arg = null, $arg2 = null);
+        $result = parent::get($invalidation, $arg, $arg2);
 
         if (isset($this->logger)) {
-            $miss = $this->cache->isMiss();
-            $key = $this->cache->getKey();
+            $miss = $this->isMiss();
+            $key = $this->getKey();
             $this->logger->logRequest($key, !($miss), $result);
         }
 
         return $result;
+
     }
 
 }

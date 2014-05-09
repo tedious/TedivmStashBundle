@@ -89,10 +89,10 @@ class CacheService extends Pool
     /**
      * Returns the current logger
      *
-     * @return CacheLogger|null
+     * @return CacheLogger|false
      */
     public function getLogger()
     {
-        return $this->logger;
+        return isset($this->logger) ? $this->logger : false;
     }
 }

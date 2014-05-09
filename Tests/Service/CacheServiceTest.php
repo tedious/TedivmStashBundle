@@ -7,8 +7,6 @@ use Stash\Driver\Ephemeral;
 
 class CacheServiceTest extends \PHPUnit_Framework_TestCase
 {
-    protected $handler;
-    protected $service;
 
     protected function setUp()
     {
@@ -20,9 +18,10 @@ class CacheServiceTest extends \PHPUnit_Framework_TestCase
         return new CacheService($name, $this->handler);
     }
 
-    public function testCache()
+    public function testCacheService()
     {
         $service = $this->getCacheService('first');
+        $service->setDriver(new Ephemeral());
 
         $this->runCacheCycle($service, 'one', true);
         $this->runCacheCycle($service, 'two', true);
@@ -43,8 +42,11 @@ class CacheServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testTwoServices()
     {
+        $driver = new Ephemeral();
         $service1 = $this->getCacheService('first');
+        $service1->setDriver($driver);
         $service2 = $this->getCacheService('second');
+        $service2->setDriver($driver);
 
         $this->runCacheCycle($service1, 'one', true);
         $this->runCacheCycle($service2, 'two', true);
@@ -59,12 +61,13 @@ class CacheServiceTest extends \PHPUnit_Framework_TestCase
         $this->runCacheCycle($service1, 'two', false);
     }
 
-    public function testGetItemIterator()
+    public function testServiceGetItemIterator()
     {
         $keys = array('test/key/one', 'test/key/two', 'test/key/three', 'test/key/four');
         $values = array('uno', 'dos', 'tres', 'quattro');
 
         $service = $this->getCacheService('first');
+        $service->setDriver(new Ephemeral());
 
         $iterator = $service->getItemIterator($keys);
         $setvalues = $values;
