@@ -57,14 +57,15 @@ class DoctrineAdapter implements DoctrineCacheInterface
     public function fetch($id)
     {
         $id = $this->normalizeId($id);
-
+/*
         if (isset($this->caches[$id])) {
             $cache = $this->caches[$id];
             unset($this->caches[$id]);
         } else {
             $cache = $this->cacheService->getItem($id);
         }
-
+*/
+        $cache = $this->cacheService->getItem($id);
         $value = $cache->get();
         if ($cache->isMiss()) {
             return false;
@@ -80,9 +81,16 @@ class DoctrineAdapter implements DoctrineCacheInterface
     {
         $id = $this->normalizeId($id);
 
+        /*
         $this->caches[$id] = $this->cacheService->getItem($id);
 
         return !$this->caches[$id]->isMiss();
+
+        */
+
+        $item = $this->cacheService->getItem($id);
+
+        return !$item->isMiss();
     }
 
     /**
@@ -90,11 +98,22 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     public function save($id, $data, $lifeTime = 0)
     {
+        if ($lifeTime === 0) {
+            $lifeTime = null;
+        }
+
         $id = $this->normalizeId($id);
 
+        /*
         $cache = $this->cacheService->getItem($id);
 
         return $cache->set($data, $lifeTime);
+        */
+
+        $item = $this->cacheService->getItem($id);
+
+        return $item->set($data, $lifeTime);
+
     }
 
     /**
@@ -117,12 +136,20 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     public function getStats()
     {
-        $stats = array();
-        $tracker = $this->cacheService->getTracker();
-        $stats['hits'] = $tracker->getHits();
-        $stats['misses'] = $tracker->getCalls() - $stats['hits'];
+        if ($tracker = $this->cacheService->getTracker()) {
+            $stats = array();
+            $tracker = $this->cacheService->getTracker();
+            $stats['hits'] = $tracker->getHits();
+            $stats['misses'] = $tracker->getCalls() - $stats['hits'];
+            $stats['uptime'] = 'NA';
+            $stats['memory_usage'] = 'NA';
+            $stats['memory_available'] = 'NA';
 
-        return $stats;
+            return $stats;
+        } else {
+            return false;
+        }
+
     }
 
     /**
@@ -130,7 +157,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     public function flushAll()
     {
-        $this->delete('');
+        return $this->delete('');
     }
 
     /**
