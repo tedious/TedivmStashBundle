@@ -51,12 +51,7 @@ class TedivmStashExtension extends Extension
     protected function addCacheService($name, $cache, $container)
     {
         $logqueries = $container->getParameter('stash.tracker');
-
-        if (isset($cache['drivers'])) {
-            $drivers = $cache['drivers'];
-        } else {
-            $drivers = array();
-        }
+        $drivers = isset($cache['drivers']) ? $cache['drivers'] : array();
 
         unset($cache['drivers']);
 
