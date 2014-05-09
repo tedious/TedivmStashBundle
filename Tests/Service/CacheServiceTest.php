@@ -5,17 +5,13 @@ namespace Tedivm\StashBundle\Tests\Service;
 use Tedivm\StashBundle\Service\CacheService;
 use Stash\Driver\Ephemeral;
 
-class CacheServiceTest extends \PHPUnit_Framework_TestCase
+class CacheServiceTest extends \Stash\Test\AbstractPoolTest
 {
-
-    protected function setUp()
-    {
-        $this->handler = new Ephemeral(array());
-    }
+    protected $itemClass = '\Tedivm\StashBundle\Service\CacheService';
 
     protected function getCacheService($name)
     {
-        return new CacheService($name, $this->handler);
+        return new $this->itemClass($name);
     }
 
     public function testCacheService()

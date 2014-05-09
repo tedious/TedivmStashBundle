@@ -27,10 +27,15 @@ class CacheService extends Pool
      * @param \Stash\Interfaces\DriverInterface $driver
      * @param CacheLogger|null                  $logger
      */
-    public function __construct($name, DriverInterface $driver, CacheLogger $logger = null)
+    public function __construct($name, DriverInterface $driver = null, CacheLogger $logger = null)
     {
         $this->logger = $logger;
         $this->setNamespace($name);
+
+        if (isset($this->driver)) {
+           $this->setDriver($driver);
+        }
+
         parent::__construct($driver);
     }
 
