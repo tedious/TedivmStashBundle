@@ -5,12 +5,13 @@ namespace Tedivm\StashBundle\Tests\Service;
 use Tedivm\StashBundle\Service\CacheService;
 use Tedivm\StashBundle\Service\CacheTracker;
 use Stash\Driver\Ephemeral;
+use Stash\Drivers;
 
 class CacheServiceTest extends \Stash\Test\AbstractPoolTest
 {
     protected $serviceClass = '\Tedivm\StashBundle\Service\CacheService';
 
-    protected function getCacheService($name)
+    protected function getCacheService($name = 'test')
     {
         return new $this->serviceClass($name);
     }
@@ -34,7 +35,20 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
 
         $item = $service->getItem('fakeItem');
         $this->assertAttributeEquals($tracker, 'tracker', $item, 'Item gets Tracker from Service on creation.');
+    }
 
+    public function testGetTracker()
+    {
+        $driver = new Ephemeral();
+        $tracker = new CacheTracker('test');
+        $service = new $this->serviceClass('test', $driver, $tracker);
+        $this->assertEquals($tracker, $service->getTracker(), 'Service returns it\'s tracker..');
+    }
+
+    public function testGetDrivers()
+    {
+        $service = $this->getCacheService();
+        $this->assertEquals(Drivers::getDrivers(), $service->getDrivers(), 'Service available drivers');
     }
 
     public function testCacheService()
