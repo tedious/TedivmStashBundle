@@ -36,14 +36,21 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($cacheoptions[$item], $value);
             }
 
-            foreach ($cache['drivers'] as $driver) {
-                $driveroptions = $cache[$driver];
-                foreach ($driveroptions as $driveroptname => $driveroptvalue) {
-                    $this->assertEquals($driveroptvalue, $cacheoptions[$driver][$driveroptname]);
+            if(isset($cache['drivers'])) {
+                foreach ($cache['drivers'] as $driver) {
+                    $driveroptions = $cache[$driver];
+                    foreach ($driveroptions as $driveroptname => $driveroptvalue) {
+                        $this->assertEquals($driveroptvalue, $cacheoptions[$driver][$driveroptname]);
+                    }
                 }
             }
-
         }
+    }
+
+    public function testGetAlias()
+    {
+        $extension = new TedivmStashExtension();
+        $this->assertEquals('stash', $extension->getAlias(), 'getAlias returns "stash"');
     }
 
     public function configProvider()
@@ -66,6 +73,16 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+
+            array(
+                'config' => array(
+                    'default_cache' => 'first',
+                    'caches' => array(
+                        'first' => array(),
+                        )
+                    ),
+                ),
+
             array(
                 'config' => array(
                     'default_cache' => 'default',

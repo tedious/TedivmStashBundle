@@ -55,7 +55,7 @@ class TedivmStashExtension extends Extension
         if (isset($cache['drivers'])) {
             $drivers = $cache['drivers'];
         } else {
-            $drivers = $cache['drivers'];
+            $drivers = array();
         }
 
         unset($cache['drivers']);
