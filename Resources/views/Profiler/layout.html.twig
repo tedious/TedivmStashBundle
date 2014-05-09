@@ -13,7 +13,7 @@
                 <b>Default Queue</b> <span>{{ collector.default }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
-                <b>Av. Handlers</b> <span>{{ collector.handlers|join(', ') }}</span>
+                <b>Av. Drivers</b> <span>{{ collector.drivers|join(', ') }}</span>
         </div>
         {% for name, details in collector.caches %}
             <hr style="border: 1px solid #ccc;">
@@ -21,7 +21,7 @@
                 <b><i>{{ name }}</i></b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ details.calls }} / {{ details.hits }}</span>
             </div>
             <div class="sf-toolbar-info-piece">
-                <b>Handlers</b> <span>{{ details.options.handlers|join(', ') }}</span>
+                <b>Drivers</b> <span>{{ details.options.drivers|join(', ') }}</span>
             </div>
         {% endfor %}
     {% endset %}
@@ -45,8 +45,8 @@
             <th>Default Cache</th>
             <td>{{ collector.default }}</td>
         <tr>
-            <th>Available Handlers</th>
-            <td>{{ collector.handlers|join(', ') }}</td>
+            <th>Available Drivers</th>
+            <td>{{ collector.drivers|join(', ') }}</td>
         </tr>
         <tr>
             <th>Total Requests</th>
@@ -63,8 +63,8 @@
         <h2>Cache Service: <i>{{ name }}</i></h2>
         <table>
             <tr>
-                <th>Handlers</th>
-                <td>{{ details.options.handlers|join(', ') }}</td>
+                <th>Drivers</th>
+                <td>{{ details.options.drivers|join(', ') }}</td>
             </tr>
             <tr>
                 <th>Calls</th>
@@ -84,10 +84,10 @@
             </tr>
         </table>
 
-        <h3>Handler Options</h3>
+        <h3>Driver Options</h3>
         <table>
             {% for name, options in details.options %}
-                {% if name != 'handlers' and name in details.options.handlers %}
+                {% if name != 'drivers' and name in details.options.drivers %}
                     <tr>
                         <th colspan="2"><h3 style="font-size: 16px; margin-bottom: 0;">{{ name }} settings</h3></th>
                     </tr>

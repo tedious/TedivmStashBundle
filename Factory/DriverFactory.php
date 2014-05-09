@@ -4,7 +4,7 @@ namespace Tedivm\StashBundle\Factory;
 use Stash\Drivers,
     Stash\Interfaces\DriverInterface;
 
-class HandlerFactory
+class DriverFactory
 {
     /**
      * Given a list of cache types and options, creates a CompositeDrivers wrapping the specified drivers.
@@ -13,14 +13,14 @@ class HandlerFactory
      * @param $options
      * @return DriverInterface
      */
-    public static function createHandler($types, $options)
+    public static function createDriver($types, $options)
     {
-        $handlers = Drivers::getDrivers();
+        $drivers = Drivers::getDrivers();
 
         $h = array();
 
         foreach ($types as $type) {
-            $class = $handlers[$type];
+            $class = $drivers[$type];
             if ($type === 'Memcache' && isset($options[$type])) {
                 // Fix servers spec since underlying drivers expect plain arrays, not hashes.
                 $servers = array();
@@ -43,9 +43,9 @@ class HandlerFactory
             return reset($h);
         }
 
-        $class = $handlers['Composite'];
-        $handler = new $class(array('drivers' => $h));
+        $class = $drivers['Composite'];
+        $driver = new $class(array('drivers' => $h));
 
-        return $handler;
+        return $driver;
     }
 }

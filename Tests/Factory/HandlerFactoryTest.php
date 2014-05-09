@@ -2,12 +2,12 @@
 
 namespace Tedivm\StashBundle\Tests\Factory;
 
-use Tedivm\StashBundle\Factory\HandlerFactory;
+use Tedivm\StashBundle\Factory\DriverFactory;
 use Stash\Drivers;
 
-class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
+class DriverFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    protected $handlers = array();
+    protected $drivers = array();
 
     protected $defaultSettings = array(
         'FileSystem' => array(
@@ -21,7 +21,7 @@ class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
             'dirPermissions'    => 0770,
             'busyTimeout'       => 500,
             'nesting'           => 0,
-            'subhandler'        => 'PDO',
+            'subdriver'        => 'PDO',
             'version'           => null,
         ),
         'Apc' => array(
@@ -32,30 +32,30 @@ class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->handlers = Drivers::getDrivers();
+        $this->drivers = Drivers::getDrivers();
     }
 
     /**
-     * @dataProvider handlerProvider
+     * @dataProvider driverProvider
      */
-    public function testManufactureHandlers($types, $options)
+    public function testManufactureDrivers($types, $options)
     {
-        $handler = HandlerFactory::createHandler($types, $options);
+        $driver = DriverFactory::createDriver($types, $options);
 
         if (count($types) > 1) {
-            $handlerclass = $this->handlers['Composite'];
-            $h = $this->getObjectAttribute($handler, 'drivers');
-            $handlers = array_combine($types, $h);
+            $driverclass = $this->drivers['Composite'];
+            $h = $this->getObjectAttribute($driver, 'drivers');
+            $drivers = array_combine($types, $h);
         } else {
-            $handlerclass = $this->handlers[$types[0]];
-            $handlers = array($types[0] => $handler);
+            $driverclass = $this->drivers[$types[0]];
+            $drivers = array($types[0] => $driver);
         }
 
-        $this->assertInstanceOf($handlerclass, $handler);
+        $this->assertInstanceOf($driverclass, $driver);
 
-        foreach ($handlers as $subtype => $subhandler) {
-            $subhandlerclass = $this->handlers[$subtype];
-            $this->assertInstanceOf($subhandlerclass, $subhandler);
+        foreach ($drivers as $subtype => $subdriver) {
+            $subdriverclass = $this->drivers[$subtype];
+            $this->assertInstanceOf($subdriverclass, $subdriver);
         }
 
         foreach ($types as $type) {
@@ -63,13 +63,13 @@ class HandlerFactoryTest extends \PHPUnit_Framework_TestCase
             $options = array_merge($defaults, $options);
 
 /*            foreach ($options as $optname => $optvalue) {
-                $this->assertAttributeEquals($optvalue, $optname, $handlers[$type]);
+                $this->assertAttributeEquals($optvalue, $optname, $drivers[$type]);
             }
 */
         }
     }
 
-    public function handlerProvider()
+    public function driverProvider()
     {
         return array(
             array(

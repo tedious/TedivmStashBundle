@@ -12,23 +12,23 @@ class CacheItem extends Item
 {
 
     /**
-     * @var null|CacheLogger
+     * @var null|CacheTracker
      */
-    protected $cacheLogger;
+    protected $cacheTracker;
 
-    public function setCacheLogger(CacheLogger $logger)
+    public function setCacheTracker(CacheTracker $tracker)
     {
-        $this->cacheLogger = $logger;
+        $this->cacheTracker = $tracker;
     }
 
     public function get($invalidation = 0, $arg = null, $arg2 = null)
     {
         $result = parent::get($invalidation, $arg, $arg2);
 
-        if (isset($this->logger)) {
+        if (isset($this->cacheTracker)) {
             $miss = $this->isMiss();
             $key = $this->getKey();
-            $this->logger->logRequest($key, !($miss), $result);
+            $this->cacheTracker->logRequest($key, !($miss), $result);
         }
 
         return $result;

@@ -7,7 +7,7 @@ namespace Tedivm\StashBundle\Service;
  *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  */
-class CacheLogger
+class CacheTracker
 {
     /**
      * The name of the cache being logged.

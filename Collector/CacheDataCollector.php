@@ -36,11 +36,11 @@ class CacheDataCollector extends DataCollector
     protected $cacheOptions;
 
     /**
-     * The logger classes for all cache services.
+     * The tracker classes for all cache services.
      *
      * @var array
      */
-    protected $loggers = array();
+    protected $trackers = array();
 
     public function __construct($default, $caches, $options)
     {
@@ -50,13 +50,13 @@ class CacheDataCollector extends DataCollector
     }
 
     /**
-     * Inject the logger for a cache service.
+     * Inject the tracker for a cache service.
      *
-     * @param $logger
+     * @param $tracker
      */
-    public function addLogger($logger)
+    public function addTracker($tracker)
     {
-        $this->loggers[] = $logger;
+        $this->trackers[] = $tracker;
     }
 
     /**
@@ -65,23 +65,23 @@ class CacheDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $info = array('calls' => 0, 'hits' => 0);
-        foreach ($this->loggers as $logger) {
-            $name = $logger->getName();
-            $calls = $logger->getCalls();
-            $hits = $logger->getHits();
+        foreach ($this->trackers as $tracker) {
+            $name = $tracker->getName();
+            $calls = $tracker->getCalls();
+            $hits = $tracker->getHits();
 
             $info['calls'] += $calls;
             $info['hits'] += $hits;
 
             $info['caches'][$name]['options'] = $this->cacheOptions[$name];
-            $info['caches'][$name]['queries'] = $logger->getQueries();
+            $info['caches'][$name]['queries'] = $tracker->getQueries();
             $info['caches'][$name]['calls'] = $calls;
             $info['caches'][$name]['hits'] = $hits;
         }
 
-        $handlers = Drivers::getDrivers();
-        foreach ($handlers as $handler) {
-            $pieces = explode('\\', $handler);
+        $drivers = Drivers::getDrivers();
+        foreach ($drivers as $driver) {
+            $pieces = explode('\\', $driver);
             $name = array_pop($pieces);
             if (!in_array($name, array('Ephemeral', 'Composite'))) {
                 $info['availableDrivers'][] = $name;
@@ -112,7 +112,7 @@ class CacheDataCollector extends DataCollector
     /**
      * Returns the list of available drivers.
      */
-    public function gethandlers()
+    public function getDrivers()
     {
         return $this->data['availableDrivers'];
     }

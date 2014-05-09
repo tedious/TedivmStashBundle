@@ -16,20 +16,20 @@ class CacheService extends Pool
     protected $itemClass = '\Tedivm\StashBundle\Service\CacheItem';
 
     /**
-     * @var CacheLogger|null
+     * @var CacheTracker|null
      */
-    protected $logger;
+    protected $cacheTracker;
 
     /**
-     * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
+     * Constructs the cache holder. Parameter is a Stash driver which is dynamically injected at service creation.
      *
      * @param string                            $name   Used to name and prefix the cache to avoid cache collisions across installs
      * @param \Stash\Interfaces\DriverInterface $driver
-     * @param CacheLogger|null                  $logger
+     * @param CacheTracker|null                  $tracker
      */
-    public function __construct($name, DriverInterface $driver = null, CacheLogger $logger = null)
+    public function __construct($name, DriverInterface $driver = null, CacheTracker $tracker = null)
     {
-        $this->logger = $logger;
+        $this->cacheTracker = $tracker;
         $this->setNamespace($name);
 
         if (isset($this->driver)) {
@@ -54,10 +54,11 @@ class CacheService extends Pool
         if(count($args) == 1 && is_array($args[0]))
             $args = $args[0];
 
+        /** @var CacheItem $item */
         $item = parent::getItem($args);
 
-        if (isset($this->logger)) {
-           $item->setCacheLogger($this->logger);
+        if (isset($this->tracker)) {
+           $item->setCacheTracker($this->cacheTracker);
         }
 
         return $item;
@@ -82,7 +83,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns the current list of handlers that the system is able to use.
+     * Returns the current list of drivers that the system is able to use.
      *
      * @return array
      */
@@ -92,12 +93,12 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns the current logger
+     * Returns the current tracker
      *
-     * @return CacheLogger|false
+     * @return CacheTracker|false
      */
-    public function getLogger()
+    public function getTracker()
     {
-        return isset($this->logger) ? $this->logger : false;
+        return isset($this->cacheTracker) ? $this->cacheTracker : false;
     }
 }

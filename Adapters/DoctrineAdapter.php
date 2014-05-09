@@ -118,9 +118,9 @@ class DoctrineAdapter implements DoctrineCacheInterface
     public function getStats()
     {
         $stats = array();
-        $logger = $this->cacheService->getLogger();
-        $stats['hits'] = $logger->getHits();
-        $stats['misses'] = $logger->getCalls() - $stats['hits'];
+        $tracker = $this->cacheService->getTracker();
+        $stats['hits'] = $tracker->getHits();
+        $stats['misses'] = $tracker->getCalls() - $stats['hits'];
 
         return $stats;
     }
