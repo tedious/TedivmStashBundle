@@ -28,6 +28,24 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
             'ttl'               => 300,
             'namespace'         => null,
         ),
+        'Memcache' => array(
+            'servers' => array(
+                array(
+                    'server' => '127.0.0.1',
+                    'port' => '11211'
+                ),
+                array(
+                    'server' => '127.0.0.1',
+                    'port' => '11212',
+                    'weight' => '30'
+                ),
+                array(
+                    'server' => '127.0.0.1',
+                    'port' => '11211',
+                    'weight' => '30'
+                ),
+            )
+        )
     );
 
     public function setUp()
@@ -43,31 +61,56 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
         $driver = DriverFactory::createDriver($types, $options);
 
         if (count($types) > 1) {
-            $driverclass = $this->drivers['Composite'];
+            $driverClass = $this->drivers['Composite'];
             $h = $this->getObjectAttribute($driver, 'drivers');
             $drivers = array_combine($types, $h);
         } else {
-            $driverclass = $this->drivers[$types[0]];
+            $driverClass = $this->drivers[$types[0]];
             $drivers = array($types[0] => $driver);
         }
 
-        $this->assertInstanceOf($driverclass, $driver);
+        $this->assertInstanceOf('Stash\Interfaces\DriverInterface', $driver);
+        $this->assertInstanceOf($driverClass, $driver);
 
-        foreach ($drivers as $subtype => $subdriver) {
-            $subdriverclass = $this->drivers[$subtype];
-            $this->assertInstanceOf($subdriverclass, $subdriver);
+        foreach ($drivers as $subtype => $subDriver) {
+            $subDriverClass = $this->drivers[$subtype];
+            $this->assertInstanceOf($subDriverClass, $subDriver);
         }
 
-        foreach ($types as $type) {
-            $defaults = isset($this->defaultSettings[$type]) ? $this->defaultSettings[$type] : array();
-            $options = array_merge($defaults, $options);
-
-/*            foreach ($options as $optname => $optvalue) {
-                $this->assertAttributeEquals($optvalue, $optname, $drivers[$type]);
-            }
-*/
-        }
     }
+
+    public function testMemcacheSetup()
+    {
+        if(!isset($this->drivers['Memcache'])) {
+            $this->markTestSkipped('Memcache extension required for this test.');
+        }
+
+        $driver = DriverFactory::createDriver(array('Memcache'), $this->defaultSettings['Memcache']);
+        $this->assertInstanceOf('Stash\Interfaces\DriverInterface', $driver);
+    }
+
+
+    /**
+     *
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Driver does not exist.
+     */
+    public function testFakeDriverException()
+    {
+        DriverFactory::createDriver(array('FakeDriver'), array());
+    }
+
+    /**
+     *
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Driver currently unavailable.
+     */
+    public function testUnavailableDriverException()
+    {
+        Drivers::registerDriver('FakeDriver', 'Stash\Test\Stubs\DriverUnavailableStub');
+        DriverFactory::createDriver(array('FakeDriver'), array());
+    }
+
 
     public function driverProvider()
     {
