@@ -14,21 +14,21 @@ class CacheItem extends Item
     /**
      * @var null|CacheTracker
      */
-    protected $cacheTracker;
+    protected $tracker;
 
     public function setCacheTracker(CacheTracker $tracker)
     {
-        $this->cacheTracker = $tracker;
+        $this->tracker = $tracker;
     }
 
     public function get($invalidation = 0, $arg = null, $arg2 = null)
     {
         $result = parent::get($invalidation, $arg, $arg2);
 
-        if (isset($this->cacheTracker)) {
+        if (isset($this->tracker)) {
             $miss = $this->isMiss();
             $key = $this->getKey();
-            $this->cacheTracker->trackRequest($key, !($miss), $result);
+            $this->tracker->trackRequest($key, !($miss), $result);
         }
 
         return $result;

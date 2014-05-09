@@ -8,22 +8,33 @@ use Stash\Driver\Ephemeral;
 
 class CacheServiceTest extends \Stash\Test\AbstractPoolTest
 {
-    protected $itemClass = '\Tedivm\StashBundle\Service\CacheService';
+    protected $serviceClass = '\Tedivm\StashBundle\Service\CacheService';
 
     protected function getCacheService($name)
     {
-        return new $this->itemClass($name);
+        return new $this->serviceClass($name);
     }
 
     public function testCacheServiceConstruct()
     {
         $driver = new Ephemeral();
         $tracker = new CacheTracker('test');
-        $service = new $this->itemClass('test', $driver, $tracker);
+        $service = new $this->serviceClass('test', $driver, $tracker);
 
         $this->assertAttributeEquals($driver, 'driver', $service, 'Constructor sets driver when passed.');
         $this->assertAttributeEquals($tracker, 'tracker', $service, 'Constructor sets tracker when passed.');
         $this->assertEquals('test', $service->getNamespace(), 'Constructor sets name as namespace.');
+    }
+
+    public function testGetItemWithTracker()
+    {
+        $driver = new Ephemeral();
+        $tracker = new CacheTracker('test');
+        $service = new $this->serviceClass('test', $driver, $tracker);
+
+        $item = $service->getItem('fakeItem');
+        $this->assertAttributeEquals($tracker, 'tracker', $item, 'Item gets Tracker from Service on creation.');
+
     }
 
     public function testCacheService()
