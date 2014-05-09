@@ -10,15 +10,16 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
     protected $testClass = 'Tedivm\StashBundle\Collector\CacheDataCollector';
 
     /**
-     * @param string $cacheService
-     * @param array $caches
-     * @param array $options
+     * @param  string                                           $cacheService
+     * @param  array                                            $caches
+     * @param  array                                            $options
      * @return \Tedivm\StashBundle\Collector\CacheDataCollector
      */
     public function testConstruct($cacheService = 'default', $caches = array('default'), $options = array('default' => array()))
     {
         $collector = new $this->testClass($cacheService, $caches, $options);
         $this->assertInstanceOf($this->testClass, $collector);
+
         return $collector;
     }
 
@@ -121,7 +122,6 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
         return $collector;
     }
 
-
     protected function getPopulatedCollector()
     {
         $services = array('first', 'second', 'third');
@@ -131,6 +131,7 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
         $collector->addTracker($this->getPopulatedTracker('first'));
         $collector->addTracker($this->getPopulatedTracker('second'));
         $collector->addTracker($this->getPopulatedTracker('third'));
+
         return $collector;
     }
 
