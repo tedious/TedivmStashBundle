@@ -80,9 +80,7 @@ class CacheDataCollector extends DataCollector
         }
 
         $drivers = Drivers::getDrivers();
-        foreach ($drivers as $driver) {
-            $pieces = explode('\\', $driver);
-            $name = array_pop($pieces);
+        foreach ($drivers as $name => $class) {
             if (!in_array($name, array('Ephemeral', 'Composite'))) {
                 $info['availableDrivers'][] = $name;
             }
