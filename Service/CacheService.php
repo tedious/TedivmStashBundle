@@ -23,9 +23,9 @@ class CacheService extends Pool
     /**
      * Constructs the cache holder. Parameter is a Stash driver which is dynamically injected at service creation.
      *
-     * @param string                            $name   Used to name and prefix the cache to avoid cache collisions across installs
+     * @param string                            $name    Used to name and prefix the cache to avoid cache collisions across installs
      * @param \Stash\Interfaces\DriverInterface $driver
-     * @param CacheTracker|null                  $tracker
+     * @param CacheTracker|null                 $tracker
      */
     public function __construct($name, DriverInterface $driver = null, CacheTracker $tracker = null)
     {
