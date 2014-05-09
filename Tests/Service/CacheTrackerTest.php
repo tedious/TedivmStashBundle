@@ -85,7 +85,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($datum[3], $query['value'], 'getQueries returns value for data example ' . $index);
         }
 
-
         $tracker = $this->testConstruct('unpopulated');
 
         $tracker->enableQueryLogging(false);
@@ -95,7 +94,7 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
 
     protected function getPopulatedTracker($tracker = null)
     {
-        if(is_null($tracker)) {
+        if (is_null($tracker)) {
             $tracker = $this->testConstruct('populated');
         }
 
@@ -106,7 +105,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
 
         return $tracker;
     }
-
 
     protected function getData()
     {
