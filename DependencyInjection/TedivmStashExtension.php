@@ -4,7 +4,6 @@ namespace Tedivm\StashBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -14,7 +13,7 @@ use Symfony\Component\Config\Definition\Processor;
 /**
  * Bundle extension to handle configuration of the Stash bundle. Based on the specification provided
  * in the configuration file, this extension instantiates and dynamically injects the selected caching provider into
- * the Stash service, passing it any handler-specific settings from the configuration.
+ * the Stash service, passing it any driver-specific settings from the configuration.
  *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  */
@@ -30,10 +29,10 @@ class TedivmStashExtension extends Extension
 
         $container->setAlias('cache', sprintf('stash.%s_cache', $config['default_cache']));
 
-        $lq = isset($config['logging'])
-            ? $config['logging']
+        $lq = isset($config['tracking'])
+            ? $config['tracking']
             : (in_array($container->getParameter('kernel.environment'), array('dev', 'test')));
-        $container->setParameter('stash.logging', $lq);
+        $container->setParameter('stash.tracker', $lq);
 
         $caches = array();
         $options = array();
@@ -50,13 +49,13 @@ class TedivmStashExtension extends Extension
 
     protected function addCacheService($name, $cache, $container)
     {
-        $logqueries = $container->getParameter('stash.logging');
+        $logqueries = $container->getParameter('stash.tracker');
+        $drivers = isset($cache['drivers']) ? $cache['drivers'] : array();
 
-        $handlers = $cache['handlers'];
-        unset($cache['handlers']);
+        unset($cache['drivers']);
 
         if (isset($cache['inMemory']) && $cache['inMemory']) {
-            array_unshift($handlers, 'Ephemeral');
+            array_unshift($drivers, 'Ephemeral');
         }
         unset($cache['inMemory']);
 
@@ -67,16 +66,16 @@ class TedivmStashExtension extends Extension
         unset($cache['registerSessionHandler']);
 
         $container
-            ->setDefinition(sprintf('stash.handler.%s_cache', $name), new DefinitionDecorator('stash.handler'))
+            ->setDefinition(sprintf('stash.driver.%s_cache', $name), new DefinitionDecorator('stash.driver'))
             ->setArguments(array(
-                $handlers,
+                $drivers,
                 $cache
             ))
             ->setAbstract(false)
         ;
 
         $container
-            ->setDefinition(sprintf('stash.logger.%s_cache', $name), new DefinitionDecorator('stash.logger'))
+            ->setDefinition(sprintf('stash.tracker.%s_cache', $name), new DefinitionDecorator('stash.tracker'))
             ->setArguments(array(
                 $name
             ))
@@ -88,8 +87,8 @@ class TedivmStashExtension extends Extension
             ->setDefinition(sprintf('stash.%s_cache', $name), new DefinitionDecorator('stash.cache'))
             ->setArguments(array(
                 $name,
-                new Reference(sprintf('stash.handler.%s_cache', $name)),
-                new Reference(sprintf('stash.logger.%s_cache', $name))
+                new Reference(sprintf('stash.driver.%s_cache', $name)),
+                new Reference(sprintf('stash.tracker.%s_cache', $name))
             ))
             ->setAbstract(false)
         ;
@@ -116,8 +115,8 @@ class TedivmStashExtension extends Extension
 
         $container
             ->getDefinition('data_collector.stash')
-                ->addMethodCall('addLogger', array(
-                    new Reference(sprintf('stash.logger.%s_cache', $name))
+                ->addMethodCall('addTracker', array(
+                    new Reference(sprintf('stash.tracker.%s_cache', $name))
                 ))
         ;
 

@@ -5,9 +5,9 @@
 
     <parameters>
         <parameter key="stash.cache.class">Tedivm\StashBundle\Service\CacheService</parameter>
-        <parameter key="stash.logger.class">Tedivm\StashBundle\Service\CacheLogger</parameter>
-        <parameter key="stash.handler.class">Stash\Handler\HandlerInterface</parameter>
-        <parameter key="stash.factory.class">Tedivm\StashBundle\Factory\HandlerFactory</parameter>
+        <parameter key="stash.tracker.class">Tedivm\StashBundle\Service\CacheTracker</parameter>
+        <parameter key="stash.driver.class">Stash\Interfaces\DriverInterface</parameter>
+        <parameter key="stash.factory.class">Tedivm\StashBundle\Factory\DriverFactory</parameter>
         <parameter key="stash.adapter.doctrine.class">Tedivm\StashBundle\Adapters\DoctrineAdapter</parameter>
         <parameter key="stash.adapter.session.class">Tedivm\StashBundle\Adapters\SessionHandlerAdapter</parameter>
         <parameter key="stash.data_collector.class">Tedivm\StashBundle\Collector\CacheDataCollector</parameter>
@@ -15,12 +15,12 @@
 
     <services>
         <service id="stash.cache" class="%stash.cache.class%" abstract="true"/>
-        <service id="stash.logger" class="%stash.logger.class%" abstract="true"/>
-        <service id="stash.handler"
-            class="%stash.handler.class%"
+        <service id="stash.tracker" class="%stash.tracker.class%" abstract="true"/>
+        <service id="stash.driver"
+            class="%stash.driver.class%"
             abstract="true"
             synthetic="true"
-            factory-method="createHandler"
+            factory-method="createDriver"
             factory-class="%stash.factory.class%"
         />
         <service id="stash.adapter.doctrine" class="%stash.adapter.doctrine.class%" abstract="true"/>

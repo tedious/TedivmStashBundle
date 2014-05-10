@@ -7,7 +7,7 @@ namespace Tedivm\StashBundle\Service;
  *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  */
-class CacheLogger
+class CacheTracker
 {
     /**
      * The name of the cache being logged.
@@ -66,7 +66,7 @@ class CacheLogger
      * @param $hit
      * @param $value
      */
-    public function logRequest($key, $hit, $value)
+    public function trackRequest($key, $hit, $value)
     {
         $this->calls++;
         if ($hit) {
@@ -75,11 +75,6 @@ class CacheLogger
 
         if (!$this->logQueries) {
             return;
-        }
-
-        $leader = sprintf('@@_%s_@@/', $this->name);
-        if (strpos($key, $leader) === 0) {
-            $key = substr($key, strlen($leader));
         }
 
         $hit = $hit ? 'true' : 'false';

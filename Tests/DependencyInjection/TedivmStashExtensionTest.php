@@ -10,7 +10,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider configProvider
      */
-    public function testLoadHandlerConfiguration($config)
+    public function testLoadDriverConfiguration($config)
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.environment', 'test');
@@ -36,14 +36,21 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($cacheoptions[$item], $value);
             }
 
-            foreach ($cache['handlers'] as $handler) {
-                $handleroptions = $cache[$handler];
-                foreach ($handleroptions as $handleroptname => $handleroptvalue) {
-                    $this->assertEquals($handleroptvalue, $cacheoptions[$handler][$handleroptname]);
+            if (isset($cache['drivers'])) {
+                foreach ($cache['drivers'] as $driver) {
+                    $driveroptions = $cache[$driver];
+                    foreach ($driveroptions as $driveroptname => $driveroptvalue) {
+                        $this->assertEquals($driveroptvalue, $cacheoptions[$driver][$driveroptname]);
+                    }
                 }
             }
-
         }
+    }
+
+    public function testGetAlias()
+    {
+        $extension = new TedivmStashExtension();
+        $this->assertEquals('stash', $extension->getAlias(), 'getAlias returns "stash"');
     }
 
     public function configProvider()
@@ -54,7 +61,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                     'default_cache' => 'first',
                     'caches' => array(
                         'first' => array(
-                            'handlers' => array('FileSystem'),
+                            'drivers' => array('FileSystem'),
                             'FileSystem' => array(
                                 'dirSplit'          => 2,
                                 'path'              => '%kernel.cache_dir%/stash',
@@ -66,12 +73,22 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+
+            array(
+                'config' => array(
+                    'default_cache' => 'first',
+                    'caches' => array(
+                        'first' => array(),
+                        )
+                    ),
+                ),
+
             array(
                 'config' => array(
                     'default_cache' => 'default',
                     'caches' => array(
                         'default' => array(
-                            'handlers' => array('SQLite'),
+                            'drivers' => array('SQLite'),
                             'registerDoctrineAdapter' => true,
                             'registerSessionHandler' => false,
                             'inMemory' => true,
@@ -82,7 +99,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         'nondefault' => array(
-                            'handlers' => array('FileSystem', 'SQLite'),
+                            'drivers' => array('FileSystem', 'SQLite'),
                             'registerDoctrineAdapter' => true,
                             'registerSessionHandler' => true,
                             'inMemory' => true,

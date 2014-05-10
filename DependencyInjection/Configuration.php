@@ -9,7 +9,7 @@ use Stash\Drivers;
 class Configuration implements ConfigurationInterface
 {
 
-    protected $handlerSettings = array(
+    protected $driverSettings = array(
         'FileSystem' => array(
             'dirSplit'          => 2,
             'path'              => '%kernel.cache_dir%/stash',
@@ -42,32 +42,18 @@ class Configuration implements ConfigurationInterface
             ->beforeNormalization()
                 ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('default_cache', $v) && array_key_exists('caches', $v); })
                 ->then(function ($v) {
-                    $names = array_keys($v['caches']);
-                    $v['default_cache'] = reset($names);
-
-                    return $v;
+                    return Configuration::normalizeDefaultCacheConfig($v);
                 })
             ->end()
             ->beforeNormalization()
                 ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('caches', $v) && !array_key_exists('cache', $v); })
                 ->then(function ($v) {
-                    $cache = array();
-                    foreach ($v as $key => $value) {
-                        if (in_array($key, array('default_cache', 'logging'))) {
-                            continue;
-                        }
-                        $cache[$key] = $v[$key];
-                        unset($v[$key]);
-                    }
-                    $v['default_cache'] = isset($v['default_cache']) ? (string) $v['default_cache'] : 'default';
-                    $v['caches'] = array($v['default_cache'] => $cache);
-
-                    return $v;
+                    return Configuration::normalizeCacheConfig($v);
                 })
             ->end()
             ->children()
                 ->scalarNode('default_cache')->end()
-                ->booleanNode('logging')->end()
+                ->booleanNode('tracking')->end()
             ->end()
             ->fixXmlConfig('cache')
             ->append($this->getCachesNode())
@@ -78,24 +64,24 @@ class Configuration implements ConfigurationInterface
 
     protected function getCachesNode()
     {
-        $handlers = array_keys(Drivers::getDrivers());
+        $drivers = array_keys(Drivers::getDrivers());
 
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('caches');
 
         $childNode = $node
-            ->fixXmlConfig('handler')
+            ->fixXmlConfig('driver')
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('array')
             ->children()
-                ->arrayNode('handlers')
+                ->arrayNode('drivers')
                     ->requiresAtLeastOneElement()
                     ->defaultValue(array('FileSystem'))
                     ->prototype('scalar')
                         ->validate()
-                            ->ifNotInArray($handlers)
-                            ->thenInvalid('A handler of that name is not registered.')
+                            ->ifNotInArray($drivers)
+                            ->thenInvalid('A driver of that name is not registered.')
                         ->end()
                     ->end()
                 ->end()
@@ -104,9 +90,9 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('inMemory')->defaultTrue()->end()
             ;
 
-            foreach ($handlers as $handler) {
-                if ($handler !== 'Composite') {
-                    $this->addHandlerSettings($handler, $childNode);
+            foreach ($drivers as $driver) {
+                if ($driver !== 'Composite') {
+                    $this->addDriverSettings($driver, $childNode);
                 }
             }
 
@@ -116,14 +102,14 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    public function addHandlerSettings($handler, $rootNode)
+    public function addDriverSettings($driver, $rootNode)
     {
-        $handlerNode = $rootNode
-            ->arrayNode($handler)
+        $driverNode = $rootNode
+            ->arrayNode($driver)
                 ->fixXmlConfig('server');
 
-            if ($handler == 'Memcache') {
-                $finalNode = $handlerNode
+            if ($driver == 'Memcache') {
+                $finalNode = $driverNode
                     ->info('All options except "servers" are Memcached options. See http://www.php.net/manual/en/memcached.constants.php')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -161,8 +147,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                ;
-            } elseif ($handler == 'Redis') {
-                $finalNode = $handlerNode
+            } elseif ($driver == 'Redis') {
+                $finalNode = $driverNode
                     ->info("Accepts server info, password, and database.")
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -185,9 +171,9 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ;
             } else {
-                $defaults = isset($this->handlerSettings[$handler]) ? $this->handlerSettings[$handler] : array();
+                $defaults = isset($this->driverSettings[$driver]) ? $this->driverSettings[$driver] : array();
 
-                $node = $handlerNode
+                $node = $driverNode
                     ->addDefaultsIfNotSet()
                     ->children();
 
@@ -205,5 +191,29 @@ class Configuration implements ConfigurationInterface
 
             $finalNode->end()
         ;
+    }
+
+    public static function normalizeCacheConfig($v)
+    {
+        $cache = array();
+        foreach ($v as $key => $value) {
+            if (in_array($key, array('default_cache', 'tracking'))) {
+                continue;
+            }
+            $cache[$key] = $v[$key];
+            unset($v[$key]);
+        }
+        $v['default_cache'] = isset($v['default_cache']) ? (string) $v['default_cache'] : 'default';
+        $v['caches'] = array($v['default_cache'] => $cache);
+
+        return $v;
+    }
+
+    public static function normalizeDefaultCacheConfig($v)
+    {
+        $names = array_keys($v['caches']);
+        $v['default_cache'] = reset($names);
+
+        return $v;
     }
 }

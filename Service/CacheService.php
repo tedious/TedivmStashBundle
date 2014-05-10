@@ -1,11 +1,9 @@
 <?php
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Item;
 use Stash\Drivers;
 use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
-use ArrayIterator;
 
 /**
  * Simple result-object provider for the Stash class.
@@ -14,50 +12,39 @@ use ArrayIterator;
  */
 class CacheService extends Pool
 {
-    /**
-     * @var string
-     */
-    protected $name;
+
+    protected $itemClass = '\Tedivm\StashBundle\Service\CacheItem';
 
     /**
-     * @var \Stash\Interfaces\DriverInterface
+     * @var CacheTracker|null
      */
-    protected $driver;
+    protected $tracker;
 
     /**
-     * @var string
-     */
-    protected $key;
-
-    /**
-     * @var CacheLogger|null
-     */
-    protected $logger;
-
-    /**
-     * Constructs the cache holder. Parameter is a Stash handler which is dynamically injected at service creation.
+     * Constructs the cache holder. Parameter is a Stash driver which is dynamically injected at service creation.
      *
-     * @param string                          $name    Used to name and prefix the cache to avoid cache collisions across installs
-     * @param \Stash\Handler\HandlerInterface $handler
-     * @param CacheLogger|null                $logger
+     * @param string                            $name    Used to name and prefix the cache to avoid cache collisions across installs
+     * @param \Stash\Interfaces\DriverInterface $driver
+     * @param CacheTracker|null                 $tracker
      */
-    public function __construct($name, DriverInterface $driver, CacheLogger $logger = null)
+    public function __construct($name, DriverInterface $driver = null, CacheTracker $tracker = null)
     {
-        $this->name = $name;
-        $this->driver = $driver;
-        $this->key = '@@_' . $name . '_@@';
+        $this->tracker = $tracker;
+        $this->setNamespace($name);
 
-        $this->pool = new Pool($this->driver);
+        if (isset($driver)) {
+           $this->setDriver($driver);
+        }
 
-        $this->logger = $logger;
+        parent::__construct($driver);
     }
 
     /**
      * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
      * or an array.
      *
-     * @param  string|array $key, $key, $key...
-     * @return \Stash\Item  Note: Cache item is wrapped inside CacheResultObject which deals with logging
+     * @param  mixed     $key,... String Representing the key
+     * @return CacheItem
      */
     public function getItem()
     {
@@ -67,63 +54,36 @@ class CacheService extends Pool
         if(count($args) == 1 && is_array($args[0]))
             $args = $args[0];
 
-        array_unshift($args, $this->key);
+        /** @var CacheItem $item */
+        $item = parent::getItem($args);
 
-        $item = $this->pool->getItem($args);
-
-        $stash = new CacheResultObject($item, $this->logger);
-
-        return $stash;
-    }
-
-    /**
-     * Returns a group of wrapped cache objects as an \Iterator. This duplicates the functionality of the
-     * Pool class getItemIterator method, but with wrapped, loggable cache items.
-     *
-     * @param  array     $keys
-     * @return \Iterator
-     */
-    public function getItemIterator($keys)
-    {
-        $items = array();
-        foreach ($keys as $key) {
-            $items[] = $this->getItem($key);
+        if (isset($this->tracker)) {
+           $item->setCacheTracker($this->tracker);
         }
 
-         return new ArrayIterator($items);
+        return $item;
     }
 
     /**
      * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either
      * a series of string arguments, or an array.
      *
-     * @param null|string|array $key, $key, $key...
+     * @param mixed $key,... String Representing the key
      */
     public function clear()
     {
         $args = func_get_args();
         if (count($args) === 0) {
-            return $this->pool->flush();
+            return $this->flush();
         } else {
-            $stash = call_user_func_array(array($this, 'getItem'), $args);
+            $item = $this->getItem($args);
 
-            return $stash->clear();
+            return $item->clear();
         }
     }
 
     /**
-     * Purges the cache of all stale or obsolete objects, as well as other maintenance tasks specified by the
-     * back end caching system. This operation has the potential to be very long running.
-     *
-     * @return bool
-     */
-    public function purge()
-    {
-        return $this->pool->purge();
-    }
-
-    /**
-     * Returns the current list of handlers that the system is able to use.
+     * Returns the current list of drivers that the system is able to use.
      *
      * @return array
      */
@@ -133,12 +93,12 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns the current logger
+     * Returns the current tracker
      *
-     * @return CacheLogger|null
+     * @return CacheTracker|false
      */
-    public function getLogger()
+    public function getTracker()
     {
-        return $this->logger;
+        return isset($this->tracker) ? $this->tracker : false;
     }
 }
