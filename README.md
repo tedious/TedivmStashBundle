@@ -1,4 +1,4 @@
-# TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedivm/TedivmStashBundle.png?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
+# TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedivm/TedivmStashBundle.svg?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
 
 [![License](http://img.shields.io/packagist/l/tedivm/stash-bundle.svg)](https://github.com/tedivm/TedivmStashBundle/blob/master/LICENSE)
 [![Latest Stable Version](http://img.shields.io/github/release/tedivm/TedivmStashBundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
