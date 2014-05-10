@@ -20,6 +20,6 @@ else
     echo "*********************"
     echo ""
     echo ""
-    phpenv config-add tests/travis/php_extensions.ini
+    phpenv config-add Tests/travis/php_extensions.ini
 
 fi
