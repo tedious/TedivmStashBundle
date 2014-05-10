@@ -42,27 +42,13 @@ class Configuration implements ConfigurationInterface
             ->beforeNormalization()
                 ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('default_cache', $v) && array_key_exists('caches', $v); })
                 ->then(function ($v) {
-                    $names = array_keys($v['caches']);
-                    $v['default_cache'] = reset($names);
-
-                    return $v;
+                    return Configuration::normalizeDefaultCacheConfig($v);
                 })
             ->end()
             ->beforeNormalization()
                 ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('caches', $v) && !array_key_exists('cache', $v); })
                 ->then(function ($v) {
-                    $cache = array();
-                    foreach ($v as $key => $value) {
-                        if (in_array($key, array('default_cache', 'tracking'))) {
-                            continue;
-                        }
-                        $cache[$key] = $v[$key];
-                        unset($v[$key]);
-                    }
-                    $v['default_cache'] = isset($v['default_cache']) ? (string) $v['default_cache'] : 'default';
-                    $v['caches'] = array($v['default_cache'] => $cache);
-
-                    return $v;
+                    return Configuration::normalizeCacheConfig($v);
                 })
             ->end()
             ->children()
@@ -205,5 +191,29 @@ class Configuration implements ConfigurationInterface
 
             $finalNode->end()
         ;
+    }
+
+    public static function normalizeCacheConfig($v)
+    {
+        $cache = array();
+        foreach ($v as $key => $value) {
+            if (in_array($key, array('default_cache', 'tracking'))) {
+                continue;
+            }
+            $cache[$key] = $v[$key];
+            unset($v[$key]);
+        }
+        $v['default_cache'] = isset($v['default_cache']) ? (string) $v['default_cache'] : 'default';
+        $v['caches'] = array($v['default_cache'] => $cache);
+
+        return $v;
+    }
+
+    public static function normalizeDefaultCacheConfig($v)
+    {
+        $names = array_keys($v['caches']);
+        $v['default_cache'] = reset($names);
+
+        return $v;
     }
 }

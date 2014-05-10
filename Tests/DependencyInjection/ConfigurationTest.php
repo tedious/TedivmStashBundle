@@ -37,4 +37,34 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'Config generator makes Redis nodes when requested');
     }
 
+    public function testNormalizeCacheConfig()
+    {
+        $testData = array('default_cache' => 'test', 'tracking' => 'test');
+        $returnedData = Configuration::normalizeCacheConfig($testData);
+
+        $this->assertInternalType('array', $returnedData, 'Returns array.');
+        $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization skips default_cache');
+        $this->assertArrayHasKey('tracking', $returnedData, 'Normalization skips tracking');
+
+        $testData = array('tracking' => 'test');
+        $returnedData = Configuration::normalizeCacheConfig($testData);
+        $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization adds default_cache when missing');
+    }
+
+
+
+    public function testNormalizeDefaultCacheConfig()
+    {
+        $testData = array('caches' =>
+            array(  'Cache1' => 'TheCacheSettings',
+                    'Cache2' => 'teTheCacheSettingsst',
+                    'Cache3' => 'teTheCacheSettingsst'));
+
+        $returnedData = Configuration::normalizeDefaultCacheConfig($testData);
+
+        $this->assertInternalType('array', $returnedData, 'Returns array.');
+        $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization adds default_cache');
+        $this->assertEquals('Cache1', $returnedData['default_cache'], 'Normalization sets first cache to default.');
+    }
+
 }
