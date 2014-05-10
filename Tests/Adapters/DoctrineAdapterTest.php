@@ -32,11 +32,9 @@ use Tedivm\StashBundle\Service\CacheTracker;
 use Tedivm\StashBundle\Adapters\DoctrineAdapter;
 use Tedivm\StashBundle\Tests\ThirdParty\Doctrine\CacheTest;
 
-
 class DoctrineAdapterTest extends CacheTest
 {
     protected $__driver;
-
 
     public function testGetStatsWithoutTracker()
     {
@@ -47,7 +45,6 @@ class DoctrineAdapterTest extends CacheTest
         $service = new CacheService('test', new Ephemeral(array()));
         $adaptor = new DoctrineAdapter($service);
         $stats = $adaptor->getStats();
-
 
         $keys = array('memory_usage', 'memory_available', 'uptime', 'hits', 'misses');
 
@@ -64,8 +61,6 @@ class DoctrineAdapterTest extends CacheTest
         $service->setNamespace('TestNameSpace');
         $this->assertEquals('TestNameSpace', $service->getNamespace(), 'getNamespace returns set namespace.');
     }
-
-
 
     /**
      * @return \Doctrine\Common\Cache\CacheProvider

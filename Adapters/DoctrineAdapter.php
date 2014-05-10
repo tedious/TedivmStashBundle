@@ -145,6 +145,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     {
         $namespace = (isset($this->namespace) && $this->namespace != '') ? $this->namespace : 'default';
         $id = sprintf('zz_%s_zz/%s', $namespace, $id);
+
         return $id;
     }
 }
