@@ -50,7 +50,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $returnedData = Configuration::normalizeCacheConfig($testData);
         $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization adds default_cache when missing');
 
-
         $testData = array(
             'Settings1' => 'Data1',
             'Settings2' => 'Data2',
@@ -62,8 +61,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $expectedResults, 'Returns array.');
         $this->assertEquals($testData, $expectedResults, 'Hanging settings converted to cache settings');
     }
-
-
 
     public function testNormalizeDefaultCacheConfig()
     {
