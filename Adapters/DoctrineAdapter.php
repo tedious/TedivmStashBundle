@@ -8,7 +8,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     /**
      * The cache service being wrapped.
      *
-     * @var \Stash\Pool
+     * @var \Tedivm\StashBundle\Service\CacheService
      */
     protected $cacheService;
 
@@ -57,21 +57,10 @@ class DoctrineAdapter implements DoctrineCacheInterface
     public function fetch($id)
     {
         $id = $this->normalizeId($id);
-/*
-        if (isset($this->caches[$id])) {
-            $cache = $this->caches[$id];
-            unset($this->caches[$id]);
-        } else {
-            $cache = $this->cacheService->getItem($id);
-        }
-*/
         $cache = $this->cacheService->getItem($id);
         $value = $cache->get();
-        if ($cache->isMiss()) {
-            return false;
-        } else {
-            return $value;
-        }
+
+        return $cache->isMiss() ? false : $value;
     }
 
     /**
@@ -80,14 +69,6 @@ class DoctrineAdapter implements DoctrineCacheInterface
     public function contains($id)
     {
         $id = $this->normalizeId($id);
-
-        /*
-        $this->caches[$id] = $this->cacheService->getItem($id);
-
-        return !$this->caches[$id]->isMiss();
-
-        */
-
         $item = $this->cacheService->getItem($id);
 
         return !$item->isMiss();
@@ -98,18 +79,12 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     public function save($id, $data, $lifeTime = 0)
     {
+        /* Stash treats 0 as a 0 second ttl, so we convert to null */
         if ($lifeTime === 0) {
             $lifeTime = null;
         }
 
         $id = $this->normalizeId($id);
-
-        /*
-        $cache = $this->cacheService->getItem($id);
-
-        return $cache->set($data, $lifeTime);
-        */
-
         $item = $this->cacheService->getItem($id);
 
         return $item->set($data, $lifeTime);
@@ -136,20 +111,20 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     public function getStats()
     {
+        $stats = array();
+        $stats['memory_usage'] = 'NA';
+        $stats['memory_available'] = 'NA';
+        $stats['uptime'] = 'NA';
+
         if ($tracker = $this->cacheService->getTracker()) {
-            $stats = array();
-            $tracker = $this->cacheService->getTracker();
             $stats['hits'] = $tracker->getHits();
             $stats['misses'] = $tracker->getCalls() - $stats['hits'];
-            $stats['uptime'] = 'NA';
-            $stats['memory_usage'] = 'NA';
-            $stats['memory_available'] = 'NA';
-
-            return $stats;
         } else {
-            return false;
+            $stats['hits'] = 'NA';
+            $stats['misses'] = 'NA';
         }
 
+        return $stats;
     }
 
     /**
@@ -168,13 +143,8 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     protected function normalizeId($id)
     {
-        if (isset($this->namespace)) {
-            $id = sprintf('zz_%s_zz/%s', $this->namespace, $id);
-            $id = trim($id, '/');
-
-            return $id;
-        } else {
-            return $id;
-        }
+        $namespace = (isset($this->namespace) && $this->namespace != '') ? $this->namespace : 'default';
+        $id = sprintf('zz_%s_zz/%s', $namespace, $id);
+        return $id;
     }
 }

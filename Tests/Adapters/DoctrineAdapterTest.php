@@ -37,6 +37,36 @@ class DoctrineAdapterTest extends CacheTest
 {
     protected $__driver;
 
+
+    public function testGetStatsWithoutTracker()
+    {
+        if (!isset($this->__driver)) {
+            $this->__driver = new Ephemeral(array());
+        }
+
+        $service = new CacheService('test', new Ephemeral(array()));
+        $adaptor = new DoctrineAdapter($service);
+        $stats = $adaptor->getStats();
+
+
+        $keys = array('memory_usage', 'memory_available', 'uptime', 'hits', 'misses');
+
+        foreach ($keys as $key) {
+            $this->assertArrayHasKey($key, $stats, 'getStats has ' . $key . ' key even without tracker.');
+            $this->assertEquals('NA', $stats[$key], 'getStats returns NA for key ' . $key . ' without tracker.');
+        }
+    }
+
+    public function testGetNamespace()
+    {
+        $service = $this->_getCacheDriver();
+        $this->assertEquals('', $service->getNamespace(), 'getNamespace returns empty string when no namespace is set.');
+        $service->setNamespace('TestNameSpace');
+        $this->assertEquals('TestNameSpace', $service->getNamespace(), 'getNamespace returns set namespace.');
+    }
+
+
+
     /**
      * @return \Doctrine\Common\Cache\CacheProvider
      */
