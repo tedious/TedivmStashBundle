@@ -36,6 +36,13 @@ class DoctrineAdapterTest extends CacheTest
 {
     protected $__driver;
 
+    public function SetUp()
+    {
+        if (!interface_exists('\\Doctrine\\Common\\Cache\\Cache')) {
+            $this->markTestSkipped('Test requires DoctrineCache');
+        }
+    }
+
     public function testGetStatsWithoutTracker()
     {
         if (!isset($this->__driver)) {

@@ -1,8 +1,8 @@
 <?php
 
 namespace Tedivm\StashBundle\Factory;
-use Stash\Drivers,
-    Stash\Interfaces\DriverInterface;
+use Stash\Drivers;
+use Stash\Interfaces\DriverInterface;
 
 class DriverFactory
 {
