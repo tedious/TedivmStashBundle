@@ -1,7 +1,10 @@
 # TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedivm/TedivmStashBundle.png?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
 
-[![Latest Stable Version](https://poser.pugx.org/tedivm/stash-bundle/v/stable.png)](https://packagist.org/packages/tedivm/stash-bundle)
-[![Total Downloads](https://poser.pugx.org/tedivm/stash-bundle/downloads.png)](https://packagist.org/packages/tedivm/stash-bundle)
+[![License](http://img.shields.io/packagist/l/tedivm/stash-bundle.svg)](https://github.com/tedivm/TedivmStashBundle/blob/master/LICENSE)
+[![Latest Stable Version](http://img.shields.io/github/release/tedivm/TedivmStashBundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
+[![Coverage Status](http://img.shields.io/coveralls/tedivm/TedivmStashBundle.svg)](https://coveralls.io/r/tedivm/TedivmStashBundle?branch=master)
+[![Total Downloads](http://img.shields.io/packagist/dt/tedivm/stash-bundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
+
 
 The **TedivmStashBundle** integrates the [Stash caching library](https://github.com/tedivm/Stash) into Symfony, providing a
 powerful abstraction for a range of caching engines. This bundle provides a caching service, adds Stash information to
