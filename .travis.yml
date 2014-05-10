@@ -10,7 +10,7 @@ php:
 
 before_script:
     - composer self-update && composer install --dev
-    - tests/travis/php_setup.sh
+    - Tests/travis/php_setup.sh
 
 script: ./Tests/runTests.sh
 
