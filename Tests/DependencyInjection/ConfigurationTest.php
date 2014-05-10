@@ -49,6 +49,18 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $testData = array('tracking' => 'test');
         $returnedData = Configuration::normalizeCacheConfig($testData);
         $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization adds default_cache when missing');
+
+
+        $testData = array(
+            'Settings1' => 'Data1',
+            'Settings2' => 'Data2',
+            'Settings3' => 'Data3',
+        );
+
+        $returnedData = Configuration::normalizeCacheConfig($testData);
+        $expectedResults = $returnedData['caches']['default'];
+        $this->assertInternalType('array', $expectedResults, 'Returns array.');
+        $this->assertEquals($testData, $expectedResults, 'Hanging settings converted to cache settings');
     }
 
 
