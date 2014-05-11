@@ -12,14 +12,6 @@
 
 namespace Tedivm\StashBundle\Adapters;
 
-use Stash\Session;
-
-if (version_compare(phpversion(), '5.4.0', '>=')) {
-    class SessionHandlerAdapterShim extends Session {}
-} else {
-    class SessionHandlerAdapterShim extends Session implements \SessionHandlerInterface {}
-}
-
 /**
  * Class SessionHandlerAdapter
  * @package Tedivm\StashBundle\Adapters
