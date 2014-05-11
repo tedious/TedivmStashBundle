@@ -88,7 +88,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string        $driver
+     * @param string      $driver
      * @param NodeBuilder $rootNode
      */
     public function addDriverSettings($driver, NodeBuilder $rootNode)
