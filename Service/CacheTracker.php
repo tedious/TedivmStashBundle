@@ -13,9 +13,10 @@
 namespace Tedivm\StashBundle\Service;
 
 /**
- * Logger for the cache service.
- *
+ * Class CacheTracker
+ * @package Tedivm\StashBundle\Service
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
  */
 class CacheTracker
 {

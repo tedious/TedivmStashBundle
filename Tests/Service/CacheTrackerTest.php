@@ -12,6 +12,10 @@
 
 namespace Tedivm\StashBundle\Tests\Service;
 
+/**
+ * Class CacheTrackerTest
+ * @package Tedivm\StashBundle\Tests\Service
+ */
 class CacheTrackerTest extends \PHPUnit_Framework_TestCase
 {
     protected $testClass = '\Tedivm\StashBundle\Service\CacheTracker';

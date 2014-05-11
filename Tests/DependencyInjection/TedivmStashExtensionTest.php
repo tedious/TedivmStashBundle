@@ -15,6 +15,12 @@ namespace Tedivm\StashBundle\Tests\DependencyInjection;
 use Tedivm\StashBundle\DependencyInjection\TedivmStashExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Class TedivmStashExtensionTest
+ * @package Tedivm\StashBundle\Tests\DependencyInjection
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**

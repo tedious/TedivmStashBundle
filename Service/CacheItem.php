@@ -14,9 +14,10 @@ namespace Tedivm\StashBundle\Service;
 use Stash\Item;
 
 /**
- * Simple result-object provider for the Stash class.
- *
+ * Class CacheItem
+ * @package Tedivm\StashBundle\Service
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
  */
 class CacheItem extends Item
 {

@@ -15,6 +15,12 @@ namespace Tedivm\StashBundle\Tests\Collector;
 use \Stash\Drivers;
 use \Tedivm\StashBundle\Service\CacheTracker as Tracker;
 
+/**
+ * Class CacheDataCollectorTest
+ * @package Tedivm\StashBundle\Tests\Collector
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
     protected $testClass = 'Tedivm\StashBundle\Collector\CacheDataCollector';

@@ -12,6 +12,12 @@
 
 namespace Tedivm\StashBundle\Tests\Adapters;
 
+/**
+ * Class SessionHandlerAdapterTest
+ * @package Tedivm\StashBundle\Tests\Adapters
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class SessionHandlerAdapterTest extends \Stash\Test\SessionTest
 {
     protected $testClass = '\Tedivm\StashBundle\Adapters\SessionHandlerAdapter';

@@ -18,6 +18,12 @@ use Tedivm\StashBundle\Service\CacheTracker;
 use Tedivm\StashBundle\Adapters\DoctrineAdapter;
 use Tedivm\StashBundle\Tests\ThirdParty\Doctrine\CacheTest;
 
+/**
+ * Class DoctrineAdapterTest
+ * @package Tedivm\StashBundle\Tests\Adapters
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class DoctrineAdapterTest extends CacheTest
 {
     protected $__driver;

@@ -29,6 +29,12 @@ namespace Tedivm\StashBundle\Tests\ThirdParty\Doctrine;
 use Doctrine\Common\Cache\Cache;
 use ArrayObject;
 
+/**
+ * Class CacheTest
+ * @package Tedivm\StashBundle\Tests\ThirdParty\Doctrine
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 abstract class CacheTest extends \PHPUnit_Framework_TestCase
 {
     /**

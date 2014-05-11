@@ -12,6 +12,12 @@
 
 namespace Tedivm\StashBundle\Tests;
 
+/**
+ * Class TedivmStashBundleTest
+ * @package Tedivm\StashBundle\Tests
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class TedivmStashBundleTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetContainerExtension()

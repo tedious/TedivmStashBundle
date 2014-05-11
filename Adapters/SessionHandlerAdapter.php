@@ -20,6 +20,12 @@ if (version_compare(phpversion(), '5.4.0', '>=')) {
     class SessionHandlerAdapterShim extends Session implements \SessionHandlerInterface {}
 }
 
+/**
+ * Class SessionHandlerAdapter
+ * @package Tedivm\StashBundle\Adapters
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class SessionHandlerAdapter extends SessionHandlerAdapterShim
 {
     protected function getCache($session_id)

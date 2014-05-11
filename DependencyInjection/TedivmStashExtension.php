@@ -21,11 +21,15 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
+ * Class TedivmStashExtension
+ *
  * Bundle extension to handle configuration of the Stash bundle. Based on the specification provided
  * in the configuration file, this extension instantiates and dynamically injects the selected caching provider into
  * the Stash service, passing it any driver-specific settings from the configuration.
  *
+ * @package Tedivm\StashBundle\DependencyInjection
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
  */
 class TedivmStashExtension extends Extension
 {

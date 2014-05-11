@@ -16,6 +16,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Stash\Drivers;
 
+/**
+ * Class Configuration
+ * @package Tedivm\StashBundle\DependencyInjection
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class Configuration implements ConfigurationInterface
 {
 

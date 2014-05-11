@@ -14,6 +14,12 @@ namespace Tedivm\StashBundle\Factory;
 use Stash\Drivers;
 use Stash\Interfaces\DriverInterface;
 
+/**
+ * Class DriverFactory
+ * @package Tedivm\StashBundle\Factory
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class DriverFactory
 {
     /**
