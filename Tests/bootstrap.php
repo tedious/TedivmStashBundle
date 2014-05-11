@@ -1,7 +1,9 @@
 <?php
+
 /*
- * This file is part of the TedivmStashBundle package.
+ * This file is part of the StashBundle package.
  *
+ * (c) Josh Hall-Bachner <jhallbachner@gmail.com>
  * (c) Robert Hafner <tedivm@tedivm.com>
  *
  * For the full copyright and license information, please view the LICENSE
