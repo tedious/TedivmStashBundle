@@ -55,7 +55,6 @@ class Configuration implements ConfigurationInterface
         ),
     );
 
-
     /**
      * {@inheritDoc}
      */
@@ -89,7 +88,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @param string $driver
+     * @param string        $driver
      * @param NodeInterface $rootNode
      */
     public function addDriverSettings($driver, NodeInterface $rootNode)
@@ -186,7 +185,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Used to normalize configuration values.
      *
-     * @param array $v
+     * @param  array $v
      * @return array
      */
     public static function normalizeCacheConfig($v)
@@ -208,7 +207,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Used to normalize configuration values.
      *
-     * @param array $v
+     * @param  array $v
      * @return array
      */
     public static function normalizeDefaultCacheConfig($v)
