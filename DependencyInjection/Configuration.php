@@ -13,6 +13,7 @@
 namespace Tedivm\StashBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Stash\Drivers;
 
@@ -25,6 +26,11 @@ use Stash\Drivers;
 class Configuration implements ConfigurationInterface
 {
 
+    /**
+     *  Default settings for various drivers.
+     *
+     * @var array
+     */
     protected $driverSettings = array(
         'FileSystem' => array(
             'dirSplit'          => 2,
@@ -49,6 +55,10 @@ class Configuration implements ConfigurationInterface
         ),
     );
 
+
+    /**
+     * {@inheritDoc}
+     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
@@ -78,47 +88,11 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    protected function getCachesNode()
-    {
-        $drivers = array_keys(Drivers::getDrivers());
-
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('caches');
-
-        $childNode = $node
-            ->fixXmlConfig('driver')
-            ->requiresAtLeastOneElement()
-            ->useAttributeAsKey('name')
-            ->prototype('array')
-            ->children()
-                ->arrayNode('drivers')
-                    ->requiresAtLeastOneElement()
-                    ->defaultValue(array('FileSystem'))
-                    ->prototype('scalar')
-                        ->validate()
-                            ->ifNotInArray($drivers)
-                            ->thenInvalid('A driver of that name is not registered.')
-                        ->end()
-                    ->end()
-                ->end()
-                ->booleanNode('registerDoctrineAdapter')->defaultFalse()->end()
-                ->booleanNode('registerSessionHandler')->defaultFalse()->end()
-                ->booleanNode('inMemory')->defaultTrue()->end()
-            ;
-
-            foreach ($drivers as $driver) {
-                if ($driver !== 'Composite') {
-                    $this->addDriverSettings($driver, $childNode);
-                }
-            }
-
-            $childNode->end()
-        ;
-
-        return $node;
-    }
-
-    public function addDriverSettings($driver, $rootNode)
+    /**
+     * @param string $driver
+     * @param NodeInterface $rootNode
+     */
+    public function addDriverSettings($driver, NodeInterface $rootNode)
     {
         $driverNode = $rootNode
             ->arrayNode($driver)
@@ -209,6 +183,12 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
+    /**
+     * Used to normalize configuration values.
+     *
+     * @param array $v
+     * @return array
+     */
     public static function normalizeCacheConfig($v)
     {
         $cache = array();
@@ -225,11 +205,57 @@ class Configuration implements ConfigurationInterface
         return $v;
     }
 
+    /**
+     * Used to normalize configuration values.
+     *
+     * @param array $v
+     * @return array
+     */
     public static function normalizeDefaultCacheConfig($v)
     {
         $names = array_keys($v['caches']);
         $v['default_cache'] = reset($names);
 
         return $v;
+    }
+
+    protected function getCachesNode()
+    {
+        $drivers = array_keys(Drivers::getDrivers());
+
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('caches');
+
+        $childNode = $node
+            ->fixXmlConfig('driver')
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children()
+            ->arrayNode('drivers')
+            ->requiresAtLeastOneElement()
+            ->defaultValue(array('FileSystem'))
+            ->prototype('scalar')
+            ->validate()
+            ->ifNotInArray($drivers)
+            ->thenInvalid('A driver of that name is not registered.')
+            ->end()
+            ->end()
+            ->end()
+            ->booleanNode('registerDoctrineAdapter')->defaultFalse()->end()
+            ->booleanNode('registerSessionHandler')->defaultFalse()->end()
+            ->booleanNode('inMemory')->defaultTrue()->end()
+        ;
+
+        foreach ($drivers as $driver) {
+            if ($driver !== 'Composite') {
+                $this->addDriverSettings($driver, $childNode);
+            }
+        }
+
+        $childNode->end()
+        ;
+
+        return $node;
     }
 }

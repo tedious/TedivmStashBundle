@@ -10,7 +10,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Tedivm\StashBundle\Adapters;
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
@@ -43,6 +42,11 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     protected $caches = array();
 
+    /**
+     * Initializes
+     *
+     * @param \Tedivm\StashBundle\Service\CacheService $cacheService
+     */
     public function __construct($cacheService)
     {
         $this->cacheService = $cacheService;

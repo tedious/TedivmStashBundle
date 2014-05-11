@@ -24,6 +24,9 @@ use Stash\Pool;
 class CacheService extends Pool
 {
 
+    /**
+     * {@inheritdoc}
+     */
     protected $itemClass = '\Tedivm\StashBundle\Service\CacheItem';
 
     /**
@@ -51,11 +54,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
-     * or an array.
-     *
-     * @param  mixed     $key,... String Representing the key
-     * @return CacheItem
+     * {@inheritdoc}
      */
     public function getItem()
     {
@@ -76,10 +75,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either
-     * a series of string arguments, or an array.
-     *
-     * @param mixed $key,... String Representing the key
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -104,7 +100,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns the current tracker
+     * Returns the current tracker.
      *
      * @return CacheTracker|false
      */

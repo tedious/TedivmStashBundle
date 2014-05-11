@@ -38,6 +38,9 @@ class SessionHandlerAdapter extends SessionHandlerAdapterShim
         return $this->pool->getItem($path);
     }
 
+    /**
+     * Clears all sessions.
+     */
     public function clearAll()
     {
         $item = $this->pool->getItem('ss_ss');

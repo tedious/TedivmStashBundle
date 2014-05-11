@@ -27,11 +27,19 @@ class CacheItem extends Item
      */
     protected $tracker;
 
+    /**
+     * Enables tracking of hits. Typically called by Service Factory
+     *
+     * @param CacheTracker $tracker
+     */
     public function setCacheTracker(CacheTracker $tracker)
     {
         $this->tracker = $tracker;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($invalidation = 0, $arg = null, $arg2 = null)
     {
         $result = parent::get($invalidation, $arg, $arg2);
@@ -43,7 +51,6 @@ class CacheItem extends Item
         }
 
         return $result;
-
     }
 
 }
