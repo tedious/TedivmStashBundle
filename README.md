@@ -21,7 +21,7 @@ Add the bundle using composer, either by requiring it on the command line:
 or by adding it directly to your `composer.json` file:
 
     "require": {
-        "tedivm/stash-bundle": "0.3.*"
+        "tedivm/stash-bundle": "0.4.*"
     }
 
 Add the bundle to `app/AppKernel.php`:
