@@ -13,7 +13,7 @@
 namespace Tedivm\StashBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Stash\Drivers;
 
@@ -89,9 +89,9 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param string        $driver
-     * @param NodeInterface $rootNode
+     * @param NodeBuilder $rootNode
      */
-    public function addDriverSettings($driver, NodeInterface $rootNode)
+    public function addDriverSettings($driver, NodeBuilder $rootNode)
     {
         $driverNode = $rootNode
             ->arrayNode($driver)
