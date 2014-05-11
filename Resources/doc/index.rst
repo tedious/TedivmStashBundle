@@ -1,5 +1,5 @@
 TedivmStashBundle
-================================
+=================
 
 The **TedivmStashBundle** integrates the `Stash caching
 library <https://github.com/tedivm/Stash>`__ into Symfony, providing a
@@ -7,9 +7,8 @@ powerful abstraction for a range of caching engines. This bundle
 provides a caching service, adds Stash information to the Web Profiler
 toolbar, and adds integration for the Doctrine Common Cache library.
 
-Both the bundle and Stash are licensed under the New BSD License.
-
-Please fork us on `Github <https://github.com/tedivm/TedivmStashBundle>`__.
+Both the bundle and Stash are licensed under the New BSD License. Please
+fork us on `Github <https://github.com/tedivm/TedivmStashBundle>`__!
 
 Installation
 ------------
@@ -86,7 +85,7 @@ single driver:
 ::
 
     stash:
-        handlers: [ FileSystem]
+        drivers: [ FileSystem ]
         FileSystem: ~
 
 This cache service will be registered as ``stash.default_cache``, which
@@ -101,7 +100,7 @@ the configuration:
 ::
 
     stash:
-        handlers: [ FileSystem ]
+        drivers: [ FileSystem ]
         FileSystem:
             dirSplit: 3
             path: /tmp
@@ -115,15 +114,15 @@ separately:
 ::
 
     stash:
-        handlers: [ Apc, FileSystem ]
+        drivers: [ Apc, FileSystem ]
         Apc: ~
         FileSystem:
             path: /tmp
 
 The cache service will automatically be configured with a Composite
-handler, with the drivers queried in the specified order (for example,
-in this example, Apc would be queried first, followed by FileSystem if
-that query failed.)
+driver, with the drivers queried in the specified order (for example, in
+this example, Apc would be queried first, followed by FileSystem if that
+query failed.)
 
 In-Memory
 ~~~~~~~~~
@@ -133,12 +132,12 @@ lifetime of a single request, any values stored or retrieved from the
 cache service will be stored in memory, with the in-memory
 representation being checked before any other drivers. In some
 circumstances, however (such as long-running CLI batch scripts) this may
-not be desirable. In those cases, the in-memory handler can be disabled:
+not be desirable. In those cases, the in-memory driver can be disabled:
 
 ::
 
     stash:
-        handlers: [ Apc ]
+        drivers: [ Apc ]
         inMemory: false
         Apc: ~
 
@@ -153,7 +152,7 @@ the parameter:
 ::
 
     stash:
-        handlers: [ Apc ]
+        drivers: [ Apc ]
         registerDoctrineAdapter: true
         Apc: ~
 
@@ -184,7 +183,7 @@ directly inside the cache. To turn on the adapter, set the parameter:
 ::
 
     stash:
-        handlers: [ Apc ]
+        drivers: [ Apc ]
         registerSessionHandler: true
         Apc: ~
 
@@ -195,7 +194,7 @@ automatically be used:
 
     framework:
         session:
-            handler_id: stash.adapter.session.default_cache
+            driver_id: stash.adapter.session.default_cache
 
 Multiple Services
 ~~~~~~~~~~~~~~~~~
@@ -208,11 +207,11 @@ entirely separate:
     stash:
         caches:
             first:
-                handlers: [ FileSystem ]
+                drivers: [ FileSystem ]
                 registerDoctrineAdapter: true
                 FileSystem: ~
             second:
-                handlers: [ Apc, FileSystem ]
+                drivers: [ Apc, FileSystem ]
                 inMemory: false
                 FileSystem ~
 
@@ -276,3 +275,4 @@ individually overridden.
     Memcache:
         servers:
             - { server: 127.0.0.1, port: 11211, weight: 1 }
+

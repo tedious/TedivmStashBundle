@@ -10,7 +10,7 @@ The **TedivmStashBundle** integrates the [Stash caching library](https://github.
 powerful abstraction for a range of caching engines. This bundle provides a caching service, adds Stash information to
 the Web Profiler toolbar, and adds integration for the Doctrine Common Cache library.
 
-Both the bundle and Stash are licensed under the New BSD License.
+Both the bundle and Stash are licensed under the New BSD License. Please fork us on [Github](https://github.com/tedivm/TedivmStashBundle)!
 
 ## Installation ##
 
@@ -70,7 +70,7 @@ Then you can use the cache service directly:
 To get started quickly, you can define a single caching service with a single driver:
 
     stash:
-        handlers: [ FileSystem]
+        drivers: [ FileSystem ]
         FileSystem: ~
 
 This cache service will be registered as `stash.default_cache`, which will also be automatically aliased to `cache`.
@@ -80,7 +80,7 @@ This cache service will be registered as `stash.default_cache`, which will also 
 You can set the individual parameters of the cache driver directly in the configuration:
 
     stash:
-        handlers: [ FileSystem ]
+        drivers: [ FileSystem ]
         FileSystem:
             dirSplit: 3
             path: /tmp
@@ -90,12 +90,12 @@ You can set the individual parameters of the cache driver directly in the config
 If you want to use multiple drivers in sequence, you can list them separately:
 
     stash:
-        handlers: [ Apc, FileSystem ]
+        drivers: [ Apc, FileSystem ]
         Apc: ~
         FileSystem:
             path: /tmp
 
-The cache service will automatically be configured with a Composite handler, with the drivers queried in the specified
+The cache service will automatically be configured with a Composite driver, with the drivers queried in the specified
 order (for example, in this example, Apc would be queried first, followed by FileSystem if that query failed.)
 
 ### In-Memory ###
@@ -103,10 +103,10 @@ order (for example, in this example, Apc would be queried first, followed by Fil
 By default, every cache service includes in-memory caching: during the lifetime of a single request, any values stored
 or retrieved from the cache service will be stored in memory, with the in-memory representation being checked before
 any other drivers. In some circumstances, however (such as long-running CLI batch scripts) this may not be desirable.
-In those cases, the in-memory handler can be disabled:
+In those cases, the in-memory driver can be disabled:
 
     stash:
-        handlers: [ Apc ]
+        drivers: [ Apc ]
         inMemory: false
         Apc: ~
 
@@ -116,7 +116,7 @@ Stash provides a Doctrine cache adapter so that your Stash caching service can b
 a DoctrineCacheInterface object. To turn on the adapter for a service, set the parameter:
 
     stash:
-        handlers: [ Apc ]
+        drivers: [ Apc ]
         registerDoctrineAdapter: true
         Apc: ~
 
@@ -141,7 +141,7 @@ Stash provides a session adapter to allow Symfony sessions to be stored directly
 adapter, set the parameter:
 
     stash:
-        handlers: [ Apc ]
+        drivers: [ Apc ]
         registerSessionHandler: true
         Apc: ~
 
@@ -149,7 +149,7 @@ Once it's enabled, enable it in the framework bundle and it will automatically b
 
     framework:
         session:
-            handler_id: stash.adapter.session.default_cache
+            driver_id: stash.adapter.session.default_cache
 
 ### Multiple Services ###
 
@@ -158,11 +158,11 @@ You can also configure multiple services, each of which stores is entirely separ
     stash:
         caches:
             first:
-                handlers: [ FileSystem ]
+                drivers: [ FileSystem ]
                 registerDoctrineAdapter: true
                 FileSystem: ~
             second:
-                handlers: [ Apc, FileSystem ]
+                drivers: [ Apc, FileSystem ]
                 inMemory: false
                 FileSystem ~
 
