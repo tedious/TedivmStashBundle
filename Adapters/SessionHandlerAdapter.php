@@ -12,6 +12,8 @@
 
 namespace Tedivm\StashBundle\Adapters;
 
+use Tedivm\StashBundle\Adapters\SessionHandlerAdapterShim as SessionHandlerAdapterShim;
+
 /**
  * Class SessionHandlerAdapter
  * @package Tedivm\StashBundle\Adapters
