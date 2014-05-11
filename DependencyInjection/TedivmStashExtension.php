@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the StashBundle package.
+ *
+ * (c) Josh Hall-Bachner <jhallbachner@gmail.com>
+ * (c) Robert Hafner <tedivm@tedivm.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tedivm\StashBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -11,14 +21,22 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
+ * Class TedivmStashExtension
+ *
  * Bundle extension to handle configuration of the Stash bundle. Based on the specification provided
  * in the configuration file, this extension instantiates and dynamically injects the selected caching provider into
  * the Stash service, passing it any driver-specific settings from the configuration.
  *
+ * @package Tedivm\StashBundle\DependencyInjection
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
  */
 class TedivmStashExtension extends Extension
 {
+
+    /**
+     * {@inheritdoc}
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -122,6 +140,9 @@ class TedivmStashExtension extends Extension
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'stash';

@@ -1,8 +1,24 @@
 <?php
 
+/*
+ * This file is part of the StashBundle package.
+ *
+ * (c) Josh Hall-Bachner <jhallbachner@gmail.com>
+ * (c) Robert Hafner <tedivm@tedivm.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tedivm\StashBundle\Adapters;
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
+/**
+ * Class DoctrineAdapter
+ * @package Tedivm\StashBundle\Adapters
+ * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
+ */
 class DoctrineAdapter implements DoctrineCacheInterface
 {
     /**
@@ -26,6 +42,11 @@ class DoctrineAdapter implements DoctrineCacheInterface
      */
     protected $caches = array();
 
+    /**
+     * Initializes
+     *
+     * @param \Tedivm\StashBundle\Service\CacheService $cacheService
+     */
     public function __construct($cacheService)
     {
         $this->cacheService = $cacheService;

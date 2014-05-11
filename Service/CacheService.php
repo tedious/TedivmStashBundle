@@ -1,18 +1,32 @@
 <?php
 
+/*
+ * This file is part of the StashBundle package.
+ *
+ * (c) Josh Hall-Bachner <jhallbachner@gmail.com>
+ * (c) Robert Hafner <tedivm@tedivm.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tedivm\StashBundle\Service;
 use Stash\Drivers;
 use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
 
 /**
- * Simple result-object provider for the Stash class.
- *
+ * Class CacheService
+ * @package Tedivm\StashBundle\Service
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
  */
 class CacheService extends Pool
 {
 
+    /**
+     * {@inheritdoc}
+     */
     protected $itemClass = '\Tedivm\StashBundle\Service\CacheItem';
 
     /**
@@ -40,11 +54,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns a Stash caching object for the specified key. The key can be either a series of string arguments,
-     * or an array.
-     *
-     * @param  mixed     $key,... String Representing the key
-     * @return CacheItem
+     * {@inheritdoc}
      */
     public function getItem()
     {
@@ -65,10 +75,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Clears the cache for the key, or if none is specified clears the entire cache. The key can be either
-     * a series of string arguments, or an array.
-     *
-     * @param mixed $key,... String Representing the key
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -93,7 +100,7 @@ class CacheService extends Pool
     }
 
     /**
-     * Returns the current tracker
+     * Returns the current tracker.
      *
      * @return CacheTracker|false
      */

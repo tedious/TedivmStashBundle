@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the StashBundle package.
+ *
+ * (c) Josh Hall-Bachner <jhallbachner@gmail.com>
+ * (c) Robert Hafner <tedivm@tedivm.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tedivm\StashBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
@@ -7,10 +17,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Stash\Drivers;
 
 /**
+ * Class CacheDataCollector
+ *
  * Collects data stored in the static variables of the Stash class for use in profiling/debugging. Currently
  * records total cache calls and returns, along with calls and returns on each individual cache node.
  *
+ * @package Tedivm\StashBundle\Collector
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
+ * @author Robert Hafner <tedivm@tedivm.com>
  */
 class CacheDataCollector extends DataCollector
 {
