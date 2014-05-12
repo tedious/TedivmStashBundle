@@ -21,19 +21,13 @@
 
 #### Test Suite
 
-*   98% code coverage.
+*   98% code coverage- more than half of the changes from this update come from improved test suites.
 
-    Seriously, so much testing. Well more than half of the changes from this update come from improved test suites.
-
-*   Extends Parent Test Suites.
-
-    In addition to the bundle specific tests, this suite is now tested against relevant upstream code. This means, for
-    example, that the CacheService passes all of the Stash\Pool tests, CacheItem the Stash\Item tests, and the
-    DoctrineAdapter passes all of the available Doctrine Cache tests.
+*   Test against parent/upstream test suites.
 
 *   Enforcement of Formatting and Coding Standards.
 
-*   Refactored Internal API for easier testing.
+*   Refactored internal API for easier testing.
 
 *   Improved Travis-CI Integration.
 
