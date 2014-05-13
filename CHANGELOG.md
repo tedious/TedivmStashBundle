@@ -5,6 +5,8 @@
 
 *   Full HHVM Support.
 
+*   Upgrade to Stash v0.12
+
 *   Removed PEAR Support.
 
 *   Added metadocuments like LICENSE, CONTRIBUTORS, and docs/index.srt.
