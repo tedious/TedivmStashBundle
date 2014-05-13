@@ -2,7 +2,16 @@
     "name": "tedivm/stash-bundle",
     "type": "symfony-bundle",
     "description": "Incorporates the Stash caching library into Symfony.",
-    "keywords": ["caching","symfony","sessions"],
+    "keywords": [
+        "apc",
+        "cache",
+        "caching",
+        "memcached",
+        "redis",
+        "sessions",
+        "stash",
+        "symfony"
+    ],
     "homepage": "http://github.com/tedivm/TedivmStashBundle",
     "license": "BSD-3-Clause",
     "authors": [
@@ -29,7 +38,6 @@
         "doctrine/cache": "~1.0"
     },
     "autoload": {
-        "psr-0": {"Tedivm\\StashBundle": ""}
-    },
-    "target-dir": "Tedivm/StashBundle"
+        "psr-4": {"Tedivm\\StashBundle\\": ""}
+    }
 }
