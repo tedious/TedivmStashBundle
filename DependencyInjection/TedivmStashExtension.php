@@ -45,7 +45,7 @@ class TedivmStashExtension extends Extension
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $configs);
 
-        $container->setAlias('cache', sprintf('stash.%s_cache', $config['default_cache']));
+        $container->setAlias('stash', sprintf('stash.%s_cache', $config['default_cache']));
 
         $lq = isset($config['tracking'])
             ? $config['tracking']
