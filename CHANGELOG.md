@@ -37,6 +37,12 @@
 
 #### API
 
+
+*   Renamed service container alias from "cache" to "stash".
+
+    This prevents overlap with the Symfony defined "cache" item, which is part of the HTTPCache package.
+
+
 *   Renamed CacheLogger to CacheTracker
 
     This is to prevent collision with the setLogger(\Psr\Logger) functionality.
