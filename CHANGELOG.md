@@ -49,14 +49,18 @@
 
     This is to prevent collision with the setLogger(\Psr\Logger) functionality.
 
+
 *   Renamed Handlers to Drivers (including HandlerFactory to DriverFactory
 
-    This maintains parity with Stash, which refers to the back end interface code as drivers.
+    This maintains parity with Stash, which refers to the back end interface code as drivers. Configurations that use
+    "handlers" will still work, although new configurations should use the new nomenclature.
+
 
 *   Removed CacheResultObject wrapper in favor of extending the Stash\Item class
 
     This means the Service\CacheService returns Service\CacheItems instead, which are extensions of the Stash\Item
     class. This reduces the abstraction between Stash and the developer down to the absolute minimum.
+
 
 *   Reduced dependencies significantly
 
