@@ -234,8 +234,6 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-
-
     /**
      * Used to normalize configuration values.
      *
