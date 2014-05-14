@@ -94,7 +94,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getCachesNode()
     {
-        $drivers = array_keys(Drivers::getDrivers());
+        $drivers = array_keys(Drivers::getAvailableDrivers());
 
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('caches');

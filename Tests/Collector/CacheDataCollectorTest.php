@@ -113,7 +113,7 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
         $drivers = $collector->getDrivers();
         $this->assertInternalType('array', $drivers, 'getDrivers returns an array');
 
-        $systemDrivers = array_keys(Drivers::getDrivers());
+        $systemDrivers = array_keys(Drivers::getAvailableDrivers());
 
         $this->assertFalse(in_array('Ephemeral', $drivers), 'getDrivers does not include Ephemeral driver');
         $this->assertFalse(in_array('Composite', $drivers), 'getDrivers does not include Composite driver');

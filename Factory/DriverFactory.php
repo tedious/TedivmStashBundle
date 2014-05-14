@@ -32,7 +32,7 @@ class DriverFactory
      */
     public static function createDriver($types, $options)
     {
-        $drivers = Drivers::getDrivers();
+        $drivers = Drivers::getAvailableDrivers();
 
         $h = array();
 

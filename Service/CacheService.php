@@ -96,7 +96,7 @@ class CacheService extends Pool
      */
     public function getDrivers()
     {
-        return Drivers::getDrivers();
+        return Drivers::getAvailableDrivers();
     }
 
     /**

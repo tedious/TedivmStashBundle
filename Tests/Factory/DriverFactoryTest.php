@@ -66,7 +66,7 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->drivers = Drivers::getDrivers();
+        $this->drivers = Drivers::getAvailableDrivers();
     }
 
     /**
