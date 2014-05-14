@@ -64,7 +64,7 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
     public function testGetDrivers()
     {
         $service = $this->getCacheService();
-        $this->assertEquals(Drivers::getDrivers(), $service->getDrivers(), 'Service available drivers');
+        $this->assertEquals(Drivers::getAvailableDrivers(), $service->getDrivers(), 'Service available drivers');
     }
 
     public function testCacheService()

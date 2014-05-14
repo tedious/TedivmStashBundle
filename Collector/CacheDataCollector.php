@@ -93,7 +93,7 @@ class CacheDataCollector extends DataCollector
             $info['caches'][$name]['hits'] = $hits;
         }
 
-        $drivers = Drivers::getDrivers();
+        $drivers = Drivers::getAvailableDrivers();
         foreach ($drivers as $name => $class) {
             if (!in_array($name, array('Ephemeral', 'Composite'))) {
                 $info['availableDrivers'][] = $name;
