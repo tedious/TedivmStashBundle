@@ -49,6 +49,7 @@ class DriverFactory
             }
 
             $class = $drivers[$type];
+
             if ($type === 'Memcache' && isset($options[$type])) {
                 // Fix servers spec since underlying drivers expect plain arrays, not hashes.
                 $servers = array();
@@ -64,7 +65,9 @@ class DriverFactory
             }
 
             $opts = isset($options[$type]) ? $options[$type] : array();
-            $h[] = new $class($opts);
+            $driver = new $class();
+            $driver->setOptions($opts);
+            $h[] = $driver;
         }
 
         if (count($h) == 1) {
@@ -72,7 +75,8 @@ class DriverFactory
         }
 
         $class = $drivers['Composite'];
-        $driver = new $class(array('drivers' => $h));
+        $driver = new $class();
+        $driver->setOptions(array('drivers' => $h));
 
         return $driver;
     }
