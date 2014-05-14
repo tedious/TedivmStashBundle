@@ -92,4 +92,15 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Cache1', $returnedData['default_cache'], 'Normalization sets first cache to default.');
     }
 
+    public function testNormalizeHandlerToDriverConfig()
+    {
+        $testData = array(  'handlers' => 'TheCacheSettings');
+
+        $returnedData = Configuration::normalizeHandlerToDriverConfig($testData);
+
+        $this->assertInternalType('array', $returnedData, 'Returns array.');
+        $this->assertArrayHasKey('drivers', $returnedData, 'Normalization converts "handlers" to "drivers"');
+        $this->assertEquals($testData['handlers'], $returnedData['drivers'], 'Normalization converts "handlers" to "drivers"');
+    }
+
 }

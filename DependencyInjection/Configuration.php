@@ -218,6 +218,19 @@ class Configuration implements ConfigurationInterface
         return $v;
     }
 
+    /**
+     * Used to make configurations from <0.4 compatibility with the new version.
+     *
+     * @param  array $v
+     * @return array
+     */
+    public static function normalizeHandlerToDriverConfig($v)
+    {
+        $v['drivers'] = $v['handlers'];
+
+        return $v;
+    }
+
     protected function getCachesNode()
     {
         $drivers = array_keys(Drivers::getDrivers());
@@ -226,7 +239,14 @@ class Configuration implements ConfigurationInterface
         $node = $treeBuilder->root('caches');
 
         $childNode = $node
+            ->fixXmlConfig('handler')
             ->fixXmlConfig('driver')
+            ->beforeNormalization()
+                ->ifTrue(function ($v) { return is_array($v) && array_key_exists('handlers', $v); })
+                ->then(function ($v) {
+                    return Configuration::normalizeHandlerToDriverConfig($v);
+                })
+            ->end()
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('array')
