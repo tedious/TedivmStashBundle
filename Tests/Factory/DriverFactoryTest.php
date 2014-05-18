@@ -13,7 +13,7 @@
 namespace Tedivm\StashBundle\Tests\Factory;
 
 use Tedivm\StashBundle\Factory\DriverFactory;
-use Stash\Drivers;
+use Stash\DriverList;
 
 /**
  * Class DriverFactoryTest
@@ -66,7 +66,7 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->drivers = Drivers::getAvailableDrivers();
+        $this->drivers = DriverList::getAvailableDrivers();
     }
 
     /**
@@ -122,7 +122,7 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnavailableDriverException()
     {
-        Drivers::registerDriver('FakeDriver', 'Stash\Test\Stubs\DriverUnavailableStub');
+        DriverList::registerDriver('FakeDriver', 'Stash\Test\Stubs\DriverUnavailableStub');
         DriverFactory::createDriver(array('FakeDriver'), array());
     }
 

@@ -15,7 +15,7 @@ namespace Tedivm\StashBundle\Tests\Service;
 use Tedivm\StashBundle\Service\CacheService;
 use Tedivm\StashBundle\Service\CacheTracker;
 use Stash\Driver\Ephemeral;
-use Stash\Drivers;
+use Stash\DriverList;
 
 /**
  * Class CacheServiceTest
@@ -64,7 +64,7 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
     public function testGetDrivers()
     {
         $service = $this->getCacheService();
-        $this->assertEquals(Drivers::getAvailableDrivers(), $service->getDrivers(), 'Service available drivers');
+        $this->assertEquals(DriverList::getAvailableDrivers(), $service->getDrivers(), 'Service available drivers');
     }
 
     public function testCacheService()

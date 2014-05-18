@@ -11,7 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Factory;
-use Stash\Drivers;
+use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
 
 /**
@@ -32,14 +32,14 @@ class DriverFactory
      */
     public static function createDriver($types, $options)
     {
-        $drivers = Drivers::getAvailableDrivers();
+        $drivers = DriverList::getAvailableDrivers();
 
         $h = array();
 
         foreach ($types as $type) {
 
             if (!isset($drivers[$type])) {
-                $allDrivers = Drivers::getAllDrivers();
+                $allDrivers = DriverList::getAllDrivers();
 
                 if (isset($allDrivers[$type])) {
                     throw new \RuntimeException('Driver currently unavailable.');

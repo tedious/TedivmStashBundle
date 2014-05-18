@@ -14,7 +14,7 @@ namespace Tedivm\StashBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stash\Drivers;
+use Stash\DriverList;
 
 /**
  * Class CacheDataCollector
@@ -93,7 +93,7 @@ class CacheDataCollector extends DataCollector
             $info['caches'][$name]['hits'] = $hits;
         }
 
-        $drivers = Drivers::getAvailableDrivers();
+        $drivers = DriverList::getAvailableDrivers();
         foreach ($drivers as $name => $class) {
             if (!in_array($name, array('Ephemeral', 'Composite'))) {
                 $info['availableDrivers'][] = $name;

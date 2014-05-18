@@ -11,7 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Service;
-use Stash\Drivers;
+use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
 
@@ -96,7 +96,7 @@ class CacheService extends Pool
      */
     public function getDrivers()
     {
-        return Drivers::getAvailableDrivers();
+        return DriverList::getAvailableDrivers();
     }
 
     /**
