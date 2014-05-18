@@ -12,7 +12,7 @@
 
 namespace Tedivm\StashBundle\Tests\Collector;
 
-use \Stash\Drivers;
+use \Stash\DriverList;
 use \Tedivm\StashBundle\Service\CacheTracker as Tracker;
 
 /**
@@ -113,7 +113,7 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
         $drivers = $collector->getDrivers();
         $this->assertInternalType('array', $drivers, 'getDrivers returns an array');
 
-        $systemDrivers = array_keys(Drivers::getAvailableDrivers());
+        $systemDrivers = array_keys(DriverList::getAvailableDrivers());
 
         $this->assertFalse(in_array('Ephemeral', $drivers), 'getDrivers does not include Ephemeral driver');
         $this->assertFalse(in_array('Composite', $drivers), 'getDrivers does not include Composite driver');

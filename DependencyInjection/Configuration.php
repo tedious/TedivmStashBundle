@@ -15,7 +15,7 @@ namespace Tedivm\StashBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Stash\Drivers;
+use Stash\DriverList;
 
 /**
  * Class Configuration
@@ -94,7 +94,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getCachesNode()
     {
-        $drivers = array_keys(Drivers::getAvailableDrivers());
+        $drivers = array_keys(DriverList::getAvailableDrivers());
 
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('caches');
