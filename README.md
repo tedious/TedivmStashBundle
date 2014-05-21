@@ -1,16 +1,16 @@
-# TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedivm/TedivmStashBundle.svg?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
+# TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedious/TedivmStashBundle.svg?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
 
 [![License](http://img.shields.io/packagist/l/tedivm/stash-bundle.svg)](https://github.com/tedivm/TedivmStashBundle/blob/master/LICENSE)
-[![Latest Stable Version](http://img.shields.io/github/release/tedivm/TedivmStashBundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
-[![Coverage Status](http://img.shields.io/coveralls/tedivm/TedivmStashBundle.svg)](https://coveralls.io/r/tedivm/TedivmStashBundle?branch=master)
+[![Latest Stable Version](http://img.shields.io/github/release/tedious/TedivmStashBundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
+[![Coverage Status](http://img.shields.io/coveralls/tedious/TedivmStashBundle.svg)](https://coveralls.io/r/tedivm/TedivmStashBundle?branch=master)
 [![Total Downloads](http://img.shields.io/packagist/dt/tedivm/stash-bundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
 
 
-The **TedivmStashBundle** integrates the [Stash caching library](https://github.com/tedivm/Stash) into Symfony, providing a
+The **TedivmStashBundle** integrates the [Stash caching library](https://github.com/tedious/Stash) into Symfony, providing a
 powerful abstraction for a range of caching engines. This bundle provides a caching service, adds Stash information to
 the Web Profiler toolbar, and adds integration for the Doctrine Common Cache library.
 
-Both the bundle and Stash are licensed under the New BSD License. Please fork us on [Github](https://github.com/tedivm/TedivmStashBundle)!
+Both the bundle and Stash are licensed under the New BSD License. Please fork us on [Github](https://github.com/tedious/TedivmStashBundle)!
 
 ## Installation ##
 
