@@ -12,7 +12,7 @@
         "stash",
         "symfony"
     ],
-    "homepage": "http://github.com/tedivm/TedivmStashBundle",
+    "homepage": "http://github.com/tedious/TedivmStashBundle",
     "license": "BSD-3-Clause",
     "authors": [
         {
