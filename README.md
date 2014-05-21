@@ -1,8 +1,8 @@
-# TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedious/TedivmStashBundle.svg?branch=master)](http://travis-ci.org/tedivm/TedivmStashBundle)
+# TedivmStashBundle [![Build Status](https://secure.travis-ci.org/tedious/TedivmStashBundle.svg?branch=master)](http://travis-ci.org/tedious/TedivmStashBundle)
 
-[![License](http://img.shields.io/packagist/l/tedivm/stash-bundle.svg)](https://github.com/tedivm/TedivmStashBundle/blob/master/LICENSE)
+[![License](http://img.shields.io/packagist/l/tedivm/stash-bundle.svg)](https://github.com/tedious/TedivmStashBundle/blob/master/LICENSE)
 [![Latest Stable Version](http://img.shields.io/github/release/tedious/TedivmStashBundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
-[![Coverage Status](http://img.shields.io/coveralls/tedious/TedivmStashBundle.svg)](https://coveralls.io/r/tedivm/TedivmStashBundle?branch=master)
+[![Coverage Status](http://img.shields.io/coveralls/tedious/TedivmStashBundle.svg)](https://coveralls.io/r/tedious/TedivmStashBundle?branch=master)
 [![Total Downloads](http://img.shields.io/packagist/dt/tedivm/stash-bundle.svg)](https://packagist.org/packages/tedivm/stash-bundle)
 
 
