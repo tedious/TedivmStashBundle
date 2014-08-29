@@ -180,14 +180,14 @@ When multiple caches are defined, you can manually define a default, which will 
 
 If you don't, the first service defined will be set as the default.
 
-### Logging ###
+### Tracking ###
 
-StashBundle includes a module which logs the keys of all cache queries made during a request for debugging purposes. By
-default this module is enabled in the `dev` and `test` environments but disabled elsewhere. However, if you want to
+StashBundle includes a module which tracks the keys of all cache queries made during a request for debugging purposes.
+By default this module is enabled in the `dev` and `test` environments but disabled elsewhere. However, if you want to 
 override the default behavior, you can enable or disable this behavior in the configuration:
 
     stash:
-        logging: true # enables query logging, false to disable
+        tracking: true # enables query logging, false to disable
 
 ## Stash Driver Configuration ##
 
