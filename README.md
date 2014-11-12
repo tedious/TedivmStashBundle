@@ -149,7 +149,7 @@ Once it's enabled, enable it in the framework bundle and it will automatically b
 
     framework:
         session:
-            driver_id: stash.adapter.session.default_cache
+            handler_id: stash.adapter.session.default_cache
 
 ### Multiple Services ###
 
