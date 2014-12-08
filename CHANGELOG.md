@@ -1,5 +1,12 @@
-
 ## Tedivm StashBundle v0.4 Changelog
+
+### 0.4.2
+
+*  Added support for Filesystem Encoder options.
+
+*  Updated documention.
+
+
 
 ### 0.4.1
 
@@ -20,7 +27,6 @@
 *   Improved Redis support.
 
 
-
 #### Test Suite
 
 *   98% code coverage- more than half of the changes from this update come from improved test suites.
@@ -34,7 +40,6 @@
 *   Improved Travis-CI Integration.
 
 *   Coveralls Support.
-
 
 
 #### API
