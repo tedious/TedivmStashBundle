@@ -195,6 +195,7 @@ Each driver comes with a set of default options which can be individually overri
 
     FileSystem:
         dirSplit:               2
+        encoder:                Native
         path:                   %kernel.cache_dir%/stash
         filePermissions:        0660
         dirPermissions:         0770

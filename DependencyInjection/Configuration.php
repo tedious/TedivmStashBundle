@@ -38,7 +38,8 @@ class Configuration implements ConfigurationInterface
             'filePermissions'   => 0660,
             'dirPermissions'    => 0770,
             'memKeyLimit'       => 200,
-            'keyHashFunction'   => 'md5'
+            'keyHashFunction'   => 'md5',
+            'encoder'           => 'Native'
         ),
         'SQLite' => array(
             'filePermissions'   => 0660,
