@@ -101,8 +101,9 @@ class TedivmStashExtension extends Extension
             ->setAbstract(false)
         ;
 
+        $cacheDefinition = new DefinitionDecorator('stash.cache');
         $container
-            ->setDefinition(sprintf('stash.%s_cache', $name), new DefinitionDecorator('stash.cache'))
+            ->setDefinition(sprintf('stash.%s_cache', $name), $cacheDefinition)
             ->setArguments(array(
                 $name,
                 new Reference(sprintf('stash.driver.%s_cache', $name)),
@@ -110,6 +111,10 @@ class TedivmStashExtension extends Extension
             ))
             ->setAbstract(false)
         ;
+            
+        if (isset($cache['logger']) && $cache['logger']) {
+            $cacheDefinition->addMethodCall('setLogger', array(new Reference($cache['logger'])));
+        }
 
         if (interface_exists("\\Doctrine\\Common\\Cache\\Cache") && $doctrine) {
             $container
