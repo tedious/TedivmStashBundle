@@ -150,6 +150,16 @@ Once it's enabled, enable it in the framework bundle and it will automatically b
     framework:
         session:
             handler_id: stash.adapter.session.default_cache
+            
+### Logger ###
+
+Stash supports PSR Compliant logging libraries, you can specify which library is used by passing the logger's
+service name as a parameter:
+
+	stash:
+		drivers: [ FileSystem ]
+		logger: logger
+		FileSystem: ~ 
 
 ### Multiple Services ###
 
@@ -164,7 +174,8 @@ You can also configure multiple services, each of which stores is entirely separ
             second:
                 drivers: [ Apc, FileSystem ]
                 inMemory: false
-                FileSystem ~
+                logger: logger
+                FileSystem: ~
 
 Each service is defined with keys inside a separate, distinct internal namespace, so you can use multiple services to
 avoid key collisions between distinct services even if you only have a single backend available.
