@@ -111,7 +111,7 @@ class TedivmStashExtension extends Extension
             ))
             ->setAbstract(false)
         ;
-            
+
         if (isset($cache['logger']) && $cache['logger']) {
             $cacheDefinition->addMethodCall('setLogger', array(new Reference($cache['logger'])));
         }

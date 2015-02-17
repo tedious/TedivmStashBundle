@@ -51,7 +51,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                 $value = isset($cache[$item]) ? $cache[$item] : false;
                 $this->assertEquals($cacheoptions[$item], $value);
             }
-			
+
             foreach (array('logger') as $item) {
                 $value = isset($cache[$item]) ? $cache[$item] : null;
                 $this->assertEquals($cacheoptions[$item], $value);
