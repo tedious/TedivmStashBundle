@@ -126,7 +126,7 @@ class Configuration implements ConfigurationInterface
             ->booleanNode('registerDoctrineAdapter')->defaultFalse()->end()
             ->booleanNode('registerSessionHandler')->defaultFalse()->end()
             ->booleanNode('inMemory')->defaultTrue()->end()
-            ->scalarNode('logger')->end()
+            ->scalarNode('logger')->defaultNull()->end()
         ;
 
         foreach ($drivers as $driver) {
