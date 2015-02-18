@@ -52,6 +52,11 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($cacheoptions[$item], $value);
             }
 
+            foreach (array('logger') as $item) {
+                $value = isset($cache[$item]) ? $cache[$item] : null;
+                $this->assertEquals($cacheoptions[$item], $value);
+            }
+
             if (isset($cache['drivers'])) {
                 foreach ($cache['drivers'] as $driver) {
                     $driveroptions = $cache[$driver];
@@ -107,6 +112,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                             'drivers' => array('SQLite'),
                             'registerDoctrineAdapter' => true,
                             'registerSessionHandler' => false,
+                            'logger' => null,
                             'inMemory' => true,
                             'SQLite' => array(
                                 'filePermissions'   => 0550,
@@ -118,6 +124,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                             'drivers' => array('FileSystem', 'SQLite'),
                             'registerDoctrineAdapter' => true,
                             'registerSessionHandler' => true,
+                            'logger' => 'logger',
                             'inMemory' => true,
                             'FileSystem' => array(
                                 'filePermissions'   => 0770,
