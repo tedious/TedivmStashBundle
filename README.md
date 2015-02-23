@@ -69,7 +69,7 @@ $info = $item->get();
 if($item->isMiss())
 {
     $info = loadInfo($id);
-    $item->store($userInfo);
+    $item->set($userInfo);
 }
 
 return $info;
