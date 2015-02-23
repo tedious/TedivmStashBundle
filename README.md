@@ -62,14 +62,14 @@ $pool = $this->container->get('stash.custom_cache');
 Then you can use the cache service directly:
 
 ```php
-$item = $pool->getItem($id, 'info');
+$item = $pool->getItem($id, 'info'); // cache keys, more than one can be used
 
 $info = $item->get();
 
 if($item->isMiss())
 {
     $info = loadInfo($id);
-    $item->set($userInfo);
+    $item->set($userInfo, 60); // second parameter is TTL (in seconds or future \Datetime object)
 }
 
 return $info;
