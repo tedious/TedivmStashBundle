@@ -19,10 +19,9 @@
         <service id="stash.driver"
             class="%stash.driver.class%"
             abstract="true"
-            synthetic="true"
-            factory-method="createDriver"
-            factory-class="%stash.factory.class%"
-        />
+            synthetic="true">
+            <factory class="%stash.factory.class%" method="createDriver" />
+        </service>
         <service id="stash.adapter.doctrine" class="%stash.adapter.doctrine.class%" abstract="true"/>
         <service id="stash.adapter.session" class="%stash.adapter.session.class%" abstract="true"/>
         <service id="data_collector.stash" class="%stash.data_collector.class%">
