@@ -50,7 +50,7 @@ stash: ~
 Just fetch the default cache pool service:
 
 ```php
-$pool = $this->container->get('cache');
+$pool = $this->container->get('stash');
 ```
 
 Or a custom-defined cache pool:
