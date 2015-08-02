@@ -1,3 +1,10 @@
+## Tedivm StashBundle v0.5 Changelog
+
+### 0.5.1
+
+*  Dropped support for PHP 5.3.
+
+
 ## Tedivm StashBundle v0.4 Changelog
 
 ### 0.4.2

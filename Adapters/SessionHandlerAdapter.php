@@ -12,7 +12,7 @@
 
 namespace Tedivm\StashBundle\Adapters;
 
-use Tedivm\StashBundle\Adapters\SessionHandlerAdapterShim as SessionHandlerAdapterShim;
+use Stash\Session;
 
 /**
  * Class SessionHandlerAdapter
@@ -20,7 +20,7 @@ use Tedivm\StashBundle\Adapters\SessionHandlerAdapterShim as SessionHandlerAdapt
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class SessionHandlerAdapter extends SessionHandlerAdapterShim
+class SessionHandlerAdapter extends Session
 {
     protected function getCache($session_id)
     {
