@@ -18,7 +18,7 @@ namespace Tedivm\StashBundle\Adapters;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class SessionHandlerAdapter extends \SessionHandlerInterface
+class SessionHandlerAdapter implements \SessionHandlerInterface
 {
     protected function getCache($session_id)
     {
