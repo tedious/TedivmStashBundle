@@ -4,6 +4,11 @@
 
 *  Dropped support for PHP 5.3.
 
+*  Added 'logger' config parameter to caches so that they may be injected when each cache is created.
+
+* Compatibility updates for our upstream projects.
+
+
 
 ## Tedivm StashBundle v0.4 Changelog
 
@@ -12,7 +17,6 @@
 *  Added support for Filesystem Encoder options.
 
 *  Updated documention.
-
 
 
 ### 0.4.1
