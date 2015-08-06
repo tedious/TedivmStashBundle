@@ -112,6 +112,10 @@ class TedivmStashExtension extends Extension
             ->setAbstract(false)
         ;
 
+        if (isset($cache['itemClass']) && $cache['itemClass'] && class_exists($cache['itemClass'])) {
+            $cacheDefinition->addMethodCall('setItemClass', array($cache['itemClass']));
+        }
+
         if (isset($cache['logger']) && $cache['logger']) {
             $cacheDefinition->addMethodCall('setLogger', array(new Reference($cache['logger'])));
         }

@@ -13,6 +13,7 @@
 namespace Tedivm\StashBundle\Service;
 use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
+use Stash\Interfaces\ItemInterface;
 use Stash\Pool;
 
 /**
@@ -23,12 +24,6 @@ use Stash\Pool;
  */
 class CacheService extends Pool
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $itemClass = '\Tedivm\StashBundle\Service\CacheItem';
-
     /**
      * @var CacheTracker|null
      */
@@ -64,10 +59,12 @@ class CacheService extends Pool
         if(count($args) == 1 && is_array($args[0]))
             $args = $args[0];
 
-        /** @var CacheItem $item */
+        /** @var ItemInterface $item */
         $item = parent::getItem($args);
 
         if (isset($this->tracker)) {
+            /** @var CacheItemWrapper $item */
+           $item = new CacheItemWrapper($item);
            $item->setCacheTracker($this->tracker);
         }
 
