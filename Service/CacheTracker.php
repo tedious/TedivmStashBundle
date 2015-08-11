@@ -89,7 +89,7 @@ class CacheTracker
         }
 
         $hit = $hit ? 'true' : 'false';
-        $value = sprintf('(%s) %s', gettype($value), print_r($value, true));
+        $value = sprintf('(%s) %s', gettype($value), @print_r($value, true));
 
         $this->queries[] = array(
             'key'   => $key,
