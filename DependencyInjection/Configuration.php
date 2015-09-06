@@ -80,6 +80,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('default_cache')->end()
                 ->booleanNode('tracking')->end()
+                ->booleanNode('tracking_values')->defaultTrue()->end()
             ->end()
             ->fixXmlConfig('cache')
             ->append($this->getCachesNode())
@@ -251,7 +252,7 @@ class Configuration implements ConfigurationInterface
     {
         $cache = array();
         foreach ($v as $key => $value) {
-            if (in_array($key, array('default_cache', 'tracking'))) {
+            if (in_array($key, array('default_cache', 'tracking', 'tracking_values'))) {
                 continue;
             }
             $cache[$key] = $v[$key];

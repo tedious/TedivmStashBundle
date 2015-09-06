@@ -235,6 +235,7 @@ override the default behavior, you can enable or disable this behavior in the co
 ```yaml
 stash:
     tracking: true # enables query logging, false to disable
+    tracking_values: true # enables query logging of full cache values, false to disable
 ```
 
 ## Stash Driver Configuration ##
