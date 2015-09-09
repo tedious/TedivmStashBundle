@@ -110,7 +110,7 @@ class CacheTracker
         $hit = $hit ? 'true' : 'false';
 
         if ($this->logQueryValues) {
-            $value = sprintf('(%s) %s', gettype($value), print_r($value, true));
+            $value = sprintf('(%s) %s', gettype($value), @print_r($value, true));
         } else {
             $value = sprintf('(%s)', gettype($value));
         }
