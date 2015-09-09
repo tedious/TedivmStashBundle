@@ -247,6 +247,7 @@ disable this behavior in the configuration:
 
     stash:
         tracking: true # enables query logging, false to disable
+        tracking_values: true # enables query logging of full cache values, false to disable
 
 Stash Driver Configuration
 --------------------------

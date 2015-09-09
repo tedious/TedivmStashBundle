@@ -55,14 +55,15 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeCacheConfig()
     {
-        $testData = array('default_cache' => 'test', 'tracking' => 'test');
+        $testData = array('default_cache' => 'test', 'tracking' => 'test', 'tracking_values' => 'test2');
         $returnedData = Configuration::normalizeCacheConfig($testData);
 
         $this->assertInternalType('array', $returnedData, 'Returns array.');
         $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization skips default_cache');
         $this->assertArrayHasKey('tracking', $returnedData, 'Normalization skips tracking');
+        $this->assertArrayHasKey('tracking_values', $returnedData, 'Normalization skips tracking_values');
 
-        $testData = array('tracking' => 'test');
+        $testData = array('tracking' => 'test', 'tracking_values' => 'test2');
         $returnedData = Configuration::normalizeCacheConfig($testData);
         $this->assertArrayHasKey('default_cache', $returnedData, 'Normalization adds default_cache when missing');
 

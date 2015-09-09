@@ -52,6 +52,9 @@ class TedivmStashExtension extends Extension
             : (in_array($container->getParameter('kernel.environment'), array('dev', 'test')));
         $container->setParameter('stash.tracker', $lq);
 
+        $lqv = isset($config['tracking_values']) ? $config['tracking_values'] : true;
+        $container->setParameter('stash.tracking_values', $lqv);
+
         $caches = array();
         $options = array();
         foreach ($config['caches'] as $name => $cache) {
@@ -68,6 +71,7 @@ class TedivmStashExtension extends Extension
     protected function addCacheService($name, $cache, $container)
     {
         $logqueries = $container->getParameter('stash.tracker');
+        $logQueryValues = $container->getParameter('stash.tracking_values');
         $drivers = isset($cache['drivers']) ? $cache['drivers'] : array();
 
         unset($cache['drivers']);
@@ -98,6 +102,7 @@ class TedivmStashExtension extends Extension
                 $name
             ))
             ->addMethodCall('enableQueryLogging', array($logqueries))
+            ->addMethodCall('enableQueryValueLogging', array($logQueryValues))
             ->setAbstract(false)
         ;
 
