@@ -65,8 +65,7 @@ class DriverFactory
             }
 
             $opts = isset($options[$type]) ? $options[$type] : array();
-            $driver = new $class();
-            $driver->setOptions($opts);
+            $driver = new $class($opts);
             $h[] = $driver;
         }
 
@@ -75,8 +74,7 @@ class DriverFactory
         }
 
         $class = $drivers['Composite'];
-        $driver = new $class();
-        $driver->setOptions(array('drivers' => $h));
+        $driver = new $class(array('drivers' => $h));
 
         return $driver;
     }
