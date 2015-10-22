@@ -110,9 +110,9 @@ class CacheTracker
         $hit = $hit ? 'true' : 'false';
 
         if ($this->logQueryValues) {
-            if(is_object($value)){
+            if (is_object($value)) {
                 $readyVal = serialize($value);
-            }else{
+            } else {
                 $readyVal = print_r($value, true);
             }
             $value = sprintf('(%s) %s', gettype($value), $readyVal);
