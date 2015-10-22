@@ -151,7 +151,7 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
             array('Key1', true, 'Value1', '(string) Value1'),
             array('Key2', false, 2, '(integer) 2'),
             array('Key3', true, array(), "(array) Array\n(\n)\n"),
-            array('Key4', false, new \stdClass(), "(object) stdClass Object\n(\n)\n"),
+            array('Key4', false, new \stdClass(), "(object) ".serialize(new \stdClass())),
             array('Key5', true, 'Value5', '(string) Value5'),
             array('Key6', false, 'Value6', '(string) Value6'),
         );
