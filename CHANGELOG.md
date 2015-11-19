@@ -1,5 +1,9 @@
 ## Tedivm StashBundle v0.4 Changelog
 
+### 0.4.3
+
+*  Added support for `tracking_values` option, to be able to disable tracking cache values.
+
 ### 0.4.2
 
 *  Added support for Filesystem Encoder options.
