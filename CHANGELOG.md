@@ -1,5 +1,13 @@
 ## Tedivm StashBundle v0.5 Changelog
 
+
+### 0.5.2
+
+*  Improved memory use when tracking is enabled.
+
+*  Added support for `tracking_values` option, to be able to disable tracking cache values.
+
+
 ### 0.5.1
 
 *  Dropped support for PHP 5.3.
