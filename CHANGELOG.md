@@ -1,5 +1,13 @@
 ## Tedivm StashBundle v0.5 Changelog
 
+### 0.5.3
+
+* Made sure AbstractDriver::setOptions is called only once in the DriverFactory.
+
+* Symfony3 support.
+
+* PHP 7.0 support *(tests on PHP 7.0 are not allowed to fail anymore)*.
+
 
 ### 0.5.2
 
