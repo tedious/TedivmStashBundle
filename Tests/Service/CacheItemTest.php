@@ -15,8 +15,8 @@ namespace Tedivm\StashBundle\Tests\Service;
 use Tedivm\StashBundle\Service\CacheTracker;
 
 /**
- * Class CacheItemTest
- * @package Tedivm\StashBundle\Tests\Service
+ * Class CacheItemTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */

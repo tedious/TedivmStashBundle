@@ -16,16 +16,16 @@ error_reporting(-1);
 
 date_default_timezone_set('UTC');
 
-$filename = __DIR__ .'/../vendor/autoload.php';
+$filename = __DIR__.'/../vendor/autoload.php';
 
 if (!file_exists($filename)) {
-    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL;
-    echo " You need to execute `composer install` before running the tests. " . PHP_EOL;
-    echo "         Vendors are required for complete test execution.        " . PHP_EOL;
-    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL . PHP_EOL;
-    $filename = __DIR__ .'/../autoload.php';
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.PHP_EOL;
+    echo ' You need to execute `composer install` before running the tests. '.PHP_EOL;
+    echo '         Vendors are required for complete test execution.        '.PHP_EOL;
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.PHP_EOL.PHP_EOL;
+    $filename = __DIR__.'/../autoload.php';
 }
 
 $loader = require $filename;
 $loader->addPsr4('Tedivm\\StashBundle\\Test\\', __DIR__);
-$loader->addPsr4('Stash\\Test\\', __DIR__ . '/../vendor/tedivm/stash/tests/Stash/Test/');
+$loader->addPsr4('Stash\\Test\\', __DIR__.'/../vendor/tedivm/stash/tests/Stash/Test/');

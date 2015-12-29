@@ -11,12 +11,13 @@
  */
 
 namespace Tedivm\StashBundle\Factory;
+
 use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
 
 /**
- * Class DriverFactory
- * @package Tedivm\StashBundle\Factory
+ * Class DriverFactory.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -27,7 +28,9 @@ class DriverFactory
      *
      * @param $types
      * @param $options
+     *
      * @throws \RuntimeException
+     *
      * @return DriverInterface
      */
     public static function createDriver($types, $options)
@@ -37,7 +40,6 @@ class DriverFactory
         $h = array();
 
         foreach ($types as $type) {
-
             if (!isset($drivers[$type])) {
                 $allDrivers = DriverList::getAllDrivers();
 
@@ -57,7 +59,7 @@ class DriverFactory
                     $servers[] = array(
                         $serverSpec['server'],
                         $serverSpec['port'],
-                        isset($serverSpec['weight']) ? $serverSpec['weight'] : null
+                        isset($serverSpec['weight']) ? $serverSpec['weight'] : null,
                     );
                 }
 

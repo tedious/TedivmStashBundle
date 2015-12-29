@@ -21,19 +21,17 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * Class TedivmStashExtension
+ * Class TedivmStashExtension.
  *
  * Bundle extension to handle configuration of the Stash bundle. Based on the specification provided
  * in the configuration file, this extension instantiates and dynamically injects the selected caching provider into
  * the Stash service, passing it any driver-specific settings from the configuration.
  *
- * @package Tedivm\StashBundle\DependencyInjection
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
 class TedivmStashExtension extends Extension
 {
-
     /**
      * {@inheritdoc}
      */
@@ -91,7 +89,7 @@ class TedivmStashExtension extends Extension
             ->setDefinition(sprintf('stash.driver.%s_cache', $name), new DefinitionDecorator('stash.driver'))
             ->setArguments(array(
                 $drivers,
-                $cache
+                $cache,
             ))
             ->setAbstract(false)
         ;
@@ -99,7 +97,7 @@ class TedivmStashExtension extends Extension
         $container
             ->setDefinition(sprintf('stash.tracker.%s_cache', $name), new DefinitionDecorator('stash.tracker'))
             ->setArguments(array(
-                $name
+                $name,
             ))
             ->addMethodCall('enableQueryLogging', array($logqueries))
             ->addMethodCall('enableQueryValueLogging', array($logQueryValues))
@@ -112,7 +110,7 @@ class TedivmStashExtension extends Extension
             ->setArguments(array(
                 $name,
                 new Reference(sprintf('stash.driver.%s_cache', $name)),
-                new Reference(sprintf('stash.tracker.%s_cache', $name))
+                new Reference(sprintf('stash.tracker.%s_cache', $name)),
             ))
             ->setAbstract(false)
         ;
@@ -121,11 +119,11 @@ class TedivmStashExtension extends Extension
             $cacheDefinition->addMethodCall('setLogger', array(new Reference($cache['logger'])));
         }
 
-        if (interface_exists("\\Doctrine\\Common\\Cache\\Cache") && $doctrine) {
+        if (interface_exists('\\Doctrine\\Common\\Cache\\Cache') && $doctrine) {
             $container
                 ->setDefinition(sprintf('stash.adapter.doctrine.%s_cache', $name), new DefinitionDecorator('stash.adapter.doctrine'))
                 ->setArguments(array(
-                    new Reference(sprintf('stash.%s_cache', $name))
+                    new Reference(sprintf('stash.%s_cache', $name)),
                 ))
                 ->setAbstract(false)
             ;
@@ -135,7 +133,7 @@ class TedivmStashExtension extends Extension
             $container
                 ->setDefinition(sprintf('stash.adapter.session.%s_cache', $name), new DefinitionDecorator('stash.adapter.session'))
                 ->setArguments(array(
-                    new Reference(sprintf('stash.%s_cache', $name))
+                    new Reference(sprintf('stash.%s_cache', $name)),
                 ))
                 ->setAbstract(false)
             ;
@@ -144,10 +142,9 @@ class TedivmStashExtension extends Extension
         $container
             ->getDefinition('data_collector.stash')
                 ->addMethodCall('addTracker', array(
-                    new Reference(sprintf('stash.tracker.%s_cache', $name))
+                    new Reference(sprintf('stash.tracker.%s_cache', $name)),
                 ))
         ;
-
     }
 
     /**

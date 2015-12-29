@@ -12,7 +12,6 @@ use Tedivm\StashBundle\DependencyInjection\TedivmStashExtension;
  */
 class TedivmStashBundle extends Bundle
 {
-
     public function getContainerExtension()
     {
         return new TedivmStashExtension();

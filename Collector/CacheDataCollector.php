@@ -11,18 +11,18 @@
  */
 
 namespace Tedivm\StashBundle\Collector;
+
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stash\DriverList;
 
 /**
- * Class CacheDataCollector
+ * Class CacheDataCollector.
  *
  * Collects data stored in the static variables of the Stash class for use in profiling/debugging. Currently
  * records total cache calls and returns, along with calls and returns on each individual cache node.
  *
- * @package Tedivm\StashBundle\Collector
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -74,7 +74,7 @@ class CacheDataCollector extends DataCollector
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {

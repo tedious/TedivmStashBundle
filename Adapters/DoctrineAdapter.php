@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the StashBundle package.
  *
@@ -11,11 +10,12 @@
  */
 
 namespace Tedivm\StashBundle\Adapters;
+
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
 /**
- * Class DoctrineAdapter
- * @package Tedivm\StashBundle\Adapters
+ * Class DoctrineAdapter.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -43,7 +43,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     protected $caches = array();
 
     /**
-     * Initializes
+     * Initializes.
      *
      * @param \Tedivm\StashBundle\Service\CacheService $cacheService
      */
@@ -73,7 +73,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function fetch($id)
     {
@@ -85,7 +85,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function contains($id)
     {
@@ -96,7 +96,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save($id, $data, $lifeTime = 0)
     {
@@ -109,11 +109,10 @@ class DoctrineAdapter implements DoctrineCacheInterface
         $item = $this->cacheService->getItem($id);
 
         return $item->set($data, $lifeTime);
-
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id)
     {
@@ -128,7 +127,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStats()
     {
@@ -160,6 +159,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
      * Standardizes the cache key id in order to separate cache items by namespace.
      *
      * @param $id
+     *
      * @return string
      */
     protected function normalizeId($id)

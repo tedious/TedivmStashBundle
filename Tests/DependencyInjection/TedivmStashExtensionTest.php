@@ -16,8 +16,8 @@ use Tedivm\StashBundle\DependencyInjection\TedivmStashExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Class TedivmStashExtensionTest
- * @package Tedivm\StashBundle\Tests\DependencyInjection
+ * Class TedivmStashExtensionTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -84,13 +84,13 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                         'first' => array(
                             'drivers' => array('FileSystem'),
                             'FileSystem' => array(
-                                'dirSplit'          => 2,
-                                'path'              => '%kernel.cache_dir%/stash',
-                                'filePermissions'   => 0660,
-                                'dirPermissions'    => 0770,
-                                'memKeyLimit'       => 400
+                                'dirSplit' => 2,
+                                'path' => '%kernel.cache_dir%/stash',
+                                'filePermissions' => 0660,
+                                'dirPermissions' => 0770,
+                                'memKeyLimit' => 400,
                             ),
-                        )
+                        ),
                     ),
                 ),
             ),
@@ -100,7 +100,7 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                     'default_cache' => 'first',
                     'caches' => array(
                         'first' => array(),
-                        )
+                        ),
                     ),
                 ),
 
@@ -115,9 +115,9 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                             'logger' => null,
                             'inMemory' => true,
                             'SQLite' => array(
-                                'filePermissions'   => 0550,
-                                'dirPermissions'    => 0444,
-                                'path'              => '%kernel.cache_dir%/tedivm/stash',
+                                'filePermissions' => 0550,
+                                'dirPermissions' => 0444,
+                                'path' => '%kernel.cache_dir%/tedivm/stash',
                             ),
                         ),
                         'nondefault' => array(
@@ -127,14 +127,14 @@ class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
                             'logger' => 'logger',
                             'inMemory' => true,
                             'FileSystem' => array(
-                                'filePermissions'   => 0770,
-                                'dirPermissions'    => 0666,
-                                'path'              => '/tmp/tedivm/stash',
+                                'filePermissions' => 0770,
+                                'dirPermissions' => 0666,
+                                'path' => '/tmp/tedivm/stash',
                             ),
                             'SQLite' => array(
-                                'filePermissions'   => 0777,
-                                'dirPermissions'    => 0666,
-                                'path'              => '%kernel.cache_dir%/tedivm/stash',
+                                'filePermissions' => 0777,
+                                'dirPermissions' => 0666,
+                                'path' => '%kernel.cache_dir%/tedivm/stash',
                             ),
                         ),
                     ),

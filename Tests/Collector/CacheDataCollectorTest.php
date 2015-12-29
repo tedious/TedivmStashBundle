@@ -12,12 +12,12 @@
 
 namespace Tedivm\StashBundle\Tests\Collector;
 
-use \Stash\DriverList;
-use \Tedivm\StashBundle\Service\CacheTracker as Tracker;
+use Stash\DriverList;
+use Tedivm\StashBundle\Service\CacheTracker as Tracker;
 
 /**
- * Class CacheDataCollectorTest
- * @package Tedivm\StashBundle\Tests\Collector
+ * Class CacheDataCollectorTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -26,9 +26,10 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
     protected $testClass = 'Tedivm\StashBundle\Collector\CacheDataCollector';
 
     /**
-     * @param  string                                           $cacheService
-     * @param  array                                            $caches
-     * @param  array                                            $options
+     * @param string $cacheService
+     * @param array  $caches
+     * @param array  $options
+     *
      * @return \Tedivm\StashBundle\Collector\CacheDataCollector
      */
     public function testConstruct($cacheService = 'default', $caches = array('default'), $options = array('default' => array()))
@@ -122,7 +123,7 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
         //var_dump($drivers, $systemDrivers);exit();
         foreach ($drivers as $driver) {
             $this->assertTrue(in_array($driver, $systemDrivers),
-                'getDrivers returns only registered drivers- Unregistered: ' . $driver);
+                'getDrivers returns only registered drivers- Unregistered: '.$driver);
         }
     }
 

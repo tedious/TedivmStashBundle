@@ -19,8 +19,8 @@ use Tedivm\StashBundle\Adapters\DoctrineAdapter;
 use Tedivm\StashBundle\Tests\ThirdParty\Doctrine\CacheTest;
 
 /**
- * Class DoctrineAdapterTest
- * @package Tedivm\StashBundle\Tests\Adapters
+ * Class DoctrineAdapterTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -48,8 +48,8 @@ class DoctrineAdapterTest extends CacheTest
         $keys = array('memory_usage', 'memory_available', 'uptime', 'hits', 'misses');
 
         foreach ($keys as $key) {
-            $this->assertArrayHasKey($key, $stats, 'getStats has ' . $key . ' key even without tracker.');
-            $this->assertEquals('NA', $stats[$key], 'getStats returns NA for key ' . $key . ' without tracker.');
+            $this->assertArrayHasKey($key, $stats, 'getStats has '.$key.' key even without tracker.');
+            $this->assertEquals('NA', $stats[$key], 'getStats returns NA for key '.$key.' without tracker.');
         }
     }
 
@@ -88,12 +88,9 @@ class DoctrineAdapterTest extends CacheTest
 
     public function testDeleteAllAndNamespaceVersioningBetweenCaches()
     {
-
     }
 
     public function testFlushAllAndNamespaceVersioningBetweenCaches()
     {
-
     }
-
 }
