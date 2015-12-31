@@ -16,6 +16,7 @@
                 {{ include('@TedivmStash/Profiler/icon.svg') }}
 
                 <span class="sf-toolbar-value">{{ collector.hits }}</span>
+                <span class="sf-toolbar-label">hit{% if collector.hits != 1 %}s{% endif %}</span>
                 <span class="sf-toolbar-info-piece-additional-detail">
                     <span class="sf-toolbar-label">of</span>
                     <span class="sf-toolbar-value">{{ collector.calls }}</span>
@@ -75,79 +76,181 @@
     {% set profiler_markup_version = profiler_markup_version|default(1) %}
 
     <h2>Cache Information</h2>
-    <table>
-        <tr>
-            <th>Default Cache</th>
-            <td>{{ collector.default }}</td>
-        <tr>
-            <th>Available Drivers</th>
-            <td>{{ collector.drivers|join(', ') }}</td>
-        </tr>
-        <tr>
-            <th>Total Requests</th>
-            <td>{{ collector.calls }}</td>
-        </tr>
-        <tr>
-            <th>Total Hits</th>
-            <td>{{ collector.hits }}</td>
-        </tr>
-    </table>
+    {% if profiler_markup_version == 1 %}
+        <table>
+            <tr>
+                <th>Default Cache</th>
+                <td>{{ collector.default }}</td>
+            <tr>
+                <th>Available Drivers</th>
+                <td>{{ collector.drivers|join(', ') }}</td>
+            </tr>
+            <tr>
+                <th>Total Requests</th>
+                <td>{{ collector.calls }}</td>
+            </tr>
+            <tr>
+                <th>Total Hits</th>
+                <td>{{ collector.hits }}</td>
+            </tr>
+        </table>
+    {% else %}
+        <div class="metrics">
+            <div class="metric">
+                <span class="value">{{ collector.calls }}</span>
+                <span class="label">Total requests</span>
+            </div>
+            <div class="metric">
+                <span class="value">{{ collector.hits }}</span>
+                <span class="label">Total hits</span>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Default Cache</th>
+                    <td>{{ collector.default }}</td>
+                <tr>
+                <tr>
+                    <th>Available Drivers</th>
+                    <td>{{ collector.drivers|join(', ') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
 
     {% for name, details in collector.caches %}
 
         <h2>Cache Service: <i>{{ name }}</i></h2>
-        <table>
-            <tr>
-                <th>Drivers</th>
-                <td>{{ details.options.drivers|join(', ') }}</td>
-            </tr>
-            <tr>
-                <th>Calls</th>
-                <td>{{ details.calls }}</td>
-            </tr>
-            <tr>
-                <th>Hits</th>
-                <td>{{ details.hits }}</td>
-            </tr>
-            <tr>
-                <th>Doctrine Adapter</th>
-                <td>{{ details.options.registerDoctrineAdapter ? 'true' : 'false' }}</td>
-            </tr>
-            <tr>
-                <th>Cache In-Memory</th>
-                <td>{{ details.options.inMemory ? 'true' : 'false' }}</td>
-            </tr>
-        </table>
+        {% if profiler_markup_version == 1 %}
+            <table>
+                <tr>
+                    <th>Drivers</th>
+                    <td>{{ details.options.drivers|join(', ') }}</td>
+                </tr>
+                <tr>
+                    <th>Calls</th>
+                    <td>{{ details.calls }}</td>
+                </tr>
+                <tr>
+                    <th>Hits</th>
+                    <td>{{ details.hits }}</td>
+                </tr>
+                <tr>
+                    <th>Doctrine Adapter</th>
+                    <td>{{ details.options.registerDoctrineAdapter ? 'true' : 'false' }}</td>
+                </tr>
+                <tr>
+                    <th>Cache In-Memory</th>
+                    <td>{{ details.options.inMemory ? 'true' : 'false' }}</td>
+                </tr>
+            </table>
+        {% else %}
+            <div class="metrics">
+                <div class="metric">
+                    <span class="value">{{ details.calls }}</span>
+                    <span class="label">Requests</span>
+                </div>
+                <div class="metric">
+                    <span class="value">{{ details.hits }}</span>
+                    <span class="label">Hits</span>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Drivers</th>
+                        <td>{{ details.options.drivers|join(', ') }}</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <th>Doctrine Adapter</th>
+                        <td>{{ details.options.registerDoctrineAdapter ? 'true' : 'false' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cache In-Memory</th>
+                        <td>{{ details.options.inMemory ? 'true' : 'false' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
 
         <h3>Driver Options</h3>
-        <table>
+        {% if profiler_markup_version == 1 %}
+            <table>
+                {% for name, options in details.options %}
+                    {% if name != 'drivers' and name in details.options.drivers %}
+                        <tr>
+                            <th colspan="2"><h3 style="font-size: 16px; margin-bottom: 0;">{{ name }} settings</h3></th>
+                        </tr>
+                        {% if name in ['Memcache', 'Redis'] %}
+                            {% for ovalue in options.servers %}
+                                <tr>
+                                    <th>Server</th>
+                                    <td>{{ ovalue.server }}:{{ ovalue.port }} {% if ovalue.weight is defined %}(weight {{ ovalue.weight }}){% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            {% for oname, ovalue in options %}
+                                <tr>
+                                    <th>{{ oname }}</th>
+                                    {% if oname == 'filePermissions' or oname == 'dirPermissions' %}
+                                        <td>{{ "%o"|format(ovalue) }}
+                                    {% else %}
+                                        <td>{{ ovalue }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% else %}
             {% for name, options in details.options %}
                 {% if name != 'drivers' and name in details.options.drivers %}
-                    <tr>
-                        <th colspan="2"><h3 style="font-size: 16px; margin-bottom: 0;">{{ name }} settings</h3></th>
-                    </tr>
-                    {% if name in ['Memcache', 'Redis'] %}
-                        {% for ovalue in options.servers %}
+                    <table>
+                        <thead>
                             <tr>
-                                <th>Server</th>
-                                <td>{{ ovalue.server }}:{{ ovalue.port }} {% if ovalue.weight is defined %}(weight {{ ovalue.weight }}){% endif %}</td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        {% for oname, ovalue in options %}
-                            <tr>
-                                <th>{{ oname }}</th>
-                                {% if oname == 'filePermissions' or oname == 'dirPermissions' %}
-                                    <td>{{ "%o"|format(ovalue) }}
-                                {% else %}
-                                    <td>{{ ovalue }}</td>
-                                {% endif %}
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
+                                <th colspan="2">{{ name }} settings</th>
+                            </th>
+                        </thead>
+                        <tbody>
+                        {% if name in ['Memcache', 'Redis'] %}
+                            {% for ovalue in options.servers %}
+                                <tr>
+                                    <th>Server</th>
+                                    <td>{{ ovalue.server }}:{{ ovalue.port }} {% if ovalue.weight is defined %}(weight {{ ovalue.weight }}){% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            {% for oname, ovalue in options %}
+                                <tr>
+                                    <th>{{ oname }}</th>
+                                    {% if oname == 'filePermissions' or oname == 'dirPermissions' %}
+                                        <td>{{ "%o"|format(ovalue) }}
+                                    {% else %}
+                                        <td>{{ ovalue }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
                 {% endif %}
+                </table>
             {% endfor %}
-        </table>
+        {% endif %}
 
         <h3>Query Record</h3>
         {% if not details.queries|length %}
@@ -156,18 +259,22 @@
             </div>
         {% else %}
             <table>
-                <tr>
-                    <th>Request Key</th>
-                    <th>Hit?</th>
-                    <th>Returned Value</th>
-                </tr>
-                {% for query in details.queries %}
+                <thead>
                     <tr>
-                        <td>{{ query.key }}</td>
-                        <td>{{ query.hit }}</td>
-                        <td>{{ query.value }}</td>
+                        <th>Request Key</th>
+                        <th>Hit?</th>
+                        <th>Returned Value</th>
                     </tr>
-                {% endfor %}
+                 </thead>
+                 <tbody>
+                    {% for query in details.queries %}
+                        <tr>
+                            <td>{{ query.key }}</td>
+                            <td>{{ query.hit }}</td>
+                            <td>{{ query.value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         {% endif %}
 
