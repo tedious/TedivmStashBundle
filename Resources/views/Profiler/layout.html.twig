@@ -2,27 +2,27 @@
 
 {% block toolbar %}
     {% if collector.calls > 0 or collector.hits > 0 %}
-
         {% set profiler_markup_version = profiler_markup_version|default(1) %}
 
         {% set icon %}
             {% if profiler_markup_version == 1 %}
-
                 <img width="22" height="28" alt="Memory Usage" style="vertical-align: middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAcCAYAAABlL09dAAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHGAALFQCM6LQAAAFwSURBVEjH7ZW9S4JRFIefRAoaAmlpbguCiKaGIqjh1FI0SV+vH6G2BmW4RlJG0Rj08RcE0aI3bGqPioagD6IpSEISGiSiBt/ATK+91ynwLBfOOffhx+/cD6jHv40GpVQ7EDXcnxCR+7JgAKVUGhgyAJ8CAyLyWVpw2esC8GEA7gesiopt1btA0AD+AnSISKacYoAYkDMAtwKJSlYgIs/AmuEQLaXUYHHCXdKwBdxqAFlN7UkH7jQ8Hd9z2gZuROTNXZQcBg6AZgPmOxAC2gAvEHXZUC9wZAjNASPAgy2ssdiKa6DX0IEM0GJfluYfHi8txi5qeRdWE/F5wFPpHNf05pQm3Lru4GyAyakJPJ6CmO6unkqtLkdgf8DHxvomyWSKfD7vSLHWipXlOGPjo6RPjglHQo680YJTKYU17ScSnsPyzehamxxZcX55VrjH2Sx7O/t/teKxKlgzrHLgV8AvIodVwQ7iDugTkav6b/8rvgBcMlqf0kD/YAAAAABJRU5ErkJggg==" />
 
                 <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.calls }} call{% if collector.calls != 1 %}s{% endif %} / {{ collector.hits }} hit{% if collector.hits != 1 %}s{% endif %}</span>
-
             {% else %}
+                {% set status = (collector.hits/collector.calls) < 0.33 ? 'red' : (collector.hits/collector.calls) < 0.66 ? 'yellow' : '' %}
+
                 {{ include('@TedivmStash/Profiler/icon.svg') }}
 
-                <span class="sf-toolbar-value">{{ collector.hits }}</span>
-                <span class="sf-toolbar-label">hit{% if collector.hits != 1 %}s{% endif %}</span>
+                <span class="sf-toolbar-value">{{ collector.calls }}</span>
                 <span class="sf-toolbar-info-piece-additional-detail">
-                    <span class="sf-toolbar-label">of</span>
-                    <span class="sf-toolbar-value">{{ collector.calls }}</span>
                     <span class="sf-toolbar-label">call{% if collector.calls != 1 %}s{% endif %}</span>
                 </span>
-
+                <span class="sf-toolbar-label">/</span>
+                <span class="sf-toolbar-value">{{ collector.hits }}</span>
+                <span class="sf-toolbar-info-piece-additional-detail">
+                    <span class="sf-toolbar-label">hit{% if collector.hits != 1 %}s{% endif %}</span>
+                </span>
             {% endif %}
         {% endset %}
 
@@ -126,7 +126,6 @@
     {% endif %}
 
     {% for name, details in collector.caches %}
-
         <h2>Cache Service: <i>{{ name }}</i></h2>
         {% if profiler_markup_version == 1 %}
             <table>
@@ -277,6 +276,5 @@
                 </tbody>
             </table>
         {% endif %}
-
     {% endfor %}
 {% endblock %}
