@@ -11,24 +11,24 @@
  */
 
 namespace Tedivm\StashBundle\Service;
+
 use Stash\Item;
 
 /**
- * Class CacheItem
- * @package Tedivm\StashBundle\Service
+ * Class CacheItem.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
 class CacheItem extends Item
 {
-
     /**
      * @var null|CacheTracker
      */
     protected $tracker;
 
     /**
-     * Enables tracking of hits. Typically called by Service Factory
+     * Enables tracking of hits. Typically called by Service Factory.
      *
      * @param CacheTracker $tracker
      */
@@ -52,5 +52,4 @@ class CacheItem extends Item
 
         return $result;
     }
-
 }

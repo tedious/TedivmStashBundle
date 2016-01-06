@@ -13,8 +13,8 @@
 namespace Tedivm\StashBundle\Tests\Adapters;
 
 /**
- * Class SessionHandlerAdapterTest
- * @package Tedivm\StashBundle\Tests\Adapters
+ * Class SessionHandlerAdapterTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -35,17 +35,17 @@ class SessionHandlerAdapterTest extends \Stash\Test\SessionTest
         $sessionA = $this->getSession($pool);
         $sessionA->open('save_path', 'sessionA');
         $sessionA->setOptions(array('ttl' => -30));
-        $sessionA->write('session_id', "session_a_data");
+        $sessionA->write('session_id', 'session_a_data');
 
         $sessionB = $this->getSession($pool);
         $sessionB->open('save_path', 'sessionB');
         $sessionB->setOptions(array('ttl' => -30));
-        $sessionB->write('session_id', "session_b_data");
+        $sessionB->write('session_id', 'session_b_data');
 
         $sessionC = $this->getSession($pool);
         $sessionC->open('save_path', 'sessionC');
         $sessionC->setOptions(array('ttl' => -30));
-        $sessionC->write('session_id', "session_c_data");
+        $sessionC->write('session_id', 'session_c_data');
 
         $sessionD = $this->getSession($pool);
         $sessionD->clearAll();
@@ -54,5 +54,4 @@ class SessionHandlerAdapterTest extends \Stash\Test\SessionTest
         $this->assertEquals('', $sessionB->read('session_id'), 'SessionB cleared after ClearAll');
         $this->assertEquals('', $sessionC->read('session_id'), 'SessionC cleared after ClearAll');
     }
-
 }

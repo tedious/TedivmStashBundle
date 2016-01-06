@@ -16,8 +16,8 @@ use Tedivm\StashBundle\Factory\DriverFactory;
 use Stash\DriverList;
 
 /**
- * Class DriverFactoryTest
- * @package Tedivm\StashBundle\Tests\Factory
+ * Class DriverFactoryTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -27,41 +27,41 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected $defaultSettings = array(
         'FileSystem' => array(
-            'dirSplit'          => 2,
-            'filePermissions'   => 0660,
-            'dirPermissions'    => 0770,
-            'memKeyLimit'       => 200
+            'dirSplit' => 2,
+            'filePermissions' => 0660,
+            'dirPermissions' => 0770,
+            'memKeyLimit' => 200,
         ),
         'SQLite' => array(
-            'filePermissions'   => 0660,
-            'dirPermissions'    => 0770,
-            'busyTimeout'       => 500,
-            'nesting'           => 0,
-            'subdriver'        => 'PDO',
-            'version'           => null,
+            'filePermissions' => 0660,
+            'dirPermissions' => 0770,
+            'busyTimeout' => 500,
+            'nesting' => 0,
+            'subdriver' => 'PDO',
+            'version' => null,
         ),
         'Apc' => array(
-            'ttl'               => 300,
-            'namespace'         => null,
+            'ttl' => 300,
+            'namespace' => null,
         ),
         'Memcache' => array(
             'servers' => array(
                 array(
                     'server' => '127.0.0.1',
-                    'port' => '11211'
+                    'port' => '11211',
                 ),
                 array(
                     'server' => '127.0.0.1',
                     'port' => '11212',
-                    'weight' => '30'
+                    'weight' => '30',
                 ),
                 array(
                     'server' => '127.0.0.1',
                     'port' => '11211',
-                    'weight' => '30'
+                    'weight' => '30',
                 ),
-            )
-        )
+            ),
+        ),
     );
 
     public function setUp()
@@ -92,7 +92,6 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
             $subDriverClass = $this->drivers[$subtype];
             $this->assertInstanceOf($subDriverClass, $subDriver);
         }
-
     }
 
     public function testMemcacheSetup()
@@ -106,7 +105,6 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Driver does not exist.
      */
@@ -116,7 +114,6 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Driver currently unavailable.
      */
@@ -130,28 +127,28 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'types'     => array('FileSystem'),
-                'options'   => array(),
+                'types' => array('FileSystem'),
+                'options' => array(),
             ),
             array(
-                'types'     => array('FileSystem'),
-                'options'   => array('FileSystem' => array('dirSplit' => 3, 'memKeyLimit' => 21)),
+                'types' => array('FileSystem'),
+                'options' => array('FileSystem' => array('dirSplit' => 3, 'memKeyLimit' => 21)),
             ),
             array(
-                'types'     => array('SQLite'),
-                'options'   => array(),
+                'types' => array('SQLite'),
+                'options' => array(),
             ),
             array(
-                'types'     => array('SQLite'),
-                'options'   => array('nesting' => 2, 'extension' => 'sqlite'),
+                'types' => array('SQLite'),
+                'options' => array('nesting' => 2, 'extension' => 'sqlite'),
             ),
             array(
-                'types'     => array('Ephemeral', 'FileSystem'),
-                'options'   => array('FileSystem' => array('dirSplit' => 2)),
+                'types' => array('Ephemeral', 'FileSystem'),
+                'options' => array('FileSystem' => array('dirSplit' => 2)),
             ),
             array(
-                'types'     => array('Ephemeral', 'FileSystem', 'SQLite'),
-                'options'   => array('FileSystem' => array('dirSplit' => 3), 'SQLite' => array('dirSplit' => 5)),
+                'types' => array('Ephemeral', 'FileSystem', 'SQLite'),
+                'options' => array('FileSystem' => array('dirSplit' => 3), 'SQLite' => array('dirSplit' => 5)),
             ),
         );
     }

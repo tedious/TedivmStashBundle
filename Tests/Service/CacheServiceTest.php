@@ -12,14 +12,13 @@
 
 namespace Tedivm\StashBundle\Tests\Service;
 
-use Tedivm\StashBundle\Service\CacheService;
 use Tedivm\StashBundle\Service\CacheTracker;
 use Stash\Driver\Ephemeral;
 use Stash\DriverList;
 
 /**
- * Class CacheServiceTest
- * @package Tedivm\StashBundle\Tests\Service
+ * Class CacheServiceTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -141,7 +140,7 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
     protected function runCacheCycle($service, $num, $ismiss)
     {
         $key = array('test', 'key', $num);
-        $testData = 'testkey' . $num;
+        $testData = 'testkey'.$num;
 
         $item = $service->getItem($key);
         $data = $item->get();
@@ -154,5 +153,4 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
         $this->assertFalse($item->isMiss());
         $this->assertEquals($testData, $data);
     }
-
 }

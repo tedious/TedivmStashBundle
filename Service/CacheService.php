@@ -11,19 +11,19 @@
  */
 
 namespace Tedivm\StashBundle\Service;
+
 use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
 
 /**
- * Class CacheService
- * @package Tedivm\StashBundle\Service
+ * Class CacheService.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
 class CacheService extends Pool
 {
-
     /**
      * {@inheritdoc}
      */
@@ -47,7 +47,7 @@ class CacheService extends Pool
         $this->setNamespace($name);
 
         if (isset($driver)) {
-           $this->setDriver($driver);
+            $this->setDriver($driver);
         }
 
         parent::__construct($driver);
@@ -61,14 +61,15 @@ class CacheService extends Pool
         $args = func_get_args();
 
         // check to see if a single array was used instead of multiple arguments
-        if(count($args) == 1 && is_array($args[0]))
+        if (count($args) == 1 && is_array($args[0])) {
             $args = $args[0];
+        }
 
         /** @var CacheItem $item */
         $item = parent::getItem($args);
 
         if (isset($this->tracker)) {
-           $item->setCacheTracker($this->tracker);
+            $item->setCacheTracker($this->tracker);
         }
 
         return $item;

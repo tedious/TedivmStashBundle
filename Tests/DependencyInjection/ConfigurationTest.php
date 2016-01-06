@@ -16,8 +16,8 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Tedivm\StashBundle\DependencyInjection\Configuration;
 
 /**
- * Class ConfigurationTest
- * @package Tedivm\StashBundle\Tests\DependencyInjection
+ * Class ConfigurationTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -81,10 +81,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeDefaultCacheConfig()
     {
-        $testData = array('caches' =>
-            array(  'Cache1' => 'TheCacheSettings',
+        $testData = array('caches' => array('Cache1' => 'TheCacheSettings',
                     'Cache2' => 'teTheCacheSettingsst',
-                    'Cache3' => 'teTheCacheSettingsst'));
+                    'Cache3' => 'teTheCacheSettingsst', ));
 
         $returnedData = Configuration::normalizeDefaultCacheConfig($testData);
 
@@ -95,7 +94,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeHandlerToDriverConfig()
     {
-        $testData = array(  'handlers' => 'TheCacheSettings');
+        $testData = array('handlers' => 'TheCacheSettings');
 
         $returnedData = Configuration::normalizeHandlerToDriverConfig($testData);
 
@@ -103,5 +102,4 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('drivers', $returnedData, 'Normalization converts "handlers" to "drivers"');
         $this->assertEquals($testData['handlers'], $returnedData['drivers'], 'Normalization converts "handlers" to "drivers"');
     }
-
 }

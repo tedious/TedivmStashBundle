@@ -18,14 +18,13 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Stash\DriverList;
 
 /**
- * Class Configuration
- * @package Tedivm\StashBundle\DependencyInjection
+ * Class Configuration.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
 class Configuration implements ConfigurationInterface
 {
-
     /**
      *  Default settings for various drivers.
      *
@@ -33,31 +32,31 @@ class Configuration implements ConfigurationInterface
      */
     protected $driverSettings = array(
         'FileSystem' => array(
-            'dirSplit'          => 2,
-            'path'              => '%kernel.cache_dir%/stash',
-            'filePermissions'   => 0660,
-            'dirPermissions'    => 0770,
-            'memKeyLimit'       => 200,
-            'keyHashFunction'   => 'md5',
-            'encoder'           => 'Native'
+            'dirSplit' => 2,
+            'path' => '%kernel.cache_dir%/stash',
+            'filePermissions' => 0660,
+            'dirPermissions' => 0770,
+            'memKeyLimit' => 200,
+            'keyHashFunction' => 'md5',
+            'encoder' => 'Native',
         ),
         'SQLite' => array(
-            'filePermissions'   => 0660,
-            'dirPermissions'    => 0770,
-            'busyTimeout'       => 500,
-            'nesting'           => 0,
-            'subhandler'        => 'PDO',
-            'version'           => null,
-            'path'              => '%kernel.cache_dir%/stash',
+            'filePermissions' => 0660,
+            'dirPermissions' => 0770,
+            'busyTimeout' => 500,
+            'nesting' => 0,
+            'subhandler' => 'PDO',
+            'version' => null,
+            'path' => '%kernel.cache_dir%/stash',
         ),
         'Apc' => array(
-            'ttl'               => 300,
-            'namespace'         => null,
+            'ttl' => 300,
+            'namespace' => null,
         ),
     );
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
@@ -152,8 +151,8 @@ class Configuration implements ConfigurationInterface
             ->arrayNode($driver)
                 ->fixXmlConfig('server');
 
-            if ($driver == 'Memcache') {
-                $finalNode = $driverNode
+        if ($driver == 'Memcache') {
+            $finalNode = $driverNode
                     ->info('All options except "servers" are Memcached options. See http://www.php.net/manual/en/memcached.constants.php')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -192,9 +191,9 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                ;
-            } elseif ($driver == 'Redis') {
-                $finalNode = $driverNode
-                    ->info("Accepts server info, password, and database.")
+        } elseif ($driver == 'Redis') {
+            $finalNode = $driverNode
+                    ->info('Accepts server info, password, and database.')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('password')->end()
@@ -215,26 +214,26 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ;
-            } else {
-                $defaults = isset($this->driverSettings[$driver]) ? $this->driverSettings[$driver] : array();
+        } else {
+            $defaults = isset($this->driverSettings[$driver]) ? $this->driverSettings[$driver] : array();
 
-                $node = $driverNode
+            $node = $driverNode
                     ->addDefaultsIfNotSet()
                     ->children();
 
-                    foreach ($defaults as $setting => $default) {
-                        $node
+            foreach ($defaults as $setting => $default) {
+                $node
                             ->scalarNode($setting)
                             ->defaultValue($default)
                             ->end()
                         ;
-                    }
-
-                    $finalNode = $node->end()
-                ;
             }
 
-            $finalNode->end()
+            $finalNode = $node->end()
+                ;
+        }
+
+        $finalNode->end()
         ;
     }
 
@@ -245,7 +244,8 @@ class Configuration implements ConfigurationInterface
      * single cache being used. This makes for less nesting and a prettier config, especially since most cases will
      * only involve a single caching system anyways.
      *
-     * @param  array $v
+     * @param array $v
+     *
      * @return array
      */
     public static function normalizeCacheConfig($v)
@@ -269,7 +269,8 @@ class Configuration implements ConfigurationInterface
      *
      * Sets the first defined cache as the default when the user hasn't explicitly set one.
      *
-     * @param  array $v
+     * @param array $v
+     *
      * @return array
      */
     public static function normalizeDefaultCacheConfig($v)
@@ -285,7 +286,8 @@ class Configuration implements ConfigurationInterface
      *
      * This converts the old "handlers" field into the new "drivers" field.
      *
-     * @param  array $v
+     * @param array $v
+     *
      * @return array
      */
     public static function normalizeHandlerToDriverConfig($v)

@@ -13,8 +13,8 @@
 namespace Tedivm\StashBundle\Service;
 
 /**
- * Class CacheTracker
- * @package Tedivm\StashBundle\Service
+ * Class CacheTracker.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -70,7 +70,7 @@ class CacheTracker
     /**
      * Enables or disables query logging.
      *
-     * @param boolean $lq
+     * @param bool $lq
      */
     public function enableQueryLogging($lq = true)
     {
@@ -82,7 +82,7 @@ class CacheTracker
      *
      * @see $logQueryValues
      *
-     * @param boolean $logQueryValues
+     * @param bool $logQueryValues
      */
     public function enableQueryValueLogging($logQueryValues = true)
     {
@@ -98,9 +98,9 @@ class CacheTracker
      */
     public function trackRequest($key, $hit, $value)
     {
-        $this->calls++;
+        ++$this->calls;
         if ($hit) {
-            $this->hits++;
+            ++$this->hits;
         }
 
         if (!$this->logQueries) {
@@ -121,9 +121,9 @@ class CacheTracker
         }
 
         $this->queries[] = array(
-            'key'   => $key,
-            'hit'   => $hit,
-            'value' => $value
+            'key' => $key,
+            'hit' => $hit,
+            'value' => $value,
         );
     }
 

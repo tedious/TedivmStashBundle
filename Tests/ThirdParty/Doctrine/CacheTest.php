@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * This test was copied and modified from the DoctrineCache project.
  *
  * Copyright (c) 2006-2012 Doctrine Project
@@ -30,8 +29,8 @@ use Doctrine\Common\Cache\Cache;
 use ArrayObject;
 
 /**
- * Class CacheTest
- * @package Tedivm\StashBundle\Tests\ThirdParty\Doctrine
+ * Class CacheTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
@@ -83,8 +82,8 @@ abstract class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteAllAndNamespaceVersioningBetweenCaches()
     {
-        if ( ! $this->isSharedStorage()) {
-            $this->markTestSkipped('The ' . __CLASS__ .' does not use shared storage');
+        if (!$this->isSharedStorage()) {
+            $this->markTestSkipped('The '.__CLASS__.' does not use shared storage');
         }
 
         $cache1 = $this->_getCacheDriver();
@@ -133,8 +132,8 @@ abstract class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testFlushAllAndNamespaceVersioningBetweenCaches()
     {
-        if ( ! $this->isSharedStorage()) {
-            $this->markTestSkipped('The ' . __CLASS__ .' does not use shared storage');
+        if (!$this->isSharedStorage()) {
+            $this->markTestSkipped('The '.__CLASS__.' does not use shared storage');
         }
 
         $cache1 = $this->_getCacheDriver();
@@ -257,7 +256,7 @@ abstract class CacheTest extends \PHPUnit_Framework_TestCase
      *
      * This is used for skipping certain tests for shared storage behavior.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isSharedStorage()
     {

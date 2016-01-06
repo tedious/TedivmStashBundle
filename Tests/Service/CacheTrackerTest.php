@@ -13,15 +13,15 @@
 namespace Tedivm\StashBundle\Tests\Service;
 
 /**
- * Class CacheTrackerTest
- * @package Tedivm\StashBundle\Tests\Service
+ * Class CacheTrackerTest.
  */
 class CacheTrackerTest extends \PHPUnit_Framework_TestCase
 {
     protected $testClass = '\Tedivm\StashBundle\Service\CacheTracker';
 
     /**
-     * @param  string                                     $name
+     * @param string $name
+     *
      * @return '\Tedivm\StashBundle\Service\CacheTracker'
      */
     public function testConstruct($name = 'test')
@@ -34,7 +34,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
 
     public function testTrackRequest()
     {
-
     }
 
     public function testGetName()
@@ -59,7 +58,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         $tracker->trackRequest('Key7', false, 'Value7');
 
         $this->assertEquals(8, $tracker->getCalls(), 'Tracker counts calls sent to it with duplicate keys.');
-
     }
 
     public function testGetHits()
@@ -75,7 +73,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         $tracker->trackRequest('Key7', true, 'Value7');
 
         $this->assertEquals(4, $tracker->getHits(), 'Tracker increments hits when sent them.');
-
     }
 
     public function testGetQueries()
@@ -94,9 +91,9 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $index => $datum) {
             $query = $queries[$index];
             $expectedTruth = $datum[1] ? 'true' : 'false';
-            $this->assertEquals($datum[0], $query['key'], 'getQueries returns key for data example ' . $index);
-            $this->assertEquals($expectedTruth, $query['hit'], 'getQueries returns hit status as string for data example ' . $index);
-            $this->assertEquals($datum[3], $query['value'], 'getQueries returns value for data example ' . $index);
+            $this->assertEquals($datum[0], $query['key'], 'getQueries returns key for data example '.$index);
+            $this->assertEquals($expectedTruth, $query['hit'], 'getQueries returns hit status as string for data example '.$index);
+            $this->assertEquals($datum[3], $query['value'], 'getQueries returns value for data example '.$index);
         }
 
         $tracker = $this->testConstruct('unpopulated');
@@ -124,10 +121,10 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         foreach ($data as $index => $datum) {
             $query = $queries[$index];
             $expectedTruth = $datum[1] ? 'true' : 'false';
-            $expectedValue = explode(" ", $datum[3], 2)[0];
-            $this->assertEquals($datum[0], $query['key'], 'getQueries returns key for data example ' . $index);
-            $this->assertEquals($expectedTruth, $query['hit'], 'getQueries returns hit status as string for data example ' . $index);
-            $this->assertEquals($expectedValue, $query['value'], 'getQueries returns value for data example ' . $index);
+            $expectedValue = explode(' ', $datum[3], 2)[0];
+            $this->assertEquals($datum[0], $query['key'], 'getQueries returns key for data example '.$index);
+            $this->assertEquals($expectedTruth, $query['hit'], 'getQueries returns hit status as string for data example '.$index);
+            $this->assertEquals($expectedValue, $query['value'], 'getQueries returns value for data example '.$index);
         }
     }
 
@@ -151,7 +148,7 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
             array('Key1', true, 'Value1', '(string) Value1'),
             array('Key2', false, 2, '(integer) 2'),
             array('Key3', true, array(), "(array) Array\n(\n)\n"),
-            array('Key4', false, new \stdClass(), "(object) ".serialize(new \stdClass())),
+            array('Key4', false, new \stdClass(), '(object) '.serialize(new \stdClass())),
             array('Key5', true, 'Value5', '(string) Value5'),
             array('Key6', false, 'Value6', '(string) Value6'),
         );

@@ -13,8 +13,8 @@
 namespace Tedivm\StashBundle\Tests;
 
 /**
- * Class TedivmStashBundleTest
- * @package Tedivm\StashBundle\Tests
+ * Class TedivmStashBundleTest.
+ *
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
