@@ -26,7 +26,7 @@
     ],
     "require": {
         "php": "^5.4|^7.0",
-        "tedivm/stash": "0.13.*",
+        "tedivm/stash": "0.14.*",
         "symfony/config": "~2.1|~3.0",
         "symfony/http-kernel": "~2.1|~3.0",
         "symfony/dependency-injection": "~2.1|~3.0"
