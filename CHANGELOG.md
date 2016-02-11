@@ -1,3 +1,10 @@
+## Tedivm StashBundle v0.6 Changelog
+
+### 0.6.1
+
+* Brought bundle up to date with the v0.14.0 line of Stash.
+
+
 ## Tedivm StashBundle v0.5 Changelog
 
 ### 0.5.3
