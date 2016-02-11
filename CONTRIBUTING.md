@@ -51,4 +51,4 @@ To call phpunit directly:
 
 To call php-cs-fixer directly to fix any code style issues automatically:
 
-    ./vendor/bin/php-cs-fixer fix ./ --level="all" -vv --dry-run
+    ./vendor/bin/php-cs-fixer fix ./ --level="all" -vv
