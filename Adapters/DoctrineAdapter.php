@@ -108,6 +108,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
         $id = $this->normalizeId($id);
         $item = $this->cacheService->getItem($id);
         $item->set($data, $lifeTime);
+
         return $this->cacheService->save($item);
     }
 
@@ -117,6 +118,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     public function delete($id)
     {
         $id = $this->normalizeId($id);
+
         return $this->cacheService->deleteItem($id);
     }
 
