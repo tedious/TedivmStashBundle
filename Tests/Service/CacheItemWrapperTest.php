@@ -100,7 +100,51 @@ class CacheItemWrapperTest extends \PHPUnit_Framework_TestCase
         static::assertTrue($this->itemWrapper->isMiss());
     }
 
-    public function lock()
+    public function testIsHit()
+    {
+        $this->wrappedItem
+            ->expects(static::once())
+            ->method('isHit')
+            ->willReturn(true);
+
+        static::assertTrue($this->itemWrapper->isHit());
+    }
+
+    public function testExpiresAfter()
+    {
+        $time = rand(1,100);
+
+        $this->wrappedItem
+            ->expects(static::once())
+            ->method('expiresAfter')
+            ->with(static::equalTo($time))
+            ->willReturnSelf();
+
+        static::assertInstanceOf('Stash\Interfaces\ItemInterface', $this->itemWrapper->expiresAfter($time));
+    }
+
+    public function testExpiresAt()
+    {
+        $this->wrappedItem
+            ->expects(static::once())
+            ->method('expiresAt')
+            ->with(static::isNull())
+            ->willReturnSelf();
+
+        static::assertInstanceOf('Stash\Interfaces\ItemInterface', $this->itemWrapper->expiresAt(null));
+    }
+
+    public function testSave()
+    {
+        $this->wrappedItem
+            ->expects(static::once())
+            ->method('save')
+            ->willReturn(true);
+
+        static::assertTrue($this->itemWrapper->save());
+    }
+
+    public function testLock()
     {
         $ttl = mt_rand(1, 100);
 
@@ -116,15 +160,14 @@ class CacheItemWrapperTest extends \PHPUnit_Framework_TestCase
     public function testSet()
     {
         $data = uniqid('test-data-', true);
-        $ttl = mt_rand(1, 100);
 
         $this->wrappedItem
             ->expects(static::once())
             ->method('set')
-            ->with(static::equalTo($data), static::equalTo($ttl))
-            ->willReturn(true);
+            ->with(static::equalTo($data))
+            ->willReturnSelf();
 
-        static::assertTrue($this->itemWrapper->set($data, $ttl));
+        static::assertInstanceOf('Stash\Interfaces\ItemInterface', $this->itemWrapper->set($data));
     }
 
     public function testExtend()

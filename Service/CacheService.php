@@ -51,16 +51,10 @@ class CacheService extends Pool
     /**
      * {@inheritdoc}
      */
-    public function getItem()
+    public function getItem($key)
     {
-        $args = func_get_args();
-
-        // check to see if a single array was used instead of multiple arguments
-        if(count($args) == 1 && is_array($args[0]))
-            $args = $args[0];
-
         /** @var ItemInterface $item */
-        $item = parent::getItem($args);
+        $item = parent::getItem($key);
 
         if (isset($this->tracker)) {
             /** @var CacheItemWrapper $item */
@@ -69,21 +63,6 @@ class CacheService extends Pool
         }
 
         return $item;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function clear()
-    {
-        $args = func_get_args();
-        if (count($args) === 0) {
-            return $this->flush();
-        } else {
-            $item = $this->getItem($args);
-
-            return $item->clear();
-        }
     }
 
     /**

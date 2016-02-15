@@ -106,6 +106,31 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $tracker->getQueries(), 'Tracker does not track queries when tracking is disabled');
     }
 
+    public function testGetQueriesNoValues()
+    {
+        $tracker = $this->testConstruct('unpopulated');
+        $tracker->enableQueryValueLogging(false);
+        $tracker = $this->getPopulatedTracker($tracker);
+
+        $queries = $tracker->getQueries();
+        $this->assertCount(6, $queries, 'Tracker returns queries passed to it.');
+
+        $tracker->trackRequest('Key6', false, 'Value6');
+        $queries = $tracker->getQueries();
+        $this->assertCount(7, $queries, 'Tracker returns queries with duplicate keys.');
+
+        $data = $this->getData();
+
+        foreach ($data as $index => $datum) {
+            $query = $queries[$index];
+            $expectedTruth = $datum[1] ? 'true' : 'false';
+            $expectedValue = explode(" ", $datum[3], 2)[0];
+            $this->assertEquals($datum[0], $query['key'], 'getQueries returns key for data example ' . $index);
+            $this->assertEquals($expectedTruth, $query['hit'], 'getQueries returns hit status as string for data example ' . $index);
+            $this->assertEquals($expectedValue, $query['value'], 'getQueries returns value for data example ' . $index);
+        }
+    }
+
     protected function getPopulatedTracker($tracker = null)
     {
         if (is_null($tracker)) {
@@ -126,7 +151,7 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
             array('Key1', true, 'Value1', '(string) Value1'),
             array('Key2', false, 2, '(integer) 2'),
             array('Key3', true, array(), "(array) Array\n(\n)\n"),
-            array('Key4', false, new \stdClass(), "(object) stdClass Object\n(\n)\n"),
+            array('Key4', false, new \stdClass(), "(object) ".serialize(new \stdClass())),
             array('Key5', true, 'Value5', '(string) Value5'),
             array('Key6', false, 'Value6', '(string) Value6'),
         );

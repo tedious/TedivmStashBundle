@@ -107,9 +107,9 @@ class DoctrineAdapter implements DoctrineCacheInterface
 
         $id = $this->normalizeId($id);
         $item = $this->cacheService->getItem($id);
+        $item->set($data, $lifeTime);
 
-        return $item->set($data, $lifeTime);
-
+        return $this->cacheService->save($item);
     }
 
     /**
@@ -119,12 +119,12 @@ class DoctrineAdapter implements DoctrineCacheInterface
     {
         $id = $this->normalizeId($id);
 
-        return $this->cacheService->clear($id);
+        return $this->cacheService->deleteItem($id);
     }
 
     public function deleteAll()
     {
-        return $this->flushAll();
+        return $this->delete('');
     }
 
     /**
@@ -165,7 +165,7 @@ class DoctrineAdapter implements DoctrineCacheInterface
     protected function normalizeId($id)
     {
         $namespace = (isset($this->namespace) && $this->namespace != '') ? $this->namespace : 'default';
-        $id = sprintf('zz_%s_zz/%s', $namespace, $id);
+        $id = sprintf('/zz_%s_zz/%s', $namespace, $id);
 
         return $id;
     }

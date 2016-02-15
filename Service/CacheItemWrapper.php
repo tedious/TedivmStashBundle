@@ -116,6 +116,38 @@ class CacheItemWrapper implements ItemInterface
     /**
      * {@inheritdoc}
      */
+    public function isHit()
+    {
+        return $this->wrappedItem->isHit();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function expiresAfter($time)
+    {
+        return $this->wrappedItem->expiresAfter($time);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function expiresAt($expiration)
+    {
+        return $this->wrappedItem->expiresAt($expiration);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save()
+    {
+        return $this->wrappedItem->save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function lock($ttl = null)
     {
         return $this->wrappedItem->lock($ttl);
@@ -124,9 +156,9 @@ class CacheItemWrapper implements ItemInterface
     /**
      * {@inheritdoc}
      */
-    public function set($data, $ttl = null)
+    public function set($data)
     {
-        return $this->wrappedItem->set($data, $ttl);
+        return $this->wrappedItem->set($data);
     }
 
     /**

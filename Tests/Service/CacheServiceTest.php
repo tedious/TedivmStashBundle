@@ -78,7 +78,7 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
         $this->runCacheCycle($service, 'one', false);
         $this->runCacheCycle($service, 'two', false);
 
-        $this->assertTrue($service->clear('test', 'key', 'one'));
+        $this->assertTrue($service->deleteItem('test/key/one'));
 
         $this->runCacheCycle($service, 'one', true);
         $this->runCacheCycle($service, 'two', false);
@@ -118,17 +118,18 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
         $service = $this->getCacheService('first');
         $service->setDriver(new Ephemeral());
 
-        $iterator = $service->getItemIterator($keys);
+        $iterator = $service->getItems($keys);
         $setvalues = $values;
 
         foreach ($iterator as $item) {
             $this->assertTrue($item->isMiss());
             $val = array_shift($setvalues);
             $item->set($val);
+            $service->save($item);
             $this->assertEquals($val, $item->get());
         }
 
-        $iterator2 = $service->getItemIterator($keys);
+        $iterator2 = $service->getItems($keys);
         $getvalues = $values;
 
         foreach ($iterator2 as $item) {
@@ -140,14 +141,17 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
 
     protected function runCacheCycle($service, $num, $ismiss)
     {
-        $key = array('test', 'key', $num);
+        $key = "test/key/$num";
         $testData = 'testkey' . $num;
 
         $item = $service->getItem($key);
         $data = $item->get();
         $this->assertEquals($ismiss, $item->isMiss());
 
-        $this->assertTrue($item->set($testData));
+//        $this->assertTrue($item->set($testData));
+
+        $item->set($testData);
+        $service->save($item);
 
         $item = $service->getItem($key);
         $data = $item->get();

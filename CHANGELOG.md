@@ -1,4 +1,27 @@
+## Tedivm StashBundle v0.6 Changelog
+
+### 0.6.1
+
+* Brought bundle up to date with the v0.14.0 line of Stash.
+
+
 ## Tedivm StashBundle v0.5 Changelog
+
+### 0.5.3
+
+* Made sure AbstractDriver::setOptions is called only once in the DriverFactory.
+
+* Symfony3 support.
+
+* PHP 7.0 support *(tests on PHP 7.0 are not allowed to fail anymore)*.
+
+
+### 0.5.2
+
+*  Improved memory use when tracking is enabled.
+
+*  Added support for `tracking_values` option, to be able to disable tracking cache values.
+
 
 ### 0.5.1
 

@@ -55,6 +55,13 @@ class CacheTracker
      */
     protected $logQueries = true;
 
+    /**
+     *  Whether to log cache values of the individual queries when $logQueries is enabled.
+     *
+     * @var bool
+     */
+    protected $logQueryValues = true;
+
     public function __construct($name)
     {
         $this->name = $name;
@@ -68,6 +75,18 @@ class CacheTracker
     public function enableQueryLogging($lq = true)
     {
         $this->logQueries = $lq;
+    }
+
+    /**
+     * Enables or disables query value logging.
+     *
+     * @see $logQueryValues
+     *
+     * @param boolean $logQueryValues
+     */
+    public function enableQueryValueLogging($logQueryValues = true)
+    {
+        $this->logQueryValues = $logQueryValues;
     }
 
     /**
@@ -89,7 +108,17 @@ class CacheTracker
         }
 
         $hit = $hit ? 'true' : 'false';
-        $value = sprintf('(%s) %s', gettype($value), print_r($value, true));
+
+        if ($this->logQueryValues) {
+            if (is_object($value)) {
+                $readyVal = serialize($value);
+            } else {
+                $readyVal = print_r($value, true);
+            }
+            $value = sprintf('(%s) %s', gettype($value), $readyVal);
+        } else {
+            $value = sprintf('(%s)', gettype($value));
+        }
 
         $this->queries[] = array(
             'key'   => $key,
