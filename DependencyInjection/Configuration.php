@@ -120,7 +120,7 @@ class Configuration implements ConfigurationInterface
             ->prototype('scalar')
             ->validate()
             ->ifNotInArray($drivers)
-            ->thenInvalid('A driver of that name is not registered.')
+            ->thenInvalid('A driver of name %s is not registered.')
             ->end()
             ->end()
             ->end()
