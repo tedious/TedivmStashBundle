@@ -24,7 +24,7 @@ or by adding it directly to your `composer.json` file:
 
 ```json
 "require": {
-    "tedivm/stash-bundle": "0.4.*"
+    "tedivm/stash-bundle": "0.6.*"
 }
 ```
 
