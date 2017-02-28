@@ -250,7 +250,7 @@ FileSystem:
     filePermissions:        0660
     dirPermissions:         0770
     memKeyLimit:            20
-Sqlite:
+SQLite:
     path:                   %kernel.cache_dir%/stash
     filePermissions:        0660
     dirPermissions:         0770
@@ -264,3 +264,4 @@ Memcache:
     servers:
         - { server: 127.0.0.1, port: 11211, weight: 1 }
 ```
+
