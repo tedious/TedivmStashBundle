@@ -168,6 +168,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('no_block')->end()
                         ->booleanNode('tcp_nodelay')->end()
                         ->booleanNode('auto_eject_hosts')->end()
+                        ->booleanNode('remove_failed_servers')->end()
                         ->scalarNode('socket_send_size')->end()
                         ->scalarNode('socket_recv_size')->end()
                         ->scalarNode('connect_timeout')->end()
