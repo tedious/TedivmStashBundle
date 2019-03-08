@@ -25,17 +25,25 @@
         }
     ],
     "require": {
-        "php": "^5.4|^7.0",
-        "tedivm/stash": "0.14.*",
-        "symfony/config": "~2.1|~3.0",
-        "symfony/http-kernel": "~2.1|~3.0",
-        "symfony/dependency-injection": "~2.1|~3.0"
+        "php": "^7.0",
+        "tedivm/stash": "^0.15",
+        "symfony/config": "^3.4",
+        "symfony/http-kernel": "^3.4",
+        "symfony/dependency-injection": "^3.4"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.8"
+        }
     },
     "require-dev": {
-        "phpunit/phpunit": "4.1.*",
-        "fabpot/php-cs-fixer": "0.4.0",
-        "satooshi/php-coveralls": "1.0.*",
-        "doctrine/cache": "~1.0"
+        "doctrine/cache": "^1.6",
+        "friendsofphp/php-cs-fixer": "^2",
+        "php-coveralls/php-coveralls": "^2",
+        "phpunit/phpunit": "^6.5",
+        "symfony/phpunit-bridge": "*"
     },
     "autoload": {
         "psr-4": {"Tedivm\\StashBundle\\": ""}
