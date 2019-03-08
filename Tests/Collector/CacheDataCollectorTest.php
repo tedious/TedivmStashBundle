@@ -12,8 +12,11 @@
 
 namespace Tedivm\StashBundle\Tests\Collector;
 
-use \Stash\DriverList;
-use \Tedivm\StashBundle\Service\CacheTracker as Tracker;
+use PHPUnit\Framework\TestCase;
+use Stash\DriverList;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Tedivm\StashBundle\Service\CacheTracker as Tracker;
 
 /**
  * Class CacheDataCollectorTest
@@ -21,7 +24,7 @@ use \Tedivm\StashBundle\Service\CacheTracker as Tracker;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
+class CacheDataCollectorTest extends TestCase
 {
     protected $testClass = 'Tedivm\StashBundle\Collector\CacheDataCollector';
 
@@ -126,12 +129,21 @@ class CacheDataCollectorTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testResetWillSetDataToEmptyArray()
+    {
+        $collector = $this->getPrimedCollector();
+
+        self::assertNotSame('a:0:{}', $collector->serialize());
+        $collector->reset();
+        self::assertSame('a:0:{}', $collector->serialize());
+    }
+
     protected function getPrimedCollector()
     {
         $collector = $this->getPopulatedCollector();
 
-        $requestMock = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $responseMock = $this->getMock('Symfony\Component\HttpFoundation\Response');
+        $requestMock = $this->createMock(Request::class);
+        $responseMock = $this->createMock(Response::class);
 
         $collector->collect($requestMock, $responseMock);
 

@@ -12,6 +12,7 @@
 
 namespace Tedivm\StashBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Tedivm\StashBundle\DependencyInjection\Configuration;
 
@@ -21,7 +22,7 @@ use Tedivm\StashBundle\DependencyInjection\Configuration;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     public function testGetConfigTreeBuilder()
     {

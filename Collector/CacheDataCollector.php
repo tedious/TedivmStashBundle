@@ -152,4 +152,9 @@ class CacheDataCollector extends DataCollector
     {
         return 'stash';
     }
+
+    public function reset()
+    {
+        $this->data = [];
+    }
 }

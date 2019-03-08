@@ -12,6 +12,7 @@
 
 namespace Tedivm\StashBundle\Tests\Factory;
 
+use PHPUnit\Framework\TestCase;
 use Tedivm\StashBundle\Factory\DriverFactory;
 use Stash\DriverList;
 
@@ -21,7 +22,7 @@ use Stash\DriverList;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class DriverFactoryTest extends \PHPUnit_Framework_TestCase
+class DriverFactoryTest extends TestCase
 {
     protected $drivers = array();
 

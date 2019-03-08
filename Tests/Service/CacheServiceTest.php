@@ -12,10 +12,9 @@
 
 namespace Tedivm\StashBundle\Tests\Service;
 
-use Tedivm\StashBundle\Service\CacheService;
-use Tedivm\StashBundle\Service\CacheTracker;
 use Stash\Driver\Ephemeral;
 use Stash\DriverList;
+use Tedivm\StashBundle\Service\CacheTracker;
 
 /**
  * Class CacheServiceTest

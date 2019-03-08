@@ -28,6 +28,7 @@ namespace Tedivm\StashBundle\Tests\ThirdParty\Doctrine;
 
 use Doctrine\Common\Cache\Cache;
 use ArrayObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CacheTest
@@ -35,7 +36,7 @@ use ArrayObject;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-abstract class CacheTest extends \PHPUnit_Framework_TestCase
+abstract class CacheTest extends TestCase
 {
     /**
      * @dataProvider provideCrudValues

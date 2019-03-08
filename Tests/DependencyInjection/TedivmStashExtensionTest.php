@@ -12,6 +12,7 @@
 
 namespace Tedivm\StashBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Tedivm\StashBundle\DependencyInjection\TedivmStashExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class TedivmStashExtensionTest extends \PHPUnit_Framework_TestCase
+class TedivmStashExtensionTest extends TestCase
 {
     /**
      * @dataProvider configProvider

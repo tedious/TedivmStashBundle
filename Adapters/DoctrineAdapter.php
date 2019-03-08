@@ -15,6 +15,7 @@ use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
 /**
  * Class DoctrineAdapter
+ *
  * @package Tedivm\StashBundle\Adapters
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
