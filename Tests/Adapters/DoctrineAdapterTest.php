@@ -88,12 +88,9 @@ class DoctrineAdapterTest extends CacheTest
 
     public function testDeleteAllAndNamespaceVersioningBetweenCaches()
     {
-
     }
 
     public function testFlushAllAndNamespaceVersioningBetweenCaches()
     {
-
     }
-
 }

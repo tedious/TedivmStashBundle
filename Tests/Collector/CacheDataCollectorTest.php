@@ -124,8 +124,10 @@ class CacheDataCollectorTest extends TestCase
 
         //var_dump($drivers, $systemDrivers);exit();
         foreach ($drivers as $driver) {
-            $this->assertTrue(in_array($driver, $systemDrivers),
-                'getDrivers returns only registered drivers- Unregistered: ' . $driver);
+            self::assertTrue(
+                in_array($driver, $systemDrivers),
+                'getDrivers returns only registered drivers- Unregistered: ' . $driver
+            );
         }
     }
 

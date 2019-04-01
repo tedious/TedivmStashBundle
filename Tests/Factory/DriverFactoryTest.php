@@ -93,7 +93,6 @@ class DriverFactoryTest extends TestCase
             $subDriverClass = $this->drivers[$subtype];
             $this->assertInstanceOf($subDriverClass, $subDriver);
         }
-
     }
 
     public function testMemcacheSetup()

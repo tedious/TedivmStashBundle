@@ -11,6 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Service;
+
 use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
 use Stash\Pool;
@@ -47,7 +48,7 @@ class CacheService extends Pool
         $this->setNamespace($name);
 
         if (isset($driver)) {
-           $this->setDriver($driver);
+            $this->setDriver($driver);
         }
 
         parent::__construct($driver);
@@ -62,7 +63,7 @@ class CacheService extends Pool
         $item = parent::getItem($key);
 
         if (isset($this->tracker)) {
-           $item->setCacheTracker($this->tracker);
+            $item->setCacheTracker($this->tracker);
         }
 
         return $item;

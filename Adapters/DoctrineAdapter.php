@@ -11,6 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Adapters;
+
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 
 /**

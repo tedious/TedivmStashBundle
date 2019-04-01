@@ -11,6 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Factory;
+
 use Stash\DriverList;
 use Stash\Interfaces\DriverInterface;
 
@@ -37,7 +38,6 @@ class DriverFactory
         $h = array();
 
         foreach ($types as $type) {
-
             if (!isset($drivers[$type])) {
                 $allDrivers = DriverList::getAllDrivers();
 

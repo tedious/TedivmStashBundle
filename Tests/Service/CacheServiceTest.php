@@ -158,5 +158,4 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
         $this->assertFalse($item->isMiss());
         $this->assertEquals($testData, $data);
     }
-
 }

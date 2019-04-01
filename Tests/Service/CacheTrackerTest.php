@@ -37,7 +37,6 @@ class CacheTrackerTest extends TestCase
 
     public function testTrackRequest()
     {
-
     }
 
     public function testGetName()
@@ -62,7 +61,6 @@ class CacheTrackerTest extends TestCase
         $tracker->trackRequest('Key7', false, 'Value7');
 
         $this->assertEquals(8, $tracker->getCalls(), 'Tracker counts calls sent to it with duplicate keys.');
-
     }
 
     public function testGetHits()
@@ -78,7 +76,6 @@ class CacheTrackerTest extends TestCase
         $tracker->trackRequest('Key7', true, 'Value7');
 
         $this->assertEquals(4, $tracker->getHits(), 'Tracker increments hits when sent them.');
-
     }
 
     public function testGetQueries()

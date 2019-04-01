@@ -158,7 +158,6 @@ class TedivmStashExtension extends Extension
                     new Reference(sprintf('stash.tracker.%s_cache', $name))
                 ))
         ;
-
     }
 
     /**
