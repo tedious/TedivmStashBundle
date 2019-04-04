@@ -66,13 +66,17 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->beforeNormalization()
-                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('default_cache', $v) && array_key_exists('caches', $v); })
+                ->ifTrue(function ($v) {
+                    return is_array($v) && !array_key_exists('default_cache', $v) && array_key_exists('caches', $v);
+                })
                 ->then(function ($v) {
                     return Configuration::normalizeDefaultCacheConfig($v);
                 })
             ->end()
             ->beforeNormalization()
-                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('caches', $v) && !array_key_exists('cache', $v); })
+                ->ifTrue(function ($v) {
+                    return is_array($v) && !array_key_exists('caches', $v) && !array_key_exists('cache', $v);
+                })
                 ->then(function ($v) {
                     return Configuration::normalizeCacheConfig($v);
                 })
@@ -105,7 +109,9 @@ class Configuration implements ConfigurationInterface
             ->fixXmlConfig('handler')
             ->fixXmlConfig('driver')
             ->beforeNormalization()
-            ->ifTrue(function ($v) { return is_array($v) && array_key_exists('handlers', $v); })
+            ->ifTrue(function ($v) {
+                return is_array($v) && array_key_exists('handlers', $v);
+            })
             ->then(function ($v) {
                 return Configuration::normalizeHandlerToDriverConfig($v);
             })
@@ -152,8 +158,8 @@ class Configuration implements ConfigurationInterface
             ->arrayNode($driver)
                 ->fixXmlConfig('server');
 
-            if ($driver == 'Memcache') {
-                $finalNode = $driverNode
+        if ($driver == 'Memcache') {
+            $finalNode = $driverNode
                     ->info('All options except "servers" are Memcached options. See http://www.php.net/manual/en/memcached.constants.php')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -193,8 +199,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                ;
-            } elseif ($driver == 'Redis') {
-                $finalNode = $driverNode
+        } elseif ($driver == 'Redis') {
+            $finalNode = $driverNode
                     ->info("Accepts server info, password, and database.")
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -216,26 +222,26 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ;
-            } else {
-                $defaults = isset($this->driverSettings[$driver]) ? $this->driverSettings[$driver] : array();
+        } else {
+            $defaults = isset($this->driverSettings[$driver]) ? $this->driverSettings[$driver] : array();
 
-                $node = $driverNode
+            $node = $driverNode
                     ->addDefaultsIfNotSet()
                     ->children();
 
-                    foreach ($defaults as $setting => $default) {
-                        $node
+            foreach ($defaults as $setting => $default) {
+                $node
                             ->scalarNode($setting)
                             ->defaultValue($default)
                             ->end()
                         ;
-                    }
-
-                    $finalNode = $node->end()
-                ;
             }
 
-            $finalNode->end()
+            $finalNode = $node->end()
+                ;
+        }
+
+        $finalNode->end()
         ;
     }
 

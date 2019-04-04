@@ -12,6 +12,8 @@
 
 namespace Tedivm\StashBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Definition\ArrayNode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Tedivm\StashBundle\DependencyInjection\Configuration;
 
@@ -21,7 +23,7 @@ use Tedivm\StashBundle\DependencyInjection\Configuration;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     public function testGetConfigTreeBuilder()
     {
@@ -40,8 +42,11 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration->addDriverSettings('Memcache', $rootNode->children());
         $memcacheNode = $rootNode->getNode('Memcache');
 
-        $this->assertInstanceOf('Symfony\Component\Config\Definition\ArrayNode', $memcacheNode,
-            'Config generator makes Memcache nodes when requested');
+        $this->assertInstanceOf(
+            ArrayNode::class,
+            $memcacheNode,
+            'Config generator makes Memcache nodes when requested'
+        );
 
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('stash');
@@ -49,8 +54,11 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration->addDriverSettings('Redis', $rootNode->children());
         $memcacheNode = $rootNode->getNode('Redis');
 
-        $this->assertInstanceOf('Symfony\Component\Config\Definition\ArrayNode', $memcacheNode,
-            'Config generator makes Redis nodes when requested');
+        $this->assertInstanceOf(
+            ArrayNode::class,
+            $memcacheNode,
+            'Config generator makes Redis nodes when requested'
+        );
     }
 
     public function testNormalizeCacheConfig()
@@ -103,5 +111,4 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('drivers', $returnedData, 'Normalization converts "handlers" to "drivers"');
         $this->assertEquals($testData['handlers'], $returnedData['drivers'], 'Normalization converts "handlers" to "drivers"');
     }
-
 }

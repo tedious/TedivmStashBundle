@@ -54,5 +54,4 @@ class SessionHandlerAdapterTest extends \Stash\Test\SessionTest
         $this->assertEquals('', $sessionB->read('session_id'), 'SessionB cleared after ClearAll');
         $this->assertEquals('', $sessionC->read('session_id'), 'SessionC cleared after ClearAll');
     }
-
 }

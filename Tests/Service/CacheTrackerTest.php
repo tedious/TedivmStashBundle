@@ -12,11 +12,14 @@
 
 namespace Tedivm\StashBundle\Tests\Service;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class CacheTrackerTest
+ *
  * @package Tedivm\StashBundle\Tests\Service
  */
-class CacheTrackerTest extends \PHPUnit_Framework_TestCase
+class CacheTrackerTest extends TestCase
 {
     protected $testClass = '\Tedivm\StashBundle\Service\CacheTracker';
 
@@ -34,7 +37,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
 
     public function testTrackRequest()
     {
-
     }
 
     public function testGetName()
@@ -59,7 +61,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         $tracker->trackRequest('Key7', false, 'Value7');
 
         $this->assertEquals(8, $tracker->getCalls(), 'Tracker counts calls sent to it with duplicate keys.');
-
     }
 
     public function testGetHits()
@@ -75,7 +76,6 @@ class CacheTrackerTest extends \PHPUnit_Framework_TestCase
         $tracker->trackRequest('Key7', true, 'Value7');
 
         $this->assertEquals(4, $tracker->getHits(), 'Tracker increments hits when sent them.');
-
     }
 
     public function testGetQueries()

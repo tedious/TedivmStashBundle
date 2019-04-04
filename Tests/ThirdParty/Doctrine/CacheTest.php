@@ -28,6 +28,7 @@ namespace Tedivm\StashBundle\Tests\ThirdParty\Doctrine;
 
 use Doctrine\Common\Cache\Cache;
 use ArrayObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CacheTest
@@ -35,7 +36,7 @@ use ArrayObject;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-abstract class CacheTest extends \PHPUnit_Framework_TestCase
+abstract class CacheTest extends TestCase
 {
     /**
      * @dataProvider provideCrudValues
@@ -83,7 +84,7 @@ abstract class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteAllAndNamespaceVersioningBetweenCaches()
     {
-        if ( ! $this->isSharedStorage()) {
+        if (! $this->isSharedStorage()) {
             $this->markTestSkipped('The ' . __CLASS__ .' does not use shared storage');
         }
 
@@ -133,7 +134,7 @@ abstract class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testFlushAllAndNamespaceVersioningBetweenCaches()
     {
-        if ( ! $this->isSharedStorage()) {
+        if (! $this->isSharedStorage()) {
             $this->markTestSkipped('The ' . __CLASS__ .' does not use shared storage');
         }
 

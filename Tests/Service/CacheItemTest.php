@@ -12,6 +12,7 @@
 
 namespace Tedivm\StashBundle\Tests\Service;
 
+use Stash\Test\AbstractItemTest;
 use Tedivm\StashBundle\Service\CacheTracker;
 
 /**
@@ -20,7 +21,7 @@ use Tedivm\StashBundle\Service\CacheTracker;
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class CacheItemTest extends \Stash\Test\AbstractItemTest
+class CacheItemTest extends AbstractItemTest
 {
     protected $itemClass = '\Tedivm\StashBundle\Service\CacheItem';
 

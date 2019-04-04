@@ -11,6 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Collector;
+
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -151,5 +152,10 @@ class CacheDataCollector extends DataCollector
     public function getname()
     {
         return 'stash';
+    }
+
+    public function reset()
+    {
+        $this->data = [];
     }
 }

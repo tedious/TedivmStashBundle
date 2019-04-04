@@ -11,6 +11,7 @@
  */
 
 namespace Tedivm\StashBundle\Service;
+
 use Stash\Item;
 
 /**
@@ -52,5 +53,4 @@ class CacheItem extends Item
 
         return $result;
     }
-
 }

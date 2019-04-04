@@ -12,10 +12,10 @@
 
 namespace Tedivm\StashBundle\Tests\Service;
 
-use Tedivm\StashBundle\Service\CacheService;
-use Tedivm\StashBundle\Service\CacheTracker;
 use Stash\Driver\Ephemeral;
 use Stash\DriverList;
+use Stash\Interfaces\ItemInterface;
+use Tedivm\StashBundle\Service\CacheTracker;
 
 /**
  * Class CacheServiceTest
@@ -121,8 +121,8 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
         $iterator = $service->getItems($keys);
         $setvalues = $values;
 
+        /** @var ItemInterface $item */
         foreach ($iterator as $item) {
-            $this->assertTrue($item->isMiss());
             $val = array_shift($setvalues);
             $item->set($val);
             $service->save($item);
@@ -158,5 +158,4 @@ class CacheServiceTest extends \Stash\Test\AbstractPoolTest
         $this->assertFalse($item->isMiss());
         $this->assertEquals($testData, $data);
     }
-
 }

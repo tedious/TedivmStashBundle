@@ -12,19 +12,25 @@
 
 namespace Tedivm\StashBundle\Tests;
 
+use PHPUnit\Framework\TestCase;
+use Tedivm\StashBundle\DependencyInjection\TedivmStashExtension;
+
 /**
  * Class TedivmStashBundleTest
+ *
  * @package Tedivm\StashBundle\Tests
  * @author Josh Hall-Bachner <jhallbachner@gmail.com>
  * @author Robert Hafner <tedivm@tedivm.com>
  */
-class TedivmStashBundleTest extends \PHPUnit_Framework_TestCase
+class TedivmStashBundleTest extends TestCase
 {
     public function testGetContainerExtension()
     {
         $bundle = new \Tedivm\StashBundle\TedivmStashBundle();
 
-        $this->assertInstanceOf('Tedivm\StashBundle\DependencyInjection\TedivmStashExtension',
-            $bundle->getContainerExtension());
+        $this->assertInstanceOf(
+            TedivmStashExtension::class,
+            $bundle->getContainerExtension()
+        );
     }
 }
