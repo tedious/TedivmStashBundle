@@ -143,7 +143,7 @@ class Configuration implements ConfigurationInterface
         $childNode->end()
         ;
 
-        return $node;
+        return $treeBuilder->getRootNode();
     }
 
     /**
