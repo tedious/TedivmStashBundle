@@ -101,10 +101,9 @@ class Configuration implements ConfigurationInterface
     {
         $drivers = array_keys(DriverList::getAvailableDrivers());
 
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('caches');
+        $treeBuilder = new TreeBuilder('caches');
 
-        $childNode = $node
+        $childNode = $treeBuilder->getRootNode()
             ->fixXmlConfig('handler')
             ->fixXmlConfig('driver')
             ->beforeNormalization()
