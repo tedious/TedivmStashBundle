@@ -77,7 +77,7 @@ class CacheDataCollector extends DataCollector
     /**
      * {@inheritDoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null)
     {
         $info = array('calls' => 0, 'hits' => 0);
         foreach ($this->trackers as $tracker) {
