@@ -61,8 +61,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('stash');
+        $treeBuilder = new TreeBuilder('stash');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->beforeNormalization()
@@ -102,8 +102,8 @@ class Configuration implements ConfigurationInterface
     {
         $drivers = array_keys(DriverList::getAvailableDrivers());
 
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('caches');
+        $treeBuilder = new TreeBuilder('caches');
+        $node = $treeBuilder->getRootNode();
 
         $childNode = $node
             ->fixXmlConfig('handler')
