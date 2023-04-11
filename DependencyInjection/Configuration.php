@@ -61,10 +61,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('stash');
+        $treeBuilder = new TreeBuilder('stash');
 
-        $rootNode
+        $treeBuilder->getRootNode()
             ->beforeNormalization()
                 ->ifTrue(function ($v) {
                     return is_array($v) && !array_key_exists('default_cache', $v) && array_key_exists('caches', $v);
@@ -102,10 +101,9 @@ class Configuration implements ConfigurationInterface
     {
         $drivers = array_keys(DriverList::getAvailableDrivers());
 
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('caches');
+        $treeBuilder = new TreeBuilder('caches');
 
-        $childNode = $node
+        $childNode = $treeBuilder->getRootNode()
             ->fixXmlConfig('handler')
             ->fixXmlConfig('driver')
             ->beforeNormalization()
@@ -145,7 +143,7 @@ class Configuration implements ConfigurationInterface
         $childNode->end()
         ;
 
-        return $node;
+        return $treeBuilder->getRootNode();
     }
 
     /**

@@ -28,7 +28,7 @@
             <argument>%stash.default_cache%</argument>
             <argument>%stash.caches%</argument>
             <argument>%stash.caches.options%</argument>
-            <tag name="data_collector" id="stash" template="TedivmStashBundle:Profiler:layout"/>
+            <tag name="data_collector" id="stash" template="@TedivmStash/Profiler/layout.html.twig"/>
         </service>
     </services>
 </container>
